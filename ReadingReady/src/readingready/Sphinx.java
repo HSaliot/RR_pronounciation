@@ -53,6 +53,14 @@ public class Sphinx{
         return results.getWords();
     }
     
+    public SpeechResult getSpeechResult(String wav) throws FileNotFoundException{
+        recognizer.startRecognition(new FileInputStream(new File("aron.wav")));
+        SpeechResult results = recognizer.getResult();
+        recognizer.stopRecognition();
+        
+        return results;
+    }
+    
     public List<WordResult> getWordResultsWithAlignment(String wav, String transcript) throws IOException{
         if(aligner == null)
             aligner = new SpeechAligner(configuration.getAcousticModelPath(), configuration.getDictionaryPath(), null);

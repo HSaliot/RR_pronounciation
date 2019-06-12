@@ -6,17 +6,14 @@
 package readingready;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Stage;
 
 /**
  *
@@ -27,7 +24,7 @@ public class ResultPage{
     private HBox leftHB;
     
     @FXML
-    private HBox rightTopHB;
+    private VBox rightTopVB;
     
     @FXML
     private HBox rightBottomHB;
@@ -35,12 +32,16 @@ public class ResultPage{
     private Stage thisStage;
     private TextFlow textSelection;
     
-    public ResultPage() throws IOException{
+    private Evaluation evaluation;
+    
+    public ResultPage(Evaluation evaluation) throws IOException{
+        this.evaluation = evaluation;
         thisStage = new Stage();
         thisStage.setMaximized(true);
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ResultPage.fxml"));
         loader.setController(this);
+        
         thisStage.setScene(new Scene(loader.load()));
     }
     
@@ -50,7 +51,12 @@ public class ResultPage{
     
     @FXML
     private void initialize(){
-        TextFlow textSelectionPane = new TextFlow();
+        Label labelSelection = new Label(evaluation.getSelection() + "\n");
+        Label labelStudent = new Label(evaluation.getStudent() + "\n");
+        Label labelDateRecorded = new Label(evaluation.getDateRecorded() + "\n");
+        
+        rightTopVB.getChildren().addAll(labelSelection, labelStudent, labelDateRecorded);
+        
     }
 
     

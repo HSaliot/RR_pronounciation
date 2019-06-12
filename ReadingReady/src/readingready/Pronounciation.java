@@ -6,18 +6,8 @@
 package readingready;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Map;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -28,7 +18,8 @@ public class Pronounciation extends Application {
     
     
   public void start(Stage stage) throws IOException {
-        ResultPage resultPage = new ResultPage();
+        Evaluation evaluation = new Evaluation("Dark Chocolate", "DELA CRUZ, Juan", null);
+        ResultPage resultPage = new ResultPage(evaluation);
         resultPage.show();
     }
 
