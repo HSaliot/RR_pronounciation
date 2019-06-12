@@ -28,14 +28,8 @@ public class Pronounciation extends Application {
     
     
   public void start(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("GUI/general.fxml"));
-        Parent root = loader.load();
-        
-        stage.setTitle("Reading Ready");
-        stage.setMaximized(true);
-        stage.setScene(new Scene(root));
-        
-        stage.show();
+        ResultPage resultPage = new ResultPage();
+        resultPage.show();
     }
 
     
@@ -45,14 +39,4 @@ public class Pronounciation extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
-    public static String readFileAsString(String fileName)throws Exception 
-    { 
-        String body = ""; 
-        body = new String(Files.readAllBytes(Paths.get(fileName))); 
-        return body; 
-    } 
-    
-    
-    
 }

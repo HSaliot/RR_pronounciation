@@ -37,6 +37,8 @@ public class ResultPage{
     
     public ResultPage() throws IOException{
         thisStage = new Stage();
+        thisStage.setMaximized(true);
+        
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ResultPage.fxml"));
         loader.setController(this);
         thisStage.setScene(new Scene(loader.load()));
@@ -49,8 +51,6 @@ public class ResultPage{
     @FXML
     private void initialize(){
         TextFlow textSelectionPane = new TextFlow();
-        
-        
     }
 
     
