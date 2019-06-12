@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import readingready.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1">
+  
+    <MenuBar VBox.vgrow="NEVER">
+      <menus>
+        <Menu  text="File">
+          <items>
+            <MenuItem  text="New"/>
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    
+    <SplitPane fx:id="body" dividerPositions="0.2, 0.5"   prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      
+        <ScrollPane fx:id="left" prefHeight="-1.0" prefWidth="-1">
+            <HBox fx:id="leftHB"></HBox>
+        </ScrollPane>
+        
+        <SplitPane fx:id="right" dividerPositions="0.5" orientation="VERTICAL" maxWidth="350" prefWidth="350" minWidth="350">
+            <HBox fx:id="rightTopHB"></HBox>
+            <HBox fx:id="rightBottomHB"></HBox>
+        </SplitPane>
+    </SplitPane>
+
+</VBox>
