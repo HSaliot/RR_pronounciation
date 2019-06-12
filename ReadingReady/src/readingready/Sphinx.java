@@ -6,23 +6,25 @@
 package readingready;
 
 import edu.cmu.sphinx.api.Configuration;
+import edu.cmu.sphinx.api.SpeechAligner;
 import edu.cmu.sphinx.api.SpeechResult;
 import edu.cmu.sphinx.api.StreamSpeechRecognizer;
 import edu.cmu.sphinx.result.WordResult;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.List;
 
 /**
- *
+ * 
  * @author Lorenz Canuto
  * @author Hannah Saliot
  */
-public class Sphinx4{
+public class Sphinx{
     private Configuration configuration;
     private StreamSpeechRecognizer recognizer;
-    private InputStream stream;
+    private SpeechAligner aligner;
     
     public void initialize(String acousticModel, String dictionary) throws IOException{
         configuration = new Configuration();
@@ -30,32 +32,30 @@ public class Sphinx4{
         //configuration.setAcousticModelPath("en-us-adapt"); //adapted
         configuration.setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
         configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
+        recognizer = new StreamSpeechRecognizer(configuration);
     }
     
-    public void setAcousticModel(String path){
+    public void setAcousticModel(String path) throws IOException{
         configuration.setAcousticModelPath(path);
+        recognizer = new StreamSpeechRecognizer(configuration);
     }
     
-    
-        
-        
-	StreamSpeechRecognizer recognizer = new StreamSpeechRecognizer(configuration);
-	InputStream stream = new FileInputStream(new File("aron.wav"));
-
-        recognizer.startRecognition(stream);
-	SpeechResult result;
-	
-    while ((result = recognizer.getResult()) != null) {
-	    System.out.format("Hypothesis: %s\n", result.getHypothesis());
-
-	    System.out.println("List of recognized words and their times:");
-	    for (WordResult r : result.getWords()) {
-	    	System.out.print(r);
-	    	System.out.print("    Score: "+r.getScore());
-	    	System.out.println("    Pronunciation : "+r.getPronunciation());
-	    }
-	}
-	recognizer.stopRecognition();
+    public void setDictionary(String path) throws IOException{
+        configuration.setDictionaryPath(path);
+        recognizer = new StreamSpeechRecognizer(configuration);
     }
     
+    public List<WordResult> getWordResults(String wav) throws FileNotFoundException{
+        recognizer.startRecognition(new FileInputStream(new File("aron.wav")));
+        SpeechResult results = recognizer.getResult();
+        recognizer.stopRecognition();
+        
+        return results.getWords();
+    }
+    
+    public List<WordResult> getWordResultsWithAlignment(String wav, String transcript) throws IOException{
+        if(aligner == null)
+            aligner = new SpeechAligner(configuration.getAcousticModelPath(), configuration.getDictionaryPath(), null);
+        return aligner.align(new File(wav).toURI().toURL(), transcript);
+    }
 }
