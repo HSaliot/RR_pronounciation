@@ -25,6 +25,13 @@ public class ResultPage{
     
     @FXML
     private VBox rightTopVB;
+    @FXML
+    private Label labelStudent;
+    @FXML
+    private Label labelSelection;
+    @FXML
+    private Label labelDateRecorded;
+    
     
     @FXML
     private HBox rightBottomHB;
@@ -51,11 +58,9 @@ public class ResultPage{
     
     @FXML
     private void initialize(){
-        Label labelSelection = new Label(evaluation.getSelection() + "\n");
-        Label labelStudent = new Label(evaluation.getStudent() + "\n");
-        Label labelDateRecorded = new Label(evaluation.getDateRecorded() + "\n");
-        
-        rightTopVB.getChildren().addAll(labelSelection, labelStudent, labelDateRecorded);
+        labelSelection.setText(evaluation.getSelection());
+        labelStudent.setText(evaluation.getStudent());
+        labelDateRecorded.setText(evaluation.getDateRecorded());
         
     }
 

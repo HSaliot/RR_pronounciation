@@ -25,7 +25,11 @@
         </ScrollPane>
         
         <SplitPane fx:id="right" dividerPositions="0.5" orientation="VERTICAL" maxWidth="350" prefWidth="350" minWidth="350">
-            <VBox fx:id="rightTopVB"></VBox>
+            <VBox fx:id="rightTopVB" padding="20">
+                <Label fx:id="labelSelection"/>
+                <Label fx:id="labelStudent"/>
+                <Label fx:id="labelDateRecorded"/>
+            </VBox>
             <HBox fx:id="rightBottomHB"></HBox>
         </SplitPane>
     </SplitPane>

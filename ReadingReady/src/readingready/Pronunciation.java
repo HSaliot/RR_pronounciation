@@ -8,19 +8,19 @@ package readingready;
 import java.io.IOException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.stage.Stage;
 
 /**
  *
  * @author Hannah Saliot
  */
-public class Pronounciation extends Application {
+public class Pronunciation extends Application {
     
     
-  public void start(Stage stage) throws IOException {
+  public void start() throws IOException {
         Evaluation evaluation = new Evaluation("Dark Chocolate", "DELA CRUZ, Juan", null);
         ResultPage resultPage = new ResultPage(evaluation);
         resultPage.show();
+      
     }
 
     
@@ -30,4 +30,5 @@ public class Pronounciation extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }
