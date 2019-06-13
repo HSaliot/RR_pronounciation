@@ -5,6 +5,7 @@
  */
 package readingready;
 
+import edu.cmu.sphinx.api.SpeechResult;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -14,6 +15,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -22,10 +25,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -76,8 +77,17 @@ public class AddWavPage {
                     out.write(buffer, 0, lengthRead);
                     out.flush();
                 }
-            }          
-        close();
+            }    
+            
+            
+            Sphinx sphinx = new Sphinx();
+            List<SpeechResult> sentences = new ArrayList<>();
+            sentences.add(sphinx.getSpeechResult("aron.wav"));
+            ResultPage result = new ResultPage(new Evaluation(name.getText(), "Dark Chocolate (edited)", sentences));
+            close();
+            result.show();
+            
+            
         }
     }
     @FXML
@@ -92,7 +102,7 @@ public class AddWavPage {
         thisStage.close();
     }
     
-    public void open() {
+    public void show() {
         thisStage.show();
     }
     
@@ -124,5 +134,7 @@ public class AddWavPage {
             }
         });
     }
+    
+    
     
 }

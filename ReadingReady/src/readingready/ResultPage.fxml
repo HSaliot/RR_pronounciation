@@ -8,14 +8,10 @@
 
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1">
   
-    <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu  text="File">
-          <items>
-            <MenuItem  text="New"/>
-          </items>
+    <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
+        <Menu fx:id="fileMenu" text="File">
+            <MenuItem fx:id="add" text="New"/>
         </Menu>
-      </menus>
     </MenuBar>
     
     <SplitPane fx:id="body" dividerPositions="0.2, 0.5"   prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
@@ -25,7 +21,7 @@
         </ScrollPane>
         
         <SplitPane fx:id="right" dividerPositions="0.5" orientation="VERTICAL" maxWidth="350" prefWidth="350" minWidth="350">
-            <VBox fx:id="rightTopVB" padding="20">
+            <VBox fx:id="rightTopVB">
                 <Label fx:id="labelSelection"/>
                 <Label fx:id="labelStudent"/>
                 <Label fx:id="labelDateRecorded"/>

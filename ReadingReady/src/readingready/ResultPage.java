@@ -6,21 +6,14 @@
 package readingready;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 /**
@@ -28,39 +21,33 @@ import javafx.stage.Stage;
  * @author Hannah Saliot
  */
 public class ResultPage{
-    @FXML
-    private HBox leftHB;
-    
-    @FXML
-    private VBox rightTopVB;
-    @FXML
-    private Label labelStudent;
-    @FXML
-    private Label labelSelection;
-    @FXML
-    private Label labelDateRecorded;
-    
-    
-    @FXML
-    private HBox rightBottomHB;
     
     @FXML
     private MenuItem add;
+    @FXML
+    private HBox leftHB;
+    @FXML
+    private VBox rightTopVB;
+    @FXML
+    private Label labelSelection;
+    @FXML
+    private Label labelStudent;
+    @FXML
+    private Label labelDateRecorded;
+    @FXML
+    private HBox rightBottomHB;
     
-    private Stage thisStage;
-    private TextFlow textSelection;
-    
-    private Evaluation evaluation;
+    private final Stage thisStage = new Stage();
+    private final Evaluation evaluation;
     
     public ResultPage(Evaluation evaluation) throws IOException{
         this.evaluation = evaluation;
-        thisStage = new Stage();
-        thisStage.setMaximized(true);
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ResultPage.fxml"));
         loader.setController(this);
         
         thisStage.setScene(new Scene(loader.load()));
+        thisStage.setMaximized(true);
     }
     
     public void show(){
@@ -68,21 +55,32 @@ public class ResultPage{
     }
     
     @FXML
-    private void initialize(){
+    private void initialize() throws IOException{
         labelSelection.setText(evaluation.getSelection());
         labelStudent.setText(evaluation.getStudent());
         labelDateRecorded.setText(evaluation.getDateRecorded());
         
-        add.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-                AddWavPage addWavePage = null;
-                try {
-                    addWavePage = new AddWavPage();
-                } catch (IOException ex) {
-                    Logger.getLogger(ResultPage.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                addWavePage.open();
-            }
+        add.setOnAction((ActionEvent e) -> {
+            openAddWavPage();
         });
+        /*
+        evaluation.getEvaluatedSentences().forEach(c -> {
+            c.getWords().forEach(i -> {
+                this
+            })
+        });
+        */
+        
+    }
+
+    private void openAddWavPage() {
+        AddWavPage addWavPage;
+        try {
+            addWavPage = new AddWavPage();
+            addWavPage.show();
+        } catch (IOException ex) {
+            ;
+        }
+        
     }
 }
