@@ -28,7 +28,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -42,6 +44,8 @@ public class AddWavPage {
     @FXML private Button submit;
     @FXML private Button back;
     private Stage thisStage;
+    private double yOffset = 0;
+    private double xOffset = 0;
 
     public AddWavPage() throws IOException{
         
@@ -49,8 +53,11 @@ public class AddWavPage {
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AddWavPage.fxml"));
         loader.setController(this);
-        
+        thisStage.initStyle(StageStyle.TRANSPARENT);
         thisStage.setScene(new Scene(loader.load()));
+        thisStage.initModality(Modality.APPLICATION_MODAL);
+
+        
     }   
     
     public void openFile() throws IOException {
@@ -82,8 +89,9 @@ public class AddWavPage {
             
             Sphinx sphinx = new Sphinx();
             List<SpeechResult> sentences = new ArrayList<>();
-            sentences.add(sphinx.getSpeechResult("aron.wav"));
-            ResultPage result = new ResultPage(new Evaluation(name.getText(), "Dark Chocolate (edited)", sentences));
+            sentences.add(sphinx.getSpeechResult("src/readingready/resources/"+"aron.wav"));
+            ResultPage result = new ResultPage(new Evaluation(name.getText(), selectedFile.getName(), sentences));
+            result.addSentences();
             close();
             result.show();
             

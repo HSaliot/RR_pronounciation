@@ -19,12 +19,14 @@ public class Evaluation {
     private String selection;
     private List<SpeechResult> evaluatedSentences;
     private String dateRecorded;
+    private int ID;
     
     public Evaluation(String student, String selection, List<SpeechResult> evaluatedSentences){
         this.student = student;
         this.selection = selection;
         this.dateRecorded = "06/13/19";
         this.evaluatedSentences = evaluatedSentences;
+        this.ID = 0;
     }
 
     public String getStudent() {
@@ -57,6 +59,9 @@ public class Evaluation {
 
     public void setDateRecorded(String dateRecorded) {
         this.dateRecorded = dateRecorded;
+    }
+    public int getID(){
+        return ID;
     }
     
     

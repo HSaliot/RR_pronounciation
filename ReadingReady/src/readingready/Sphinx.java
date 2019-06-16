@@ -26,9 +26,9 @@ public class Sphinx{
     private StreamSpeechRecognizer recognizer;
     private SpeechAligner aligner;
     
-    public void initialize(String acousticModel, String dictionary) throws IOException{
+    public void initialize() throws IOException{
         configuration = new Configuration();
-        configuration.setAcousticModelPath((acousticModel == null) ? "resource:/edu/cmu/sphinx/models/en-us/en-us" : acousticModel);
+        configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
         //configuration.setAcousticModelPath("en-us-adapt"); //adapted
         configuration.setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
         configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
@@ -45,16 +45,18 @@ public class Sphinx{
         recognizer = new StreamSpeechRecognizer(configuration);
     }
     
-    public List<WordResult> getWordResults(String wav) throws FileNotFoundException{
-        recognizer.startRecognition(new FileInputStream(new File("aron.wav")));
+    public List<WordResult> getWordResults(String wav) throws FileNotFoundException, IOException{
+        initialize();
+        recognizer.startRecognition(new FileInputStream(new File("src/readingready/resources/"+"aron.wav")));
         SpeechResult results = recognizer.getResult();
         recognizer.stopRecognition();
         
         return results.getWords();
     }
     
-    public SpeechResult getSpeechResult(String wav) throws FileNotFoundException{
-        recognizer.startRecognition(new FileInputStream(new File("aron.wav")));
+    public SpeechResult getSpeechResult(String wav) throws FileNotFoundException, IOException{
+        initialize();
+        recognizer.startRecognition(new FileInputStream(new File("src/readingready/resources/"+"aron.wav")));
         SpeechResult results = recognizer.getResult();
         recognizer.stopRecognition();
         

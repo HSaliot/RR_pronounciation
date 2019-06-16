@@ -1,33 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import readingready.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <HBox styleClass="bannerClass">
+      <children>
+         <HBox styleClass="iconClass">
+            <children>
+               <ImageView fx:id="tempIcon" fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@resources/icon.png" />
+                  </image>
+               </ImageView>
+            </children>
+         </HBox>
+         <Text fx:id="bannerText" strokeType="OUTSIDE" strokeWidth="0.0" text="Reading Ready" />
+         <Region HBox.hgrow="ALWAYS" />
+         <Button fx:id="closeButton" mnemonicParsing="false" prefHeight="29.0" prefWidth="43.0" styleClass="notes" text="❌" />
+      </children>
+   </HBox>
   
     <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
         <Menu fx:id="fileMenu" text="File">
-            <MenuItem fx:id="add" text="New"/>
+            <MenuItem fx:id="add" text="New" />
         </Menu>
     </MenuBar>
     
-    <SplitPane fx:id="body" dividerPositions="0.2, 0.5"   prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-      
-        <ScrollPane fx:id="left" prefHeight="-1.0" prefWidth="-1">
-            <HBox fx:id="leftHB"></HBox>
-        </ScrollPane>
-        
-        <SplitPane fx:id="right" dividerPositions="0.5" orientation="VERTICAL" maxWidth="350" prefWidth="350" minWidth="350">
-            <VBox fx:id="rightTopVB">
-                <Label fx:id="labelSelection"/>
-                <Label fx:id="labelStudent"/>
-                <Label fx:id="labelDateRecorded"/>
+    <SplitPane fx:id="body" pickOnBounds="false" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      <SplitPane dividerPositions="0.5" pickOnBounds="false" prefHeight="573.0" prefWidth="327.0">
+         <items>
+            <VBox prefHeight="573.0" prefWidth="332.0">
+               <children>
+                  <HBox>
+                     <children>
+                        <Button fx:id="playButton" mnemonicParsing="false" text="⏯">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin></Button>
+                        <Button fx:id="stopButton" mnemonicParsing="false" text="◼" />
+                        <Label fx:id="wavLabel" prefHeight="25.0" prefWidth="349.0" text="Dark Chocolate.wav" />
+                     </children>
+                  </HBox>
+                  <ScrollPane prefHeight="848.0" prefWidth="828.0" styleClass="con" VBox.vgrow="ALWAYS">
+                     <content>
+                        <TextFlow fx:id="tfReadings" prefHeight="817.0" prefWidth="773.0" />
+                     </content>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </ScrollPane>
+               </children>
             </VBox>
-            <HBox fx:id="rightBottomHB"></HBox>
-        </SplitPane>
+            <SplitPane dividerPositions="0.5" pickOnBounds="false" prefHeight="573.0" prefWidth="231.0" SplitPane.resizableWithParent="false">
+               <items>
+                  <VBox prefHeight="873.0" prefWidth="443.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="350.0">
+                           <children>
+                              <VBox prefHeight="100.0" prefWidth="493.0">
+                                 <children>
+                                    <Label fx:id="wordLabel" prefHeight="17.0" prefWidth="505.0" text="Antioxidants" />
+                                    <Label fx:id="pronounciationLabel" layoutX="10.0" layoutY="42.0" prefHeight="17.0" prefWidth="498.0" text="/ AE N T IY AA K S AH D AH N T S /" />
+                                    <Slider fx:id="sentenceSlider" prefHeight="14.0" prefWidth="341.0" />
+                                    <HBox prefHeight="100.0" prefWidth="200.0" styleClass="sentencePlayer">
+                                       <children>
+                                          <Button fx:id="playButton1" mnemonicParsing="false" text="⏵" />
+                                          <Region HBox.hgrow="ALWAYS" />
+                                          <Button fx:id="stopButton1" disable="true" mnemonicParsing="false" text="⏸" />
+                                          <Region HBox.hgrow="ALWAYS" />
+                                          <Button fx:id="stopButton11" disable="true" layoutX="38.0" layoutY="10.0" mnemonicParsing="false" text="⏹" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="progressLabel" text="Progress bar:" />
+                              <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.33" />
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="234.0" styleClass="toggleGroup">
+                           <children>
+                              <ToggleButton fx:id="markedWrong" mnemonicParsing="false">
+                                 <graphic>
+                                    <VBox>
+                                       <children>
+                                          <Label text="Pronounced" />
+                                          <Label layoutX="10.0" layoutY="10.0" text="Correctly but" />
+                                          <Label layoutX="10.0" layoutY="27.0" text="marked wrong." />
+                                       </children>
+                                    </VBox>
+                                 </graphic>
+                              </ToggleButton>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <ToggleButton fx:id="markedCorrect" disable="true" mnemonicParsing="false">
+                                 <graphic>
+                                    <VBox nodeOrientation="LEFT_TO_RIGHT">
+                                       <children>
+                                          <Label text="Pronounced" />
+                                          <Label layoutX="10.0" layoutY="10.0" text="Wrong but" />
+                                          <Label text="marked correct." />
+                                       </children>
+                                    </VBox>
+                                 </graphic>
+                              </ToggleButton>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <ToggleButton fx:id="markedCorrect1" layoutX="306.0" layoutY="10.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <VBox nodeOrientation="LEFT_TO_RIGHT">
+                                       <children>
+                                          <Label />
+                                          <Label layoutX="10.0" layoutY="10.0" text="Correctly Marked" />
+                                          <Label layoutX="10.0" layoutY="27.0" />
+                                       </children>
+                                    </VBox>
+                                 </graphic>
+                              </ToggleButton>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <SplitPane prefHeight="873.0" prefWidth="234.0">
+                     <items>
+                          
+                          <SplitPane fx:id="right" dividerPositions="0.08412322274881516, 0.12085308056872038" maxWidth="399.0" minWidth="170.0" orientation="VERTICAL" prefHeight="873.0" prefWidth="301.0">
+                              <VBox fx:id="rightTopVB" prefHeight="436.0" prefWidth="342.0" styleClass="informationLabels">
+                                  <Label fx:id="labelSelection" />
+                                  <Label fx:id="labelStudent" />
+                                  <Label fx:id="labelDateRecorded" />
+                              <Label fx:id="labelID" layoutX="10.0" layoutY="44.0" />
+                              </VBox>
+                              <HBox fx:id="rightBottomHB" prefHeight="427.0" prefWidth="175.0" styleClass="notes">
+                              <children>
+                                 <Label fx:id="noteLabel" text="NOTES:" />
+                                 <Region HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                       <Insets />
+                                    </HBox.margin>
+                                 </Region>
+                                 <Button fx:id="addNotes" mnemonicParsing="false" prefHeight="29.0" prefWidth="29.0" styleClass="notes" text="🖊">
+                                    <HBox.margin>
+                                       <Insets />
+                                    </HBox.margin></Button>
+                                 <Button fx:id="saveNotes" layoutX="347.0" layoutY="10.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="29.0" styleClass="notes" text="💾" />
+                                 <Button fx:id="removeNotes" layoutX="50.0" layoutY="10.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="29.0" styleClass="notes" text="🗑">
+                                    <HBox.margin>
+                                       <Insets />
+                                    </HBox.margin></Button>
+                              </children>
+                           </HBox>
+                           <VBox prefHeight="200.0" prefWidth="100.0" styleClass="paperBox">
+                              <children>
+                                 <TextArea prefHeight="200.0" prefWidth="200.0" styleClass="paper" wrapText="true" />
+                                 <TextArea disable="true" prefHeight="200.0" prefWidth="200.0" styleClass="paper" wrapText="true" />
+                                 <TextArea disable="true" prefHeight="200.0" prefWidth="200.0" styleClass="paper" wrapText="true" />
+                                 <TextArea disable="true" layoutX="10.0" layoutY="148.0" prefHeight="200.0" prefWidth="200.0" styleClass="paper" wrapText="true" />
+                              </children>
+                           </VBox>
+                          </SplitPane>
+                     </items>
+                  </SplitPane>
+               </items>
+            </SplitPane>
+         </items>
+      </SplitPane>
     </SplitPane>
 
 </VBox>
