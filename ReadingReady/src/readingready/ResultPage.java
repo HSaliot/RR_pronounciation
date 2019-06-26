@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -67,6 +68,8 @@ public class ResultPage{
     private Button stopButton;
     @FXML
     private TextFlow tfReadings;
+    @FXML Label wordLabel;
+    
     
     private SpeechResult speechResult;
     private final Stage thisStage = new Stage();
@@ -156,21 +159,34 @@ public class ResultPage{
         String[] words = passage.split(" ");
         ArrayList<Hyperlink> texts = new ArrayList();
         Hyperlink temp;
+        
         for (int i=0; i<words.length;i++){
                 wordsList.add(new Word(words[i]));
                 temp = new Hyperlink(words[i]+" ");
+                temp.setId(Integer.toString(i));
                 if(wordsList.get(i).getScore()<800) {
                     temp.setFont(Font.font("",FontWeight.NORMAL,16)); 
-                    
                     //temp.setFill(Color.DARKBLUE); 
                 }else{
                     temp.setFont(Font.font("",FontWeight.BOLD,16)); 
                 
                 }
-                texts.add(temp);            
+                
+                int tempId = i;
+                temp.setOnAction((ActionEvent e) -> {
+                    selectedWord(tempId);
+                });
+                texts.add(temp);
         }
         tfReadings.setTextAlignment(TextAlignment.JUSTIFY); 
         ObservableList list = tfReadings.getChildren(); 
         list.addAll(texts);
     }
+    
+    @FXML
+    private void selectedWord(int id){
+        Word sWord = wordsList.get(id);
+        wordLabel.setText(sWord.getWord());
+    }
+    
 }

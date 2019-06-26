@@ -33,7 +33,7 @@ public class Word {
         return random;
     }
 
-    public String word(){
+    public String getWord(){
         return word;
     }
     
