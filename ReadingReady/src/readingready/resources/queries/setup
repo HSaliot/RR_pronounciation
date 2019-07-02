@@ -1,4 +1,4 @@
-CREATE TABLE ReadingSelection (
+CREATE TABLE R2_READINGSELECTIONS (
     id INT not null
         GENERATED ALWAYS AS IDENTITY
         (START WITH 1, INCREMENT BY 1),
@@ -6,3 +6,25 @@ CREATE TABLE ReadingSelection (
     text VARCHAR(1024) not null,
     PRIMARY KEY (id)
 );
+
+CREATE TABLE R2_STUDENTS (
+    id INT not null
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 1, INCREMENT BY 1),
+    lName VARCHAR(20),
+    fNameEtc VARCHAR(40) not null,
+    level INT not null,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE R2_EVALUATIONS (
+    id INT not null
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 1, INCREMENT BY 1),
+    dateDone DATE not null,
+    student INT not null,
+    PRIMARY KEY (id),
+    FOREIGN KEY (student) REFERENCES R2_STUDENTS(id)
+);
+
+

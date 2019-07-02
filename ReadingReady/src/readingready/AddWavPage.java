@@ -90,7 +90,7 @@ public class AddWavPage {
             Sphinx sphinx = new Sphinx();
             List<SpeechResult> sentences = new ArrayList<>();
             sentences.add(sphinx.getSpeechResult("src/readingready/resources/"+"aron.wav"));
-            ResultPage result = new ResultPage(new Evaluation(name.getText(), selectedFile.getName(), sentences));
+            ResultPage result = new ResultPage(new Evaluation());
             result.addSentences();
             close();
             result.show();

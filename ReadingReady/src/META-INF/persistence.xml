@@ -3,6 +3,8 @@
   <persistence-unit name="ReadingReadyPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>readingready.ReadingSelection</class>
+    <class>readingready.Student</class>
+    <class>readingready.Evaluation</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/rrDB"/>
       <property name="javax.persistence.jdbc.user" value="rrdbadmin"/>

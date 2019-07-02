@@ -13,7 +13,7 @@ public class Pronounciation extends Application {
 
 
   public void start(Stage stage) throws IOException {
-        Evaluation evaluation = new Evaluation("Dark Chocolate", "DELA CRUZ, Juan", null);
+        Evaluation evaluation = new Evaluation();
         ResultPage resultPage = new ResultPage(evaluation);
         resultPage.show();
     }

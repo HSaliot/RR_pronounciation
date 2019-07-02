@@ -6,16 +6,13 @@
 package readingready;
 
 import edu.cmu.sphinx.api.SpeechResult;
-import edu.cmu.sphinx.result.WordResult;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,13 +22,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javax.sound.sampled.AudioInputStream;
@@ -76,6 +70,8 @@ public class ResultPage{
     private final Evaluation evaluation;
     private Clip clip;
     private ArrayList<Word> wordsList = new ArrayList<>();
+    
+    
     public ResultPage(Evaluation evaluation) throws IOException{
         this.evaluation = evaluation;
         
@@ -95,10 +91,10 @@ public class ResultPage{
     @FXML
     private void initialize() throws IOException{
         addSentences();
-        labelSelection.setText(evaluation.getSelection());
-        labelStudent.setText(evaluation.getStudent());
-        labelDateRecorded.setText(evaluation.getDateRecorded());
-        labelID.setText("ID "+Integer.toString(evaluation.getID()));
+        labelSelection.setText("Dark Chocolate");
+        labelStudent.setText("Cruz, Juan Dela");
+        labelDateRecorded.setText("Date");
+        labelID.setText("ID 1");
 
         
         stopButton.setDisable(true);        

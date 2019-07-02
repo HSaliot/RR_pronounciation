@@ -16,13 +16,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Hannah Saliot
  */
 @Entity
-@Table(name = "READINGSELECTION")
+@Table(name = "R2_READINGSELECTIONS")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ReadingSelection.findAll", query = "SELECT r FROM ReadingSelection r"),
-    @NamedQuery(name = "ReadingSelection.findById", query = "SELECT r FROM ReadingSelection r WHERE r.id = :id"),
     @NamedQuery(name = "ReadingSelection.findByTitle", query = "SELECT r FROM ReadingSelection r WHERE r.title = :title")})
-public class ReadingSelection implements Serializable {
+public class ReadingSelection implements Serializable { 
 
     private static final long serialVersionUID = 1L;
     @Id
