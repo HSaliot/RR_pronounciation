@@ -28,7 +28,7 @@ public class Home implements Initializable {
         scene.getStylesheets().add(getClass().getResource("Home.css").toExternalForm());
         thisStage.setScene(scene);
         thisStage.setMaximized(true);
-        Evaluation evaluation = new Evaluation("Dark Chocolate", "DELA CRUZ, Juan", null);
+        Evaluation evaluation = new Evaluation();
         ResultPage resultPage = new ResultPage(evaluation);
         
     }
