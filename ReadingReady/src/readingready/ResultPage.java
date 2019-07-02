@@ -99,7 +99,7 @@ public class ResultPage{
         
         stopButton.setDisable(true);        
         add.setOnAction((ActionEvent e) -> {
-            openAddWavPage();
+            openReadingEvaluationPage();
         });
         /*
         evaluation.getEvaluatedSentences().forEach(c -> {
@@ -126,11 +126,11 @@ public class ResultPage{
         
     }
 
-    private void openAddWavPage() {
-        AddWavPage addWavPage;
+    private void openReadingEvaluationPage() {
+        ReadingEvaluation readingEvaluation;
         try {
-            addWavPage = new AddWavPage();
-            addWavPage.show();
+            readingEvaluation = new ReadingEvaluation();
+            readingEvaluation.show();
         } catch (IOException ex) {
             ;
         }

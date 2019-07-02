@@ -22,7 +22,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ReadingSelection.findAll", query = "SELECT r FROM ReadingSelection r"),
     @NamedQuery(name = "ReadingSelection.findByTitle", query = "SELECT r FROM ReadingSelection r WHERE r.title = :title")})
 public class ReadingSelection implements Serializable { 
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
