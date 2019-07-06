@@ -1,7 +1,7 @@
-Thu Jun 27 17:18:14 CST 2019 : Apache Derby Network Server - 10.11.1.2 - (1629631) started and ready to accept connections on port 1527
+Sat Jul 06 17:31:50 CST 2019 : Apache Derby Network Server - 10.11.1.2 - (1629631) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Thu Jun 27 17:18:14 CST 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-016b-983a-5c59-ffffa7cd77d7 
+Sat Jul 06 17:31:52 CST 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-016b-c69f-e373-ffffa7cd77d7 
 on database directory C:\Users\Hannah Saliot\Documents\GitHub\RR_pronounciation\rrDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
 Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_171/db/lib/derby.jar
 java.vendor=Oracle Corporation
@@ -12,56 +12,3 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=C:\Users\Hannah Saliot\Documents\GitHub\RR_pronounciation
 Database Class Loader started - derby.database.classpath=''
-----------------------------------------------------------------
-Thu Jun 27 17:18:16 CST 2019:
-Shutting down instance a816c00e-016b-983a-5c59-ffffa7cd77d7 on database directory C:\Users\Hannah Saliot\Documents\GitHub\RR_pronounciation\rrDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-Thu Jun 27 17:18:16 CST 2019 Thread[DRDAConnThread_3,5,main] (DATABASE = rrDB), (DRDAID = {2}), Database 'rrDB' shutdown.
-----------------------------------------------------------------
-Thu Jun 27 17:19:44 CST 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a65c80ac-016b-983a-5c59-ffffa7cd77d7 
-on database directory C:\Users\Hannah Saliot\Documents\GitHub\RR_pronounciation\rrDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_171/db/lib/derby.jar
-java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_171-b11
-user.dir=C:\Program Files\Java\jdk1.8.0_171\db
-os.name=Windows 10
-os.arch=amd64
-os.version=10.0
-derby.system.home=C:\Users\Hannah Saliot\Documents\GitHub\RR_pronounciation
-Database Class Loader started - derby.database.classpath=''
-----------------------------------------------------------------
-Thu Jun 27 18:56:50 CST 2019:
-Shutting down instance a65c80ac-016b-983a-5c59-ffffa7cd77d7 on database directory C:\Users\Hannah Saliot\Documents\GitHub\RR_pronounciation\rrDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-Thu Jun 27 18:56:50 CST 2019 Thread[DRDAConnThread_3,5,main] (DATABASE = rrDB), (DRDAID = {4}), Database 'rrDB' shutdown.
-----------------------------------------------------------------
-Thu Jun 27 23:48:08 CST 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance dd5cc163-016b-983a-5c59-ffffa7cd77d7 
-on database directory C:\Users\Hannah Saliot\Documents\GitHub\RR_pronounciation\rrDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_171/db/lib/derby.jar
-java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_171-b11
-user.dir=C:\Program Files\Java\jdk1.8.0_171\db
-os.name=Windows 10
-os.arch=amd64
-os.version=10.0
-derby.system.home=C:\Users\Hannah Saliot\Documents\GitHub\RR_pronounciation
-Database Class Loader started - derby.database.classpath=''
-----------------------------------------------------------------
-Thu Jun 27 23:48:08 CST 2019:
-Shutting down instance dd5cc163-016b-983a-5c59-ffffa7cd77d7 on database directory C:\Users\Hannah Saliot\Documents\GitHub\RR_pronounciation\rrDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-Thu Jun 27 23:48:08 CST 2019 Thread[DRDAConnThread_3,5,main] (DATABASE = rrDB), (DRDAID = {6}), Database 'rrDB' shutdown.
-----------------------------------------------------------------
-Thu Jun 27 23:48:15 CST 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance 00400201-016b-983a-5c59-ffffa7cd77d7 
-on database directory C:\Users\Hannah Saliot\Documents\GitHub\RR_pronounciation\rrDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_171/db/lib/derby.jar
-java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_171-b11
-user.dir=C:\Program Files\Java\jdk1.8.0_171\db
-os.name=Windows 10
-os.arch=amd64
-os.version=10.0
-derby.system.home=C:\Users\Hannah Saliot\Documents\GitHub\RR_pronounciation
-Database Class Loader started - derby.database.classpath=''
-----------------------------------------------------------------
-Sun Jun 30 20:39:54 CST 2019: Shutting down Derby engine

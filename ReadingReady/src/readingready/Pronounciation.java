@@ -14,8 +14,6 @@ public class Pronounciation extends Application {
 
   public void start(Stage stage) throws IOException {
 
-        Evaluation evaluation = new Evaluation();
-
         Login login = new Login();
         login.show();
     }

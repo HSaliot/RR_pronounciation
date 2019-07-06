@@ -43,6 +43,9 @@ public class Student implements Serializable {
     private List<Evaluation> evaluations;
 
   
+    public Student() {
+    }
+    
     public Student(Integer id) {
         this.id = id;
     }

@@ -30,6 +30,9 @@ public class ReadingSelection implements Serializable {
     private String title;
     private String text;
 
+    public ReadingSelection() {
+    }
+    
     public ReadingSelection(Integer id) {
         this.id = id;
     }

@@ -19,17 +19,18 @@ import javafx.stage.Stage;
  * @author Lorenz
  */
 public class Home implements Initializable {
-    private Stage thisStage = new Stage();
+    private Stage thisStage;
 
-    public Home() throws IOException{
+    public Home(Stage stage) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
         scene.getStylesheets().add(getClass().getResource("Home.css").toExternalForm());
+        
+        thisStage = stage;
         thisStage.setScene(scene);
-        thisStage.setMaximized(true);
-        Evaluation evaluation = new Evaluation();
-        ResultPage resultPage = new ResultPage(evaluation);
+        //Evaluation evaluation = new Evaluation();
+        //ResultPage resultPage = new ResultPage(evaluation);
         
     }
     /**

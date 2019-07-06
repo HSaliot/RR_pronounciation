@@ -13,14 +13,17 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.StageStyle;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 
 /**
  * FXML Controller class
@@ -38,6 +41,11 @@ public class Login implements Initializable {
     @FXML
     Button btnLLogin;
     
+    private final EntityManagerFactory emf;
+    
+    @PersistenceContext(unitName="ReadingReadyPU")
+    private final EntityManager em;
+    
     private Stage thisStage = new Stage();
 
     public Login()throws IOException{
@@ -47,6 +55,8 @@ public class Login implements Initializable {
         scene.getStylesheets().add(getClass().getResource("Login.css").toExternalForm());
         thisStage.setScene(scene);
         thisStage.setMaximized(true);
+        emf = Persistence.createEntityManagerFactory("ReadingReadyPU");
+        em = emf.createEntityManager();
     }
     /**
      * Initializes the controller class.
@@ -66,19 +76,28 @@ public class Login implements Initializable {
             close();
             signup.show();
         });
+        
         btnLLogin.setOnAction((ActionEvent e) -> {
-            if(tfLUsername.getText().length()!=0&&pfLPassword.getText().length()!=0){
-                System.out.println(tfLUsername.getText());
-                System.out.println(pfLPassword.getText());
-                try {
-                    Home home = new Home();
+            String username = tfLUsername.getText();
+            String password = pfLPassword.getText();
+            
+            User user = em.createNamedQuery("User.findByUName", User.class)
+                    .setParameter("uName", username)
+                    .getSingleResult();
+        
+            System.out.println(user.getLName());
+            
+            
+            /**
+            if(user == null)
+                System.out.println("User does not exist");
+            else {   
+                System.out.println("User");
+                if(user.getPassword() == password)
                     home.show();
-                } catch (IOException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
-            else
-                System.out.println("else");
+            **/
+            
         });
     }    
     public void show(){
