@@ -68,20 +68,23 @@ public class ReadingSelectionPage implements Initializable {
     private Label lRSPronunciation2;
     @FXML
     private Label lRSPronunciation3;
+    @FXML
+    private Button btnRSaddPronunciation;
     
     private SpeechResult speechResult;
     private final Stage thisStage = new Stage();
     private Clip clip;
     private ArrayList<Word> wordsList = new ArrayList<>();
     private String title;
+    private int selectedWordIndex;
     private ArrayList<String> strings = new ArrayList<>();
     private boolean exist;
     public ReadingSelectionPage(String title) throws IOException{
         this.title = title;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ReadingSelection.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ReadingSelectionPage.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
-        scene.getStylesheets().add(getClass().getResource("ReadingSelection.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("ReadingSelectionPage.css").toExternalForm());
         thisStage.initStyle(StageStyle.TRANSPARENT);
         thisStage.setScene(scene);
         thisStage.setMaximized(true);
@@ -115,8 +118,10 @@ public class ReadingSelectionPage implements Initializable {
                 }
                 String tempWord = words[i]; 
                 Word tWord = wordsList.get(i);
+                int tempInt = i;
                 temp.setOnAction((ActionEvent e) -> {
                     setSelectedWord(tWord);
+                    selectedWordIndex = tempInt;
                 });
                 texts.add(temp);            
         }
@@ -137,6 +142,15 @@ public class ReadingSelectionPage implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(ReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+        btnRSaddPronunciation.setOnAction((ActionEvent e) -> {
+            PhonemeBuilderPage phonemeBuilderPage = null;
+            try {
+                phonemeBuilderPage = new PhonemeBuilderPage(title,wordsList.get(selectedWordIndex));
+            } catch (IOException ex) {
+                Logger.getLogger(ReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            phonemeBuilderPage.show();
+        });
     }
     
     public boolean inDictionary(String input) throws IOException {

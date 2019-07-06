@@ -48,10 +48,10 @@ public class SignupPage implements Initializable {
 
     public SignupPage(Stage stage)throws IOException{
         thisStage = stage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Signup.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("SignupPage.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
-        scene.getStylesheets().add(getClass().getResource("Signup.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("SignupPage.css").toExternalForm());
         thisStage.setScene(scene);
         thisStage.setMaximized(true);
     }

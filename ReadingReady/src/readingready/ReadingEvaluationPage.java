@@ -68,7 +68,7 @@ public class ReadingEvaluationPage implements Initializable {
     public ReadingEvaluationPage() throws IOException{
         
         thisStage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ReadingEvaluation.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ReadingEvaluationPage.fxml"));
         loader.setController(this);
         //thisStage.initStyle(StageStyle.TRANSPARENT);
         thisStage.setScene(new Scene(loader.load()));

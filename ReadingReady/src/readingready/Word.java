@@ -18,6 +18,12 @@ public class Word {
     private ArrayList<String> pronunciations = new ArrayList<>();
     
     public Word(String word){
+        word = word.replace(".", ""); //replace all . character
+        word = word.replace(",", ""); //replace all , character
+        word = word.replace("“", ""); //replace all “ character
+        word = word.replace("”", ""); //replace all ” character
+        word = word.replace("’", ""); //replace all ’ character
+        word = word.toLowerCase();
         this.word = word;
         score = rand();
     }

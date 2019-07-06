@@ -45,19 +45,19 @@ public class LoginPage implements Initializable {
 
     public LoginPage()throws IOException{
         thisStage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginPage.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
-        scene.getStylesheets().add(getClass().getResource("Login.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("LoginPage.css").toExternalForm());
         thisStage.setScene(scene);
         thisStage.setMaximized(true);
     }
     public LoginPage(Stage stage)throws IOException{
         thisStage = stage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginPage.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
-        scene.getStylesheets().add(getClass().getResource("Login.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("LoginPage.css").toExternalForm());
         thisStage.setScene(scene);
         thisStage.setMaximized(true);
     }
