@@ -19,7 +19,7 @@ public class Pronounciation extends Application {
         ResultPage resultPage = new ResultPage(evaluation);
         resultPage.show();
       */
-        Login login = new Login();
+        LoginPage login = new LoginPage();
         login.show();
     }
 

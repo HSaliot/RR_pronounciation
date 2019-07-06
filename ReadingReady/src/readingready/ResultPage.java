@@ -131,9 +131,9 @@ public class ResultPage{
     }
 
     private void openReadingEvaluationPage() {
-        ReadingEvaluation readingEvaluation;
+        ReadingEvaluationPage readingEvaluation;
         try {
-            readingEvaluation = new ReadingEvaluation();
+            readingEvaluation = new ReadingEvaluationPage();
             readingEvaluation.show();
         } catch (IOException ex) {
             ;

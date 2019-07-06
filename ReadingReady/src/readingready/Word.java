@@ -46,7 +46,13 @@ public class Word {
         return pronunciations;
     }
 
-    void addPronunciation(String pronunciation) {
-        pronunciations.add(pronunciation);
+    void addPronunciation(String[] pronunciation) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String temp;
+        for(int i =1;i<pronunciation.length;i++)
+            stringBuilder.append(pronunciation[i]+" ");
+        temp = stringBuilder.toString();
+        System.out.println(word+" "+temp);
+        pronunciations.add(temp);
     }
 }

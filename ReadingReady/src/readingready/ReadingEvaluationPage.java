@@ -43,7 +43,7 @@ import javafx.stage.StageStyle;
  *
  * @author Lorenz
  */
-public class ReadingEvaluation implements Initializable {
+public class ReadingEvaluationPage implements Initializable {
     @FXML
     private ChoiceBox readingSelection;
     @FXML
@@ -65,7 +65,7 @@ public class ReadingEvaluation implements Initializable {
     private String[] selections = {"Dark Chocolate", "Sneezing", "Dust", "Pain", "Diving"};
     private List<File> list;
     
-    public ReadingEvaluation() throws IOException{
+    public ReadingEvaluationPage() throws IOException{
         
         thisStage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ReadingEvaluation.fxml"));
@@ -114,7 +114,7 @@ public class ReadingEvaluation implements Initializable {
                 try {
                     submit();
                 } catch (IOException ex) {
-                    Logger.getLogger(ReadingEvaluation.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ReadingEvaluationPage.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });

@@ -29,7 +29,7 @@ import javafx.stage.Stage;
  *
  * @author Lorenz
  */
-public class Login implements Initializable {
+public class LoginPage implements Initializable {
 
     @FXML
     Hyperlink hlLSignup;
@@ -43,7 +43,7 @@ public class Login implements Initializable {
     StackPane stackPane;
     private Stage thisStage;
 
-    public Login()throws IOException{
+    public LoginPage()throws IOException{
         thisStage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
         loader.setController(this);
@@ -52,7 +52,7 @@ public class Login implements Initializable {
         thisStage.setScene(scene);
         thisStage.setMaximized(true);
     }
-    public Login(Stage stage)throws IOException{
+    public LoginPage(Stage stage)throws IOException{
         thisStage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
         loader.setController(this);
@@ -72,12 +72,12 @@ public class Login implements Initializable {
         
         hlLSignup.requestFocus();
         hlLSignup.setOnAction((ActionEvent e) -> {
-            Signup signup = null;
+            SignupPage signup = null;
             try {
                 
-                signup = new Signup(thisStage);
+                signup = new SignupPage(thisStage);
             } catch (IOException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         btnLLogin.setOnAction((ActionEvent e) -> {
@@ -85,10 +85,10 @@ public class Login implements Initializable {
                 System.out.println(tfLUsername.getText());
                 System.out.println(pfLPassword.getText());
                 try {
-                    Home home = new Home();
+                    HomePage home = new HomePage();
                     home.show();
                 } catch (IOException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             else

@@ -29,7 +29,7 @@ import javafx.stage.Stage;
  *
  * @author Lorenz
  */
-public class Signup implements Initializable {
+public class SignupPage implements Initializable {
 
     @FXML
     Hyperlink hlSLogin;
@@ -46,7 +46,7 @@ public class Signup implements Initializable {
     
     private Stage thisStage;
 
-    public Signup(Stage stage)throws IOException{
+    public SignupPage(Stage stage)throws IOException{
         thisStage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Signup.fxml"));
         loader.setController(this);
@@ -69,7 +69,7 @@ public class Signup implements Initializable {
                 
                 toLogin();
                         } catch (IOException ex) {
-                Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SignupPage.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         btnSSignup.setOnAction((ActionEvent e) -> {
@@ -79,7 +79,7 @@ public class Signup implements Initializable {
                 try {
                     toLogin();
                 } catch (IOException ex) {
-                    Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SignupPage.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             else
@@ -87,6 +87,6 @@ public class Signup implements Initializable {
         });
     }
     public void toLogin() throws IOException{
-        Login login = new Login(thisStage);
+        LoginPage login = new LoginPage(thisStage);
     }
 }

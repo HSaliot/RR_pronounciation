@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author Lorenz
  */
-public class PhonemeBuilder implements Initializable {
+public class PhonemeBuilderPage implements Initializable {
 
     /**
      * Initializes the controller class.

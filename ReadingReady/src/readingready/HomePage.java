@@ -23,12 +23,12 @@ import javafx.stage.Stage;
  *
  * @author Lorenz
  */
-public class Home implements Initializable {
+public class HomePage implements Initializable {
     @FXML
     private Hyperlink hlHDarkChocolate;
     private Stage thisStage = new Stage();
 
-    public Home() throws IOException{
+    public HomePage() throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
@@ -46,12 +46,12 @@ public class Home implements Initializable {
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
         hlHDarkChocolate.setOnAction((ActionEvent e) -> {
-            ReadingSelection readingSelection = null;
+            ReadingSelectionPage readingSelection = null;
             try {
                 
-                readingSelection = new ReadingSelection("Dark Chocolate");
+                readingSelection = new ReadingSelectionPage("Dark Chocolate");
             } catch (IOException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
             }
             readingSelection.show();
         });

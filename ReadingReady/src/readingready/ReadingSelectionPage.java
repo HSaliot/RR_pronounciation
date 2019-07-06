@@ -52,7 +52,7 @@ import javax.sound.sampled.Clip;
  *
  * @author Lorenz
  */
-public class ReadingSelection implements Initializable {
+public class ReadingSelectionPage implements Initializable {
 
     @FXML
     private TextFlow tfReadings;
@@ -60,6 +60,15 @@ public class ReadingSelection implements Initializable {
     private Label lRSTitle;
     @FXML
     private Label lRSWord;
+    @FXML
+    private Label lRSPronunciation;
+    @FXML
+    private Label lRSPronunciation1;
+    @FXML
+    private Label lRSPronunciation2;
+    @FXML
+    private Label lRSPronunciation3;
+    
     private SpeechResult speechResult;
     private final Stage thisStage = new Stage();
     private Clip clip;
@@ -67,7 +76,7 @@ public class ReadingSelection implements Initializable {
     private String title;
     private ArrayList<String> strings = new ArrayList<>();
     private boolean exist;
-    public ReadingSelection(String title) throws IOException{
+    public ReadingSelectionPage(String title) throws IOException{
         this.title = title;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ReadingSelection.fxml"));
         loader.setController(this);
@@ -91,16 +100,23 @@ public class ReadingSelection implements Initializable {
         for (int i=0; i<words.length;i++){
                 wordsList.add(new Word(words[i]));
                 temp = new Hyperlink(words[i]+" ");
+                //int numPro=1;
                 if(inDictionary(words[i])==true) {
-                    
+                /*    numPro++;
+                    wordsList.get(i).addPronunciation(passage);
+                    while(inDictionary(words[i]+"("+numPro+")")==true){
+                        
+                        numPro++;
+                    } */
                     temp.setFont(Font.font("",FontWeight.NORMAL,16));                     
                 }else{
                     temp.setFont(Font.font("",FontWeight.NORMAL,16)); 
                     temp.setTextFill(Color.RED); 
                 }
                 String tempWord = words[i]; 
+                Word tWord = wordsList.get(i);
                 temp.setOnAction((ActionEvent e) -> {
-                    setSelectedWord(tempWord);
+                    setSelectedWord(tWord);
                 });
                 texts.add(temp);            
         }
@@ -119,7 +135,7 @@ public class ReadingSelection implements Initializable {
         try {
             addSentences();
         } catch (IOException ex) {
-            Logger.getLogger(ReadingSelection.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -141,12 +157,13 @@ public class ReadingSelection implements Initializable {
         FileReader fr = new FileReader(open);  //Creation of File Reader object
         BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
         String s;     
-        boolean found = false;   //Intialize the word to zero
+        boolean found = false;   
         while((s=br.readLine())!=null)   //Reading Content from the file
         {
             words=s.split(" ");  //Split the word using space
-            if (words[0].equals(input.toLowerCase()))   //Search for the given word
+            if (words[0].equals(input.toLowerCase())||words[0].equals(input.toLowerCase()+"(2)")||words[0].equals(input.toLowerCase()+"(3)")||words[0].equals(input.toLowerCase()+"(4)"))   //Search for the given word
             {
+                wordsList.get(wordsList.size()-1).addPronunciation(words);
                 if(exist==false){
                     if(!(strings.contains(s)))
                         strings.add(s);
@@ -157,13 +174,31 @@ public class ReadingSelection implements Initializable {
         fr.close();
         return found;
     }
-    private void setSelectedWord(String word){
-           word = word.replace(".", ""); //replace all . character
-           word = word.replace(",", ""); //replace all , character
-           word = word.replace("“", ""); //replace all “ character
-           word = word.replace("”", ""); //replace all ” character
-           word = word.toLowerCase();
-           lRSWord.setText(word);        
+    private void setSelectedWord(Word word){
+        String temp = word.getWord();
+        temp = temp.replace(".", ""); //replace all . character
+        temp = temp.replace(",", ""); //replace all , character
+        temp = temp.replace("“", ""); //replace all “ character
+        temp = temp.replace("”", ""); //replace all ” character
+        temp = temp.toLowerCase();
+        lRSWord.setText(temp);        
+        lRSPronunciation.setText(""); 
+        lRSPronunciation1.setText(""); 
+        lRSPronunciation2.setText(""); 
+        lRSPronunciation3.setText("");
+        lRSPronunciation.setText("/ "+word.getPronunciations().get(0)+" /");
+        for(int i=0; i<word.getPronunciations().size();i++){
+            switch (i){
+                case 0: lRSPronunciation.setText("/ "+word.getPronunciations().get(i)+" /");
+                    break;
+                case 1: lRSPronunciation1.setText("/ "+word.getPronunciations().get(i)+" /");
+                    break;
+                case 2: lRSPronunciation2.setText("/ "+word.getPronunciations().get(i)+" /");
+                    break;
+                case 3: lRSPronunciation3.setText("/ "+word.getPronunciations().get(i)+" /");
+                    break;
+            }
+        }
     }
     private boolean doesFileExist(){
         boolean exist = false;
@@ -176,13 +211,5 @@ public class ReadingSelection implements Initializable {
         Collections.sort(strings);
         Path out = Paths.get(title+".DICT");
         Files.write(out,strings,Charset.defaultCharset());
-    }
-    private void setPronunciations(){
-        String word;
-        String[] words=null;
-        for(int i =0 ; i<wordsList.size();i++){
-            word=wordsList.get(i).getWord();
-            
-        }
     }
 }

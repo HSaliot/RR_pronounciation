@@ -69,10 +69,31 @@
                      <children>
                         <VBox HBox.hgrow="ALWAYS">
                            <children>
-                              <Label fx:id="lRSWord" style="-fx-font-size: 24;" text="&lt;WORD&gt;">
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="lRSWord" style="-fx-font-size: 24;" text="&lt;WORD&gt;" />
+                                    <Button mnemonicParsing="false" text="Button" />
+                                 </children>
+                              </HBox>
+                              <Label fx:id="lRSPronunciation" layoutX="20.0" layoutY="20.0" style="-fx-font-size: 24;" text="&lt;PRONUNCIATION&gt;">
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </VBox.margin></Label>
+                              <Label fx:id="lRSPronunciation1" style="-fx-font-size: 24;" text="&lt;PRONUNCIATION&gt;">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label fx:id="lRSPronunciation2" style="-fx-font-size: 24;" text="&lt;PRONUNCIATION&gt;">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label fx:id="lRSPronunciation3" style="-fx-font-size: 24;" text="&lt;PRONUNCIATION&gt;">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
                            </children>
                         </VBox>
                      </children>
