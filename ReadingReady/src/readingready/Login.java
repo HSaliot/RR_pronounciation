@@ -20,6 +20,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -37,10 +39,21 @@ public class Login implements Initializable {
     PasswordField pfLPassword;
     @FXML
     Button btnLLogin;
-    
-    private Stage thisStage = new Stage();
+    @FXML
+    StackPane stackPane;
+    private Stage thisStage;
 
     public Login()throws IOException{
+        thisStage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+        loader.setController(this);
+        Scene scene = new Scene(loader.load());
+        scene.getStylesheets().add(getClass().getResource("Login.css").toExternalForm());
+        thisStage.setScene(scene);
+        thisStage.setMaximized(true);
+    }
+    public Login(Stage stage)throws IOException{
+        thisStage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
@@ -54,17 +67,18 @@ public class Login implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        stackPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
+        stackPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
+        
         hlLSignup.requestFocus();
         hlLSignup.setOnAction((ActionEvent e) -> {
             Signup signup = null;
             try {
                 
-                signup = new Signup();
+                signup = new Signup(thisStage);
             } catch (IOException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
-            close();
-            signup.show();
         });
         btnLLogin.setOnAction((ActionEvent e) -> {
             if(tfLUsername.getText().length()!=0&&pfLPassword.getText().length()!=0){
@@ -83,8 +97,5 @@ public class Login implements Initializable {
     }    
     public void show(){
         thisStage.showAndWait();
-    }
-    public void close(){
-        thisStage.close();
     }
 }

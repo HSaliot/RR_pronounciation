@@ -78,6 +78,7 @@ public class ReadingEvaluation implements Initializable {
      * Initializes the controller class.
      */
     @Override
+    @FXML
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         

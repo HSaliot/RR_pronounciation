@@ -5,6 +5,7 @@
  */
 package readingready;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Random;
 public class Word {
     private String word;
     private int score;
-            
+    private ArrayList<String> pronunciations = new ArrayList<>();
     
     public Word(String word){
         this.word = word;
@@ -41,4 +42,11 @@ public class Word {
         return score;
     }
     
+    public ArrayList<String> getPronunciations(){
+        return pronunciations;
+    }
+
+    void addPronunciation(String pronunciation) {
+        pronunciations.add(pronunciation);
+    }
 }

@@ -20,6 +20,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -39,10 +41,13 @@ public class Signup implements Initializable {
     PasswordField pfSConfirmPassword;
     @FXML
     Button btnSSignup;
+    @FXML
+    StackPane stackPane;
     
-    private Stage thisStage = new Stage();
+    private Stage thisStage;
 
-    public Signup()throws IOException{
+    public Signup(Stage stage)throws IOException{
+        thisStage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Signup.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
@@ -55,6 +60,9 @@ public class Signup implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        stackPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
+        stackPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
         // TODO
         hlSLogin.setOnAction((ActionEvent e) -> {
             try {
@@ -78,14 +86,7 @@ public class Signup implements Initializable {
                 System.out.println("else");
         });
     }
-    public void show(){
-        thisStage.showAndWait();
-    }
-    public void close(){
-        thisStage.close();
-    }
     public void toLogin() throws IOException{
-        Login login = new Login();
-        login.show();
+        Login login = new Login(thisStage);
     }
 }
