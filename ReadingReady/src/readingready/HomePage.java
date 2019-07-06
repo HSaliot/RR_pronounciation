@@ -8,9 +8,14 @@ package readingready;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Hyperlink;
 import javafx.stage.Stage;
 
 /**
@@ -18,10 +23,13 @@ import javafx.stage.Stage;
  *
  * @author Lorenz
  */
-public class Home implements Initializable {
+
+public class HomePage implements Initializable {
+    @FXML
+    private Hyperlink hlHDarkChocolate;
     private Stage thisStage;
 
-    public Home(Stage stage) throws IOException{
+    public HomePage(Stage stage) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
@@ -37,8 +45,18 @@ public class Home implements Initializable {
      * Initializes the controller class.
      */
     @Override
+    @FXML
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        hlHDarkChocolate.setOnAction((ActionEvent e) -> {
+            ReadingSelectionPage readingSelection = null;
+            try {
+                
+                readingSelection = new ReadingSelectionPage("Dark Chocolate");
+            } catch (IOException ex) {
+                Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            readingSelection.show();
+        });
     }    
     
     public void show(){

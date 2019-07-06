@@ -20,6 +20,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -27,7 +29,7 @@ import javafx.stage.Stage;
  *
  * @author Lorenz
  */
-public class Signup implements Initializable {
+public class SignupPage implements Initializable {
 
     @FXML
     Hyperlink hlSLogin;
@@ -39,10 +41,13 @@ public class Signup implements Initializable {
     PasswordField pfSConfirmPassword;
     @FXML
     Button btnSSignup;
+    @FXML
+    StackPane stackPane;
     
-    private Stage thisStage = new Stage();
+    private Stage thisStage;
 
-    public Signup()throws IOException{
+    public SignupPage(Stage stage)throws IOException{
+        thisStage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Signup.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
@@ -55,13 +60,16 @@ public class Signup implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        stackPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
+        stackPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
         // TODO
         hlSLogin.setOnAction((ActionEvent e) -> {
             try {
                 
                 toLogin();
                         } catch (IOException ex) {
-                Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SignupPage.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         btnSSignup.setOnAction((ActionEvent e) -> {
@@ -71,21 +79,14 @@ public class Signup implements Initializable {
                 try {
                     toLogin();
                 } catch (IOException ex) {
-                    Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SignupPage.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             else
                 System.out.println("else");
         });
     }
-    public void show(){
-        thisStage.showAndWait();
-    }
-    public void close(){
-        thisStage.close();
-    }
     public void toLogin() throws IOException{
-        Login login = new Login();
-        login.show();
+        LoginPage login = new LoginPage(thisStage);
     }
 }
