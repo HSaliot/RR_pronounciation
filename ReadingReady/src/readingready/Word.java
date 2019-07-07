@@ -6,7 +6,6 @@
 package readingready;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  *
@@ -14,7 +13,6 @@ import java.util.Random;
  */
 public class Word {
     private String word;
-    private int score;
     private ArrayList<String> pronunciations = new ArrayList<>();
     private ArrayList<String> lines = new ArrayList<>();
     private int lastIndex;
@@ -27,27 +25,10 @@ public class Word {
         word = word.replace("’", ""); //replace all ’ character
         word = word.toLowerCase();
         this.word = word;
-        score = rand();
-    }
-    
-    private int rand(){
-        Random rand;
-        int random = (int) (Math.random()*1000+1);
-        if(word.length()>10)
-            random+=400;
-        else if(word.length()<7)
-            random-=200;
-        else if(word.length()>7)
-            random+=200;
-        return random;
     }
 
     public String getWord(){
         return word;
-    }
-    
-    public int getScore() {
-        return score;
     }
     
     public ArrayList<String> getPronunciations(){

@@ -1,7 +1,13 @@
-/*
- * Empty Stylesheet file.
- */
+.btnClear{
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-font-size: 17px;
+}
 
-.mainFxmlClass {
-
+.tp{
+    -fx-tile-alignment: CENTER_LEFT;
+    -fx-pref-tile-width: 300;
+    -fx-pref-tile-height: 80;
+    -fx-hgap: 15;
+    -fx-vgap: 5;
 }
