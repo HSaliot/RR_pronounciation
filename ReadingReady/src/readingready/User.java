@@ -30,11 +30,11 @@ public class User implements Serializable {
     @Basic(optional = false)
     
     private Integer id;
+    private String fName;
+    private String lName;
     private String uName;
     private String password;
-    private String lName;
-    private String fName;
-
+    
     public User() {
     }
 
@@ -42,14 +42,13 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public User(Integer id, String uName, String password, String lName, String fName) {
-        this.id = id;
+    public User(String fName, String lName, String uName, String password) {
+        this.fName = fName;
+        this.lName = lName;
         this.uName = uName;
         this.password = password;
-        this.lName = lName;
-        this.fName = fName;
     }
-
+    
     public Integer getId() {
         return id;
     }

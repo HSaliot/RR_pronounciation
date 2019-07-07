@@ -43,7 +43,7 @@ public class LoginPage implements Initializable {
     private StackPane stackPane;
     private Stage thisStage;
     
-    UserDao uDao = new UserDao();
+    private final UserDao uDao = new UserDao();
 
 
     public LoginPage()throws IOException{
@@ -96,7 +96,7 @@ public class LoginPage implements Initializable {
                 tfLUsername.clear();
                 pfLPassword.clear();
             
-                User user = uDao.findByCredentials(uName, password);
+                User user = uDao.findAndAuthenticate(uName, password);
                 if(user == null)
                     System.out.println("Wrong username or password");
                 else

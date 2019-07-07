@@ -5,6 +5,7 @@
  */
 package readingready.dao;
 
+import javax.persistence.NoResultException;
 import readingready.User;
 
 /**
@@ -16,5 +17,17 @@ public class UserDao extends Dao<User>{
         return getEM().createNamedQuery("User.findByUName", User.class)
                 .setParameter("uName", uName)
                 .getSingleResult();
+    }
+    
+    public User findAndAuthenticate(String uName, String password){
+        try {
+            User user = findByUName(uName);
+            if(password.equals(user.getPassword()))
+                return user;
+            else
+                return null;
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 }

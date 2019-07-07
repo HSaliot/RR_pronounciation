@@ -13,9 +13,8 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.StageStyle;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
@@ -23,6 +22,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javax.persistence.NoResultException;
+import readingready.dao.UserDao;
 
 /**
  * FXML Controller class
@@ -49,6 +50,7 @@ public class SignupPage implements Initializable {
     private StackPane stackPane;
     
     private Stage thisStage;
+    private final UserDao uDao = new UserDao();
 
     public SignupPage(Stage stage)throws IOException{
         thisStage = stage;
@@ -67,31 +69,57 @@ public class SignupPage implements Initializable {
         
         stackPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
         stackPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
-        // TODO
+        
         hlSLogin.setOnAction((ActionEvent e) -> {
             try {
-                
                 toLogin();
-                        } catch (IOException ex) {
+            } catch (IOException ex) {
                 Logger.getLogger(SignupPage.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        
         btnSSignup.setOnAction((ActionEvent e) -> {
-            if(tfSUsername.getText().length()!=0&&pfSPassword.getText().length()!=0&&pfSConfirmPassword.getText().equals(pfSPassword.getText())&&
-                    tfSLastName.getText().length()!=00&&tfSFirstName.getText().length()!=00){
-                System.out.println(tfSUsername.getText());
-                System.out.println(pfSPassword.getText());
-                try {
-                    toLogin();
-                } catch (IOException ex) {
-                    Logger.getLogger(SignupPage.class.getName()).log(Level.SEVERE, null, ex);
+            String fName = tfSFirstName.getText();
+            String lName = tfSLastName.getText();
+            String uName = tfSUsername.getText();
+            String password1 = pfSPassword.getText();
+            String password2 = pfSConfirmPassword.getText();
+            
+            if(fName.isEmpty() || lName.isEmpty() || uName.isEmpty() || password1.isEmpty() || password1.isEmpty()) 
+                System.out.println("Please complete the form");
+            
+            else {
+                if(password1.equals(password2)) {
+                    try {
+                        User user = uDao.findByUName(uName);
+                        System.out.println("Username already taken. Please choose another username");
+                    } catch (NoResultException ex) {
+                        User user = new User(fName.toUpperCase(), lName.toUpperCase(), uName, password1);
+                        uDao.create(user);
+                        notifyCompletion();
+                    }
+                }
+                else {
+                    System.out.println("Password Mismatch. Please re-confirm password.");
                 }
             }
-            else
-                System.out.println("else");
+            
+            clearFields();
         });
     }
     public void toLogin() throws IOException{
         LoginPage login = new LoginPage(thisStage);
+    }
+    
+    public void clearFields(){
+        tfSFirstName.clear();
+        tfSLastName.clear();
+        tfSUsername.clear();
+        pfSPassword.clear();
+        pfSConfirmPassword.clear();
+    }
+    
+    public void notifyCompletion(){
+        System.out.println("User registered");
     }
 }

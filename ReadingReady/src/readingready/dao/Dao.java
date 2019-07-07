@@ -17,18 +17,24 @@ public abstract class Dao<T> implements IDao<T>{
     
     @Override
     public void create(T t) {
+        em.getTransaction().begin();
         em.persist(t);
+        em.getTransaction().commit();
     }
 
     @Override
     public void update(T t) {
+        em.getTransaction().begin();
         em.persist(t);
+        em.getTransaction().commit();
     }
 
     @Override
     public void delete(Class<T> entityType, int id) {
         final T t = em.getReference(entityType, id);
+        em.getTransaction().begin();
         em.remove(t);
+        em.getTransaction().commit();
     }
 
     @Override
