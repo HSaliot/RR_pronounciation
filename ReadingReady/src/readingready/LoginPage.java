@@ -22,7 +22,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javax.persistence.NoResultException;
 import readingready.dao.UserDao;
 
 /**
@@ -33,15 +32,15 @@ import readingready.dao.UserDao;
 public class LoginPage implements Initializable {
 
     @FXML
-    Hyperlink hlLSignup;
+    private Hyperlink hlLSignup;
     @FXML
-    TextField tfLUsername;
+    private TextField tfLUsername;
     @FXML
-    PasswordField pfLPassword;
+    private PasswordField pfLPassword;
     @FXML
-    Button btnLLogin;
+    private Button btnLLogin;
     @FXML
-    StackPane stackPane;
+    private StackPane stackPane;
     private Stage thisStage;
     
     UserDao uDao = new UserDao();
@@ -49,20 +48,20 @@ public class LoginPage implements Initializable {
 
     public LoginPage()throws IOException{
         thisStage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginPage.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
-        scene.getStylesheets().add(getClass().getResource("Login.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("LoginPage.css").toExternalForm());
         thisStage.setScene(scene);
         thisStage.setMaximized(true);
     }
     
     public LoginPage(Stage stage)throws IOException{
         thisStage = stage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginPage.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
-        scene.getStylesheets().add(getClass().getResource("Login.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("LoginPage.css").toExternalForm());
         thisStage.setScene(scene);
         thisStage.setMaximized(true);
     }
@@ -89,37 +88,32 @@ public class LoginPage implements Initializable {
         btnLLogin.setOnAction((ActionEvent e) -> {
             String uName = tfLUsername.getText();
             String password = pfLPassword.getText();
-            boolean pass = false;
             
             if(uName.isEmpty() || password.isEmpty()){
                 System.out.println("Please complete the form");
             }
             else{
-                try {
-                    User user = uDao.findByUName(uName);
-                    if(password.equals(user.getPassword()))
-                        pass = true;    
-                } catch (NoResultException ex){
-                } finally {
-                    tfLUsername.clear();
-                    pfLPassword.clear();
-                    if(pass)
-                        try {
-                            toHome();
+                tfLUsername.clear();
+                pfLPassword.clear();
+            
+                User user = uDao.findByCredentials(uName, password);
+                if(user == null)
+                    System.out.println("Wrong username or password");
+                else
+                    try {
+                        toHome(user);
                     } catch (IOException ex) {
-                        Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    else
-                        System.out.println("Wrong username or password");
-                }
             }
         });
     }    
+    
     public void show(){
         thisStage.showAndWait();
     }
     
-    public void toHome() throws IOException{
-        HomePage home = new HomePage(thisStage);
+    public void toHome(User user) throws IOException{
+        HomePage home = new HomePage(thisStage, user);
     }
 }

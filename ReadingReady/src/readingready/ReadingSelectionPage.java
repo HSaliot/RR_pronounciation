@@ -10,6 +10,7 @@ import edu.cmu.sphinx.api.SpeechResult;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -61,34 +62,28 @@ public class ReadingSelectionPage implements Initializable {
     @FXML
     private Label lRSWord;
     @FXML
-    private Label lRSPronunciation;
+    private Button btnRSaddPronunciation;
     @FXML
-    private Label lRSPronunciation1;
-    @FXML
-    private Label lRSPronunciation2;
-    @FXML
-    private Label lRSPronunciation3;
+    private VBox vBoxPronunciations;
     
     private SpeechResult speechResult;
-    private final Stage thisStage = new Stage();
+    private Stage thisStage;
     private Clip clip;
     private ArrayList<Word> wordsList = new ArrayList<>();
     private String title;
+    private int selectedWordIndex;
     private ArrayList<String> strings = new ArrayList<>();
     private boolean exist;
-    public ReadingSelectionPage(String title) throws IOException{
+    public ReadingSelectionPage(Stage stage,String title) throws IOException{
         this.title = title;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ReadingSelection.fxml"));
+        thisStage = stage;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ReadingSelectionPage.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
-        scene.getStylesheets().add(getClass().getResource("ReadingSelection.css").toExternalForm());
-        thisStage.initStyle(StageStyle.TRANSPARENT);
+        scene.getStylesheets().add(getClass().getResource("ReadingSelectionPage.css").toExternalForm());
         thisStage.setScene(scene);
         thisStage.setMaximized(true);
-    }
-    
-    public void show(){
-        thisStage.showAndWait();
+
     }
 
     public void addSentences() throws IOException{
@@ -115,8 +110,10 @@ public class ReadingSelectionPage implements Initializable {
                 }
                 String tempWord = words[i]; 
                 Word tWord = wordsList.get(i);
+                int tempInt = i;
                 temp.setOnAction((ActionEvent e) -> {
                     setSelectedWord(tWord);
+                    selectedWordIndex = tempInt;
                 });
                 texts.add(temp);            
         }
@@ -137,6 +134,16 @@ public class ReadingSelectionPage implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(ReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+        btnRSaddPronunciation.setOnAction((ActionEvent e) -> {
+            PhonemeBuilderPage phonemeBuilderPage = null;
+            try {
+                phonemeBuilderPage = new PhonemeBuilderPage(title,wordsList.get(selectedWordIndex));
+            } catch (IOException ex) {
+                Logger.getLogger(ReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            phonemeBuilderPage.show();
+            
+        });
     }
     
     public boolean inDictionary(String input) throws IOException {
@@ -158,10 +165,12 @@ public class ReadingSelectionPage implements Initializable {
         BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
         String s;     
         boolean found = false;   
+        String delimiters = "[ \\(]";
         while((s=br.readLine())!=null)   //Reading Content from the file
         {
-            words=s.split(" ");  //Split the word using space
-            if (words[0].equals(input.toLowerCase())||words[0].equals(input.toLowerCase()+"(2)")||words[0].equals(input.toLowerCase()+"(3)")||words[0].equals(input.toLowerCase()+"(4)"))   //Search for the given word
+            words=s.split(delimiters);  //Split the word using space
+            
+            if (words[0].equals(input.toLowerCase()))   //Search for the given word
             {
                 wordsList.get(wordsList.size()-1).addPronunciation(words);
                 if(exist==false){
@@ -175,6 +184,7 @@ public class ReadingSelectionPage implements Initializable {
         return found;
     }
     private void setSelectedWord(Word word){
+        vBoxPronunciations.getChildren().clear();
         String temp = word.getWord();
         temp = temp.replace(".", ""); //replace all . character
         temp = temp.replace(",", ""); //replace all , character
@@ -182,23 +192,56 @@ public class ReadingSelectionPage implements Initializable {
         temp = temp.replace("”", ""); //replace all ” character
         temp = temp.toLowerCase();
         lRSWord.setText(temp);        
-        lRSPronunciation.setText(""); 
-        lRSPronunciation1.setText(""); 
-        lRSPronunciation2.setText(""); 
-        lRSPronunciation3.setText("");
-        lRSPronunciation.setText("/ "+word.getPronunciations().get(0)+" /");
+        ArrayList<HBox> hboxes = new ArrayList<>();
         for(int i=0; i<word.getPronunciations().size();i++){
-            switch (i){
-                case 0: lRSPronunciation.setText("/ "+word.getPronunciations().get(i)+" /");
-                    break;
-                case 1: lRSPronunciation1.setText("/ "+word.getPronunciations().get(i)+" /");
-                    break;
-                case 2: lRSPronunciation2.setText("/ "+word.getPronunciations().get(i)+" /");
-                    break;
-                case 3: lRSPronunciation3.setText("/ "+word.getPronunciations().get(i)+" /");
-                    break;
-            }
+            HBox tempHBox = new HBox();
+            Label tempLabel = new Label("/ "+word.getPronunciations().get(i)+" /");
+            Button tempBtn = new Button("X");
+            int tempInt = i;
+            tempBtn.setOnAction((ActionEvent e) -> {
+                try {
+                    deletePronunciation(word,tempInt);
+                } catch (IOException ex) {
+                    Logger.getLogger(ReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+            tempHBox.getChildren().add(tempLabel);
+            tempHBox.getChildren().add(tempBtn);
+            hboxes.add(tempHBox);
         }
+        ObservableList list = vBoxPronunciations.getChildren(); 
+        list.addAll(hboxes);
+    }
+    public void deletePronunciation(Word word, int index) throws IOException{
+        /*
+        if(index>0)
+            deleteInFile(") "+word.getPronunciations().get(index));
+        else
+            deleteInFile(word.getWord()+" "+word.getPronunciations().get(index));
+        */
+        deleteInFile(word,index);
+        for(int i = 0; i<wordsList.size(); i++){
+            if(wordsList.get(i).getWord().equalsIgnoreCase(word.getWord()))
+                wordsList.get(i).removePronunciation(index);
+        }
+        setSelectedWord(word);
+    }
+    public void  deleteInFile(Word word,int index) throws FileNotFoundException, IOException{
+        File inputFile = new File(title+".DICT");
+        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+        String currentLine;
+        ArrayList<String> tempStrings = new ArrayList<>();
+        while((currentLine = reader.readLine()) != null) {
+            // trim newline when comparing with lineToRemove
+            if((currentLine.equals(word.getWord()+" "+word.getPronunciations().get(index)))||
+                currentLine.startsWith(word.getWord()+"(")&&currentLine.endsWith(") "+word.getPronunciations().get(index)))
+                    System.out.println(word.getWord()+" "+word.getPronunciations().get(index));
+            else
+                tempStrings.add(currentLine);
+        }
+        reader.close(); 
+        strings = tempStrings;
+        createDICT();
     }
     private boolean doesFileExist(){
         boolean exist = false;

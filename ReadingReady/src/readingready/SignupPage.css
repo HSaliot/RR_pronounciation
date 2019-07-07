@@ -36,7 +36,7 @@
     -fx-text-fill: #087830;
 }
 
-#tfSUsername,#pfSPassword,#pfSConfirmPassword{
+#tfSUsername,#pfSPassword,#pfSConfirmPassword,#tfSLastName,#tfSFirstName{
     -fx-background-color: transparent;
 }
 

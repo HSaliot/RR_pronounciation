@@ -16,8 +16,16 @@ public class Word {
     private String word;
     private int score;
     private ArrayList<String> pronunciations = new ArrayList<>();
+    private ArrayList<String> lines = new ArrayList<>();
+    private int lastIndex=0;
     
     public Word(String word){
+        word = word.replace(".", ""); //replace all . character
+        word = word.replace(",", ""); //replace all , character
+        word = word.replace("“", ""); //replace all “ character
+        word = word.replace("”", ""); //replace all ” character
+        word = word.replace("’", ""); //replace all ’ character
+        word = word.toLowerCase();
         this.word = word;
         score = rand();
     }
@@ -46,13 +54,37 @@ public class Word {
         return pronunciations;
     }
 
-    void addPronunciation(String[] pronunciation) {
+    public void addPronunciation(String[] pronunciation) {
+        lastIndex++;
         StringBuilder stringBuilder = new StringBuilder();
         String temp;
-        for(int i =1;i<pronunciation.length;i++)
-            stringBuilder.append(pronunciation[i]+" ");
+        lines.add(pronunciation[1]);
+        if(!Character.isDigit(pronunciation[1].charAt(0)))
+            for(int i =1;i<pronunciation.length;i++)
+                if(i==pronunciation.length-1)
+                stringBuilder.append(pronunciation[i]);
+            else
+                stringBuilder.append(pronunciation[i]+" ");
+        else
+            for(int i=2;i<pronunciation.length;i++)
+                if(i==pronunciation.length-1)
+                stringBuilder.append(pronunciation[i]);
+            else
+                stringBuilder.append(pronunciation[i]+" ");
         temp = stringBuilder.toString();
-        System.out.println(word+" "+temp);
         pronunciations.add(temp);
     }
+
+    public void removePronunciation(int i) {
+        pronunciations.remove(i);
+    }
+    
+    public int getLastIndex(){
+        if(lines.size()==1)
+            lastIndex=1;
+        else
+            lastIndex = lines.get(lines.size()-1).charAt(0);
+        return lastIndex;
+    }
 }
+

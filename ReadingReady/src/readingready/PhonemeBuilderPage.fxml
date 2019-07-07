@@ -11,26 +11,17 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="316.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label text="&lt;WORD&gt;">
+      <Label fx:id="lPBWord" style="-fx-font-size: 16;" text="&lt;WORD&gt;">
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
       </Label>
-      <TextField prefHeight="40.0" prefWidth="276.0">
+      <TextField fx:id="tfPBPhoneme" prefHeight="40.0" prefWidth="276.0">
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
       </TextField>
       <Separator prefWidth="200.0" />
-      <HBox alignment="CENTER">
-         <children>
-            <Button mnemonicParsing="false" text="SIL">
-               <HBox.margin>
-                  <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
-               </HBox.margin>
-            </Button>
-         </children>
-      </HBox>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Consonants">
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -38,27 +29,27 @@
       </Text>
       <HBox alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="B">
+            <Button fx:id="btnPB2" mnemonicParsing="false" text="B">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="CH">
+            <Button fx:id="btnPB3" mnemonicParsing="false" text="CH">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="D">
+            <Button fx:id="btnPB4" mnemonicParsing="false" text="D">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="DH">
+            <Button fx:id="btnPB5" mnemonicParsing="false" text="DH">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="ER">
+            <Button fx:id="btnPB6" mnemonicParsing="false" text="ER">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
@@ -70,56 +61,27 @@
       </HBox>
       <HBox alignment="CENTER" layoutX="15.0" layoutY="74.0">
          <children>
-            <Button mnemonicParsing="false" text="F">
+            <Button fx:id="btnPB7" mnemonicParsing="false" text="F">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="G">
+            <Button fx:id="btnPB8" mnemonicParsing="false" text="G">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="HH">
+            <Button fx:id="btnPB9" mnemonicParsing="false" text="HH">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="JH">
+            <Button fx:id="btnPB10" mnemonicParsing="false" text="JH">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="K">
-               <HBox.margin>
-                  <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
-               </HBox.margin>
-            </Button>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" layoutX="10.0" layoutY="109.0">
-         <children>
-            <Button mnemonicParsing="false" text="L">
-               <HBox.margin>
-                  <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" text="M">
-               <HBox.margin>
-                  <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" text="N">
-               <HBox.margin>
-                  <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" text="NG">
-               <HBox.margin>
-                  <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" text="P">
+            <Button fx:id="btnPB11" mnemonicParsing="false" text="K">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
@@ -128,27 +90,56 @@
       </HBox>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="109.0">
          <children>
-            <Button mnemonicParsing="false" text="R">
+            <Button fx:id="btnPB12" mnemonicParsing="false" text="L">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="S">
+            <Button fx:id="btnPB13" mnemonicParsing="false" text="M">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="SH">
+            <Button fx:id="btnPB14" mnemonicParsing="false" text="N">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="T">
+            <Button fx:id="btnPB15" mnemonicParsing="false" text="NG">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="TH">
+            <Button fx:id="btnPB16" mnemonicParsing="false" text="P">
+               <HBox.margin>
+                  <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="109.0">
+         <children>
+            <Button fx:id="btnPB17" mnemonicParsing="false" text="R">
+               <HBox.margin>
+                  <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="btnPB18" mnemonicParsing="false" text="S">
+               <HBox.margin>
+                  <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="btnPB19" mnemonicParsing="false" text="SH">
+               <HBox.margin>
+                  <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="btnPB20" mnemonicParsing="false" text="T">
+               <HBox.margin>
+                  <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="btnPB21" mnemonicParsing="false" text="TH">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
@@ -157,27 +148,27 @@
       </HBox>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="140.0">
          <children>
-            <Button mnemonicParsing="false" text="V">
+            <Button fx:id="btnPB22" mnemonicParsing="false" text="V">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="W">
+            <Button fx:id="btnPB23" mnemonicParsing="false" text="W">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="Y">
+            <Button fx:id="btnPB24" mnemonicParsing="false" text="Y">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="Z">
+            <Button fx:id="btnPB25" mnemonicParsing="false" text="Z">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="ZH">
+            <Button fx:id="btnPB26" mnemonicParsing="false" text="ZH">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
@@ -191,27 +182,27 @@
       </Text>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="141.0">
          <children>
-            <Button mnemonicParsing="false" text="AA">
+            <Button fx:id="btnPB27" mnemonicParsing="false" text="AA">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="AE">
+            <Button fx:id="btnPB28" mnemonicParsing="false" text="AE">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="AH">
+            <Button fx:id="btnPB29" mnemonicParsing="false" text="AH">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="AO">
+            <Button fx:id="btnPB30" mnemonicParsing="false" text="AO">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="AW">
+            <Button fx:id="btnPB31" mnemonicParsing="false" text="AW">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
@@ -220,27 +211,27 @@
       </HBox>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="172.0">
          <children>
-            <Button mnemonicParsing="false" text="AY">
+            <Button fx:id="btnPB32" mnemonicParsing="false" text="AY">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="EH">
+            <Button fx:id="btnPB33" mnemonicParsing="false" text="EH">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="EY">
+            <Button fx:id="btnPB34" mnemonicParsing="false" text="EY">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="IH">
+            <Button fx:id="btnPB35" mnemonicParsing="false" text="IH">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="IY">
+            <Button fx:id="btnPB36" mnemonicParsing="false" text="IY">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
@@ -249,22 +240,22 @@
       </HBox>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="203.0">
          <children>
-            <Button mnemonicParsing="false" text="OW">
+            <Button fx:id="btnPB37" mnemonicParsing="false" text="OW">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="OY">
+            <Button fx:id="btnPB38" mnemonicParsing="false" text="OY">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="UH">
+            <Button fx:id="btnPB39" mnemonicParsing="false" text="UH">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="UW">
+            <Button fx:id="btnPB40" mnemonicParsing="false" text="UW">
                <HBox.margin>
                   <Insets bottom="2.5" left="10.0" right="10.0" top="2.5" />
                </HBox.margin>
@@ -278,7 +269,7 @@
       </Separator>
       <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="75.0">
          <children>
-            <Button mnemonicParsing="false" text="Submit">
+            <Button fx:id="btnPBSubmit" mnemonicParsing="false" text="Submit">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>

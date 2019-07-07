@@ -32,26 +32,30 @@ import javafx.stage.Stage;
 public class SignupPage implements Initializable {
 
     @FXML
-    Hyperlink hlSLogin;
+    private Hyperlink hlSLogin;
     @FXML
-    TextField tfSUsername;
+    private TextField tfSUsername;
     @FXML
-    PasswordField pfSPassword;
+    private TextField tfSFirstName;
     @FXML
-    PasswordField pfSConfirmPassword;
+    private TextField tfSLastName;
     @FXML
-    Button btnSSignup;
+    private PasswordField pfSPassword;
     @FXML
-    StackPane stackPane;
+    private PasswordField pfSConfirmPassword;
+    @FXML
+    private Button btnSSignup;
+    @FXML
+    private StackPane stackPane;
     
     private Stage thisStage;
 
     public SignupPage(Stage stage)throws IOException{
         thisStage = stage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Signup.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("SignupPage.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
-        scene.getStylesheets().add(getClass().getResource("Signup.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("SignupPage.css").toExternalForm());
         thisStage.setScene(scene);
         thisStage.setMaximized(true);
     }
@@ -73,7 +77,8 @@ public class SignupPage implements Initializable {
             }
         });
         btnSSignup.setOnAction((ActionEvent e) -> {
-            if(tfSUsername.getText().length()!=0&&pfSPassword.getText().length()!=0&&pfSConfirmPassword.getText().equals(pfSPassword.getText())){
+            if(tfSUsername.getText().length()!=0&&pfSPassword.getText().length()!=0&&pfSConfirmPassword.getText().equals(pfSPassword.getText())&&
+                    tfSLastName.getText().length()!=00&&tfSFirstName.getText().length()!=00){
                 System.out.println(tfSUsername.getText());
                 System.out.println(pfSPassword.getText());
                 try {
