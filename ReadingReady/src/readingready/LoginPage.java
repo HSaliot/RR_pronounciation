@@ -32,15 +32,15 @@ import javafx.stage.Stage;
 public class LoginPage implements Initializable {
 
     @FXML
-    Hyperlink hlLSignup;
+    private Hyperlink hlLSignup;
     @FXML
-    TextField tfLUsername;
+    private TextField tfLUsername;
     @FXML
-    PasswordField pfLPassword;
+    private PasswordField pfLPassword;
     @FXML
-    Button btnLLogin;
+    private Button btnLLogin;
     @FXML
-    StackPane stackPane;
+    private StackPane stackPane;
     private Stage thisStage;
 
     public LoginPage()throws IOException{
@@ -85,8 +85,7 @@ public class LoginPage implements Initializable {
                 System.out.println(tfLUsername.getText());
                 System.out.println(pfLPassword.getText());
                 try {
-                    HomePage home = new HomePage();
-                    home.show();
+                    HomePage home = new HomePage(thisStage);
                 } catch (IOException ex) {
                     Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
                 }

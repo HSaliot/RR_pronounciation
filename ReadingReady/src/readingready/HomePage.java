@@ -16,6 +16,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -26,18 +28,19 @@ import javafx.stage.Stage;
 public class HomePage implements Initializable {
     @FXML
     private Hyperlink hlHDarkChocolate;
-    private Stage thisStage = new Stage();
+    @FXML
+    private VBox vBoxHP;
+    
+    private Stage thisStage;
 
-    public HomePage() throws IOException{
+    public HomePage(Stage stage) throws IOException{
+        thisStage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("HomePage.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
         scene.getStylesheets().add(getClass().getResource("HomePage.css").toExternalForm());
         thisStage.setScene(scene);
-        thisStage.setMaximized(true);
-        Evaluation evaluation = new Evaluation("Dark Chocolate", "DELA CRUZ, Juan", null);
-        ResultPage resultPage = new ResultPage(evaluation);
-        
+        thisStage.setMaximized(true);        
     }
     /**
      * Initializes the controller class.
@@ -45,19 +48,18 @@ public class HomePage implements Initializable {
     @Override
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
+        
+        vBoxHP.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
+        vBoxHP.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
         hlHDarkChocolate.setOnAction((ActionEvent e) -> {
             ReadingSelectionPage readingSelection = null;
             try {
                 
-                readingSelection = new ReadingSelectionPage("Dark Chocolate");
+                readingSelection = new ReadingSelectionPage(thisStage,"Dark Chocolate");
             } catch (IOException ex) {
                 Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
             }
-            readingSelection.show();
         });
     }    
-    
-    public void show(){
-        thisStage.show();
-    }
+
 }

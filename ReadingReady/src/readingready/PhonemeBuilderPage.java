@@ -64,6 +64,7 @@ public class PhonemeBuilderPage implements Initializable {
         btnPBSubmit.setOnAction((ActionEvent e) -> {
             try {
                 appendToFile(getFinal());
+                close();
             } catch (IOException ex) {
                 Logger.getLogger(PhonemeBuilderPage.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -189,10 +190,14 @@ public class PhonemeBuilderPage implements Initializable {
     }    
 
     public String getFinal(){
-        return ""+word.getWord()+"("+(word.getPronunciations().size()+1)+") "+tfPBPhoneme.getText();
+        return ""+word.getWord()+"("+(word.getLastIndex()+1)+") "+tfPBPhoneme.getText();
     }
     public void show() {
         thisStage.showAndWait();
+    }
+    
+    public void close(){
+        thisStage.close();
     }
     
     public void appendToFile(String textToAppend) throws IOException{  
