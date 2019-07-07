@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="vBoxHP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<children>
+    <Accordion VBox.vgrow="ALWAYS">
+    <panes>
+        <TitledPane animated="false" text="Reading Selection">
+            <content>
+                <VBox>
+                    <children>
+                        <TilePane styleClass="tp" fx:id="tpReadingSelections" />
+                    </children>
+                </VBox>
+            </content>
+        </TitledPane>
+        <TitledPane animated="false" text="Students">
+               <content>
+                  <VBox>
+                    <children>
+                        <TilePane styleClass="tp" fx:id="tpEvaluatStudents" />
+                    </children>
+                  </VBox>
+               </content>
+          </TitledPane>
+          <TitledPane animated="false" text="Evaluations">
+               <content>
+                  <VBox>
+                    <children>
+                        <TilePane styleClass="tp" fx:id="tpEvaluations" />
+                    </children>
+                  </VBox>
+               </content>
+          </TitledPane>
+        </panes>
+    </Accordion>
+</children>
+</VBox>

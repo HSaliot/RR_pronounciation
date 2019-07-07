@@ -5,6 +5,7 @@
  */
 package readingready;
 
+import edu.cmu.sphinx.api.SpeechResult;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -14,6 +15,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -22,12 +25,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -41,6 +44,8 @@ public class AddWavPage {
     @FXML private Button submit;
     @FXML private Button back;
     private Stage thisStage;
+    private double yOffset = 0;
+    private double xOffset = 0;
 
     public AddWavPage() throws IOException{
         
@@ -48,8 +53,11 @@ public class AddWavPage {
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AddWavPage.fxml"));
         loader.setController(this);
-        
+        thisStage.initStyle(StageStyle.TRANSPARENT);
         thisStage.setScene(new Scene(loader.load()));
+        thisStage.initModality(Modality.APPLICATION_MODAL);
+
+        
     }   
     
     public void openFile() throws IOException {
@@ -76,8 +84,18 @@ public class AddWavPage {
                     out.write(buffer, 0, lengthRead);
                     out.flush();
                 }
-            }          
-        close();
+            }    
+            
+            
+            Sphinx sphinx = new Sphinx();
+            List<SpeechResult> sentences = new ArrayList<>();
+            sentences.add(sphinx.getSpeechResult("src/readingready/resources/"+"aron.wav"));
+            ResultPage result = new ResultPage(new Evaluation());
+            result.addSentences();
+            close();
+            result.show();
+            
+            
         }
     }
     @FXML
@@ -92,7 +110,7 @@ public class AddWavPage {
         thisStage.close();
     }
     
-    public void open() {
+    public void show() {
         thisStage.show();
     }
     
@@ -124,5 +142,7 @@ public class AddWavPage {
             }
         });
     }
+    
+    
     
 }

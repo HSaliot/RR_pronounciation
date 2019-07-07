@@ -1,71 +1,84 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package readingready;
 
-import edu.cmu.sphinx.api.SpeechResult;
-import java.util.List;
-
-
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Hannah Saliot
  */
-public class Evaluation {
-    private String student;
-    private String selection;
-    private List<SpeechResult> evaluatedSentences;
-    private String dateRecorded;
+@Entity
+@Table(name = "R2_EVALUATIONS")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Evaluation.findAll", query = "SELECT e FROM Evaluation e")
+    , @NamedQuery(name = "Evaluation.findById", query = "SELECT e FROM Evaluation e WHERE e.id = :id")
+    , @NamedQuery(name = "Evaluation.findByDatedone", query = "SELECT e FROM Evaluation e WHERE e.dateDone = :dateDone")})
+public class Evaluation implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     
-    public Evaluation(String student, String selection, List<SpeechResult> evaluatedSentences){
-        this.student = student;
-        this.selection = selection;
-        this.dateRecorded = "06/13/19";
-        this.evaluatedSentences = evaluatedSentences;
+    @Temporal(TemporalType.DATE)
+    private Date dateDone;
+    
+    @JoinColumn(name = "STUDENT", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private Student student;
+
+    public Evaluation() {
     }
 
-    public String getStudent() {
+    public Evaluation(Integer id) {
+        this.id = id;
+    }
+
+    public Evaluation(Integer id, Date dateDone) {
+        this.id = id;
+        this.dateDone = dateDone;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Date getDatedone() {
+        return dateDone;
+    }
+
+    public void setDatedone(Date dateDone) {
+        this.dateDone = dateDone;
+    }
+
+    public Student getStudent() {
         return student;
     }
 
-    public void setStudent(String student) {
+    public void setStudent(Student student) {
         this.student = student;
     }
-
-    public String getSelection() {
-        return selection;
+    
+    @Override
+    public String toString() {
+        return "readingready.Evaluation[ id=" + id + " ]";
     }
-
-    public void setSelection(String selection) {
-        this.selection = selection;
-    }
-
-    public List<SpeechResult> getEvaluatedSentences() {
-        return evaluatedSentences;
-    }
-
-    public void setEvaluatedSentences(List<SpeechResult> evaluatedSentences) {
-        this.evaluatedSentences = evaluatedSentences;
-    }
-
-    public String getDateRecorded() {
-        return dateRecorded;
-    }
-
-    public void setDateRecorded(String dateRecorded) {
-        this.dateRecorded = dateRecorded;
-    }
-    
-    
-
-    
-    
-    
-    
-    
-    
     
 }

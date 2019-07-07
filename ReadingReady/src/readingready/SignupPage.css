@@ -1,0 +1,62 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+
+}
+
+.tfHbox{
+    -fx-alignment: CENTER_RIGHT;
+    -fx-border-color: #a2a2a2;
+    -fx-border-width: 0px 0px 2px;
+}
+
+.hbIcons{
+    -fx-fill: #087830;
+}
+
+#vBox2{
+    -fx-background-color: #087830;
+}
+
+#vBox3{
+    -fx-alignment: CENTER;
+}
+
+#vBox4{
+    -fx-alignment: TOP_CENTER;
+    -fx-background-color: white;
+    -fx-padding: 25 25 25 25;
+}
+
+#label1{
+    -fx-font-size: 2em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #087830;
+}
+
+#tfSUsername,#pfSPassword,#pfSConfirmPassword,#tfSLastName,#tfSFirstName{
+    -fx-background-color: transparent;
+}
+
+#btnSSignup{
+    -fx-background-color: #087830;
+    -fx-text-fill: white;
+    -fx-background-radius: 50px;
+}
+
+#text1,#hlSLogin{
+    -fx-font-weight: bold;
+}
+
+#hlSLogin{
+    -fx-font-weight: bold;
+    -fx-text-fill: #087830;
+    -fx-underline: true;
+}
+
+#hBox2{
+ -fx-alignment: BOTTOM_CENTER;   
+}
+

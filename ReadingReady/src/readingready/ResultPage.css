@@ -1,0 +1,127 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 06 15, 19, 10:34:51 PM
+    Author     : Lorenz
+*/
+#wavLabel{
+    -fx-padding: 0 0 0 20;
+}
+.button {
+    -fx-font-size: 12px;
+    
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+    
+    -fx-border-insets: 10px;
+    -fx-background-insets: 5px;
+}
+.button:hover {
+    -fx-background-color: lightgrey;
+}
+
+#removeNotes,
+#addNotes,
+#saveNotes,
+#closeButton{
+    -fx-background-color: transparent;
+}
+#removeNotes:hover,
+#addNotes:hover ,
+#saveNotes:hover,
+#closeButton:hover{
+  -fx-background-color: lightgrey;
+} 
+
+#removeNotes:clicked,
+#addNotes:clicked ,
+#saveNotes:clicked,
+#closeButton:clicked{
+    -fx-fill: white;
+} 
+.hyperlink:hover,
+.hyperlink:visited {
+    -fx-fill: -fx-text-background-color;
+}
+.hyperlink,
+.hyperlink:visited {
+    -fx-underline: false;
+}
+.hyperlink:hover,
+.hyperlink:armed {
+    -fx-underline: false;
+}
+
+.progress-bar {
+    -fx-padding: 5 10 0 0;
+    -fx-accent: orange;
+}   
+
+#wordLabel{
+    letter-spacing: 4px;
+    -fx-font-size: 40px;
+    -fx-text-alignment: center;
+    -fx-padding: 20 40 0 40;
+}
+#pronounciationLabel {
+    -fx-font-size: 16px;
+    -fx-font-style: italic; 
+    -fx-text-alignment: center;
+    -fx-padding: 0 40 20 40;
+}
+#progressLabel{
+    -fx-padding: 0 20 0 10;
+    -fx-font-size: 16px;
+}
+
+#noteLabel{
+    -fx-padding: 0 0 0 20;
+    -fx-font-size: 16px;
+}
+
+.con{
+    -fx-padding: 30 50 15 50;
+    -fx-wrap-text: true;
+}
+.notes{
+    margin-left: 50px;
+}
+
+.toggleGroup{
+    -fx-padding: 10 30 10 30;
+}
+.sentencePlayer{
+    -fx-padding: 0 140 10 140;
+}
+
+#sentenceSlider{
+    -fx-padding: 0 60 0 60;
+}
+.informationLabels{
+    -fx-padding: 20 20 20 20;
+    -fx-font-size: 20px;
+}
+.paper{
+    
+}
+#closeButton{
+    -fx-background-radius: 5,4,3,5;
+    -fx-te: whitesmoke;
+}
+
+.bannerClass{
+    -fx-background-color: black;
+
+}
+#bannerText{
+    -fx-fill: whitesmoke;
+    -fx-font: bold 20pt "Arial";
+}
+
+.iconClass{
+    -fx-padding: 5 10 5 10;
+}
