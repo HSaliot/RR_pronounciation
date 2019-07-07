@@ -38,6 +38,9 @@ public class HomePage implements Initializable {
     @FXML
     private TilePane tpReadingSelections;
     
+    @FXML
+    private Button btnHAddSelection;
+    
     private Stage thisStage;
     private final ButtonFactory btnFactory = new ButtonFactory();
     private final ReadingSelectionDao rsDao = new ReadingSelectionDao();
@@ -76,6 +79,15 @@ public class HomePage implements Initializable {
             });
             tpReadingSelections.getChildren().add(button);
         });
+        btnHAddSelection.setOnAction(e -> {
+                AddReadingSelectionPage addReadingSelectionPage = null;
+            try {
+                addReadingSelectionPage = new AddReadingSelectionPage();
+            } catch (IOException ex) {
+                Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                addReadingSelectionPage.show();
+            });
     }    
 
     private void toFocus(Stage thisStage, ReadingSelection selection) throws IOException {

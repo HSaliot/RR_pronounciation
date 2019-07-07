@@ -83,9 +83,13 @@ public class ReadingSelectionPage implements Initializable {
         FileReader fr = new FileReader(open);  //Creation of File Reader object
         BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
         String s;
-        String passage="";
-        while((s=br.readLine())!=null)   //Reading Content from the file
-            passage+=s;
+        String passage = null;
+        while((s=br.readLine())!=null){   //Reading Content from the file
+         if (passage==null)
+             passage=s;
+         else
+             passage=passage+s;
+        }
         
         br.close();
         fr.close();
@@ -103,9 +107,12 @@ public class ReadingSelectionPage implements Initializable {
         exist = doesFileExist();
         
         for (int i = 0; i < words.length; i++){
+            if(i==0){
+                   words[0]=words[0].replace(Character.toString(words[0].charAt(0)), "");
+            }
             hyperlink = new Hyperlink(words[i]+" ");
+            wordsList.add(new Word(words[i]));
 
-            //marking dictionary-foreign words
             if(inDictionary(words[i])) {
                 hyperlink.setFont(Font.font("",FontWeight.NORMAL,16));                     
             } else {
@@ -114,13 +121,12 @@ public class ReadingSelectionPage implements Initializable {
             }
             
             int tempInt = i;
-            Word word = new Word(words[i]);
+            Word word = wordsList.get(i);
             hyperlink.setOnAction((ActionEvent e) -> {
                 setSelectedWord(word);
                 selectedWordIndex = tempInt;
             });
             
-            wordsList.add(word);
             hyperlinks.add(hyperlink);     
             wordsList.get(i).setLastIndex();
         }
@@ -159,14 +165,14 @@ public class ReadingSelectionPage implements Initializable {
     }
     
     public boolean inDictionary(String input) throws IOException {
-
+        input = input.trim();
         input = input.replace(".", ""); //replace all . character
         input = input.replace(",", ""); //replace all , character
         input = input.replace("“", ""); //replace all “ character
         input = input.replace("”", ""); //replace all ” character
         input = input.replace("—", ""); //replace all — character
         input = input.replace("’", ""); //replace all ’ character
-        
+
         String[] words=null;  //Intialize the word Array
         File open;
         if(exist)
@@ -177,11 +183,11 @@ public class ReadingSelectionPage implements Initializable {
         BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
         String s;     
         boolean found = false;   
-        String delimiters = "[ \\(]";
+        String delimiters = "[ \\(\\s+]";
         while((s=br.readLine())!=null)   //Reading Content from the file
         {
             words=s.split(delimiters);  //Split the word using space
-            
+             
             if (words[0].equals(input.toLowerCase()))   //Search for the given word
             {
                 wordsList.get(wordsList.size()-1).addPronunciation(words);
@@ -191,6 +197,7 @@ public class ReadingSelectionPage implements Initializable {
                 }
                 found = true;    //If Present, found is true
             }
+
         }
         fr.close();
         return found;

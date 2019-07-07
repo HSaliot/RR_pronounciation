@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -13,7 +15,12 @@
             <content>
                 <VBox>
                     <children>
-                        <TilePane styleClass="tp" fx:id="tpReadingSelections" />
+                        <HBox alignment="CENTER_RIGHT">
+                           <children>
+                              <Button fx:id="btnHAddSelection" mnemonicParsing="false" text="Add" />
+                           </children>
+                        </HBox>
+                        <TilePane fx:id="tpReadingSelections" styleClass="tp" />
                     </children>
                 </VBox>
             </content>
@@ -22,7 +29,7 @@
                <content>
                   <VBox>
                     <children>
-                        <TilePane styleClass="tp" fx:id="tpEvaluatStudents" />
+                        <TilePane fx:id="tpEvaluatStudents" styleClass="tp" />
                     </children>
                   </VBox>
                </content>
@@ -31,7 +38,7 @@
                <content>
                   <VBox>
                     <children>
-                        <TilePane styleClass="tp" fx:id="tpEvaluations" />
+                        <TilePane fx:id="tpEvaluations" styleClass="tp" />
                     </children>
                   </VBox>
                </content>
