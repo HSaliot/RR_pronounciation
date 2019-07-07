@@ -17,7 +17,7 @@ public class Word {
     private int score;
     private ArrayList<String> pronunciations = new ArrayList<>();
     private ArrayList<String> lines = new ArrayList<>();
-    private int lastIndex=0;
+    private int lastIndex;
     
     public Word(String word){
         word = word.replace(".", ""); //replace all . character
@@ -79,12 +79,22 @@ public class Word {
         pronunciations.remove(i);
     }
     
-    public int getLastIndex(){
-        if(lines.size()==1)
-            lastIndex=1;
+    public void setLastIndex(){
+        if(lines.size()==0)
+            lastIndex=0;
+        else if(Character.isDigit(lines.get(lines.size()-1).charAt(0))){
+            String[] tmp = lines.get(lines.size()-1).split("\\)");
+            String temp = tmp[0];
+            lastIndex = Integer.parseInt(temp);
+        }
         else
-            lastIndex = lines.get(lines.size()-1).charAt(0);
+            lastIndex=1;
+    }
+    public int getLastIndex(){
         return lastIndex;
+    }
+    public void increaseLastIndex(){
+        lastIndex =lastIndex+1;
     }
 }
 

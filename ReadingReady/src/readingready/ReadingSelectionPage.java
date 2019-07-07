@@ -94,15 +94,10 @@ public class ReadingSelectionPage implements Initializable {
         exist=doesFileExist();
         for (int i=0; i<words.length;i++){
                 wordsList.add(new Word(words[i]));
+                
                 temp = new Hyperlink(words[i]+" ");
                 //int numPro=1;
                 if(inDictionary(words[i])==true) {
-                /*    numPro++;
-                    wordsList.get(i).addPronunciation(passage);
-                    while(inDictionary(words[i]+"("+numPro+")")==true){
-                        
-                        numPro++;
-                    } */
                     temp.setFont(Font.font("",FontWeight.NORMAL,16));                     
                 }else{
                     temp.setFont(Font.font("",FontWeight.NORMAL,16)); 
@@ -115,7 +110,8 @@ public class ReadingSelectionPage implements Initializable {
                     setSelectedWord(tWord);
                     selectedWordIndex = tempInt;
                 });
-                texts.add(temp);            
+                texts.add(temp);     
+                wordsList.get(i).setLastIndex();
         }
         tfReadings.setTextAlignment(TextAlignment.JUSTIFY); 
         ObservableList list = tfReadings.getChildren(); 
@@ -137,7 +133,7 @@ public class ReadingSelectionPage implements Initializable {
         btnRSaddPronunciation.setOnAction((ActionEvent e) -> {
             PhonemeBuilderPage phonemeBuilderPage = null;
             try {
-                phonemeBuilderPage = new PhonemeBuilderPage(title,wordsList.get(selectedWordIndex));
+                phonemeBuilderPage = new PhonemeBuilderPage(this,title,wordsList.get(selectedWordIndex));
             } catch (IOException ex) {
                 Logger.getLogger(ReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -177,7 +173,7 @@ public class ReadingSelectionPage implements Initializable {
                     if(!(strings.contains(s)))
                         strings.add(s);
                 }
-                 found = true;    //If Present, found is true
+                found = true;    //If Present, found is true
             }
         }
         fr.close();
@@ -213,12 +209,6 @@ public class ReadingSelectionPage implements Initializable {
         list.addAll(hboxes);
     }
     public void deletePronunciation(Word word, int index) throws IOException{
-        /*
-        if(index>0)
-            deleteInFile(") "+word.getPronunciations().get(index));
-        else
-            deleteInFile(word.getWord()+" "+word.getPronunciations().get(index));
-        */
         deleteInFile(word,index);
         for(int i = 0; i<wordsList.size(); i++){
             if(wordsList.get(i).getWord().equalsIgnoreCase(word.getWord()))
@@ -232,16 +222,19 @@ public class ReadingSelectionPage implements Initializable {
         String currentLine;
         ArrayList<String> tempStrings = new ArrayList<>();
         while((currentLine = reader.readLine()) != null) {
-            // trim newline when comparing with lineToRemove
-            if((currentLine.equals(word.getWord()+" "+word.getPronunciations().get(index)))||
-                currentLine.startsWith(word.getWord()+"(")&&currentLine.endsWith(") "+word.getPronunciations().get(index)))
-                    System.out.println(word.getWord()+" "+word.getPronunciations().get(index));
+            if((currentLine.equals(word.getWord()+" "+word.getPronunciations().get(index)))||(currentLine.equals(word.getWord()+" "+word.getPronunciations().get(index)+" "))||
+                (currentLine.startsWith(word.getWord()+"(")&&(currentLine.endsWith(") "+word.getPronunciations().get(index))||currentLine.endsWith(") "+word.getPronunciations().get(index)+" "))));
             else
                 tempStrings.add(currentLine);
         }
         reader.close(); 
         strings = tempStrings;
         createDICT();
+    }
+    
+    public void addedPronunciation() throws IOException{
+        wordsList.get(selectedWordIndex).increaseLastIndex();
+
     }
     private boolean doesFileExist(){
         boolean exist = false;
@@ -255,4 +248,5 @@ public class ReadingSelectionPage implements Initializable {
         Path out = Paths.get(title+".DICT");
         Files.write(out,strings,Charset.defaultCharset());
     }
+    
 }

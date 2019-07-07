@@ -45,7 +45,9 @@ public class PhonemeBuilderPage implements Initializable {
     
     private String title;
     private Word word;
-    PhonemeBuilderPage(String title, Word selected) throws IOException {
+    private ReadingSelectionPage rsp;
+    PhonemeBuilderPage(ReadingSelectionPage rsp,String title, Word selected) throws IOException {
+        this.rsp=rsp;
         this.title = title;
         word = selected;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PhonemeBuilderPage.fxml"));
@@ -64,6 +66,7 @@ public class PhonemeBuilderPage implements Initializable {
         btnPBSubmit.setOnAction((ActionEvent e) -> {
             try {
                 appendToFile(getFinal());
+                rsp.addedPronunciation();
                 close();
             } catch (IOException ex) {
                 Logger.getLogger(PhonemeBuilderPage.class.getName()).log(Level.SEVERE, null, ex);
@@ -190,7 +193,12 @@ public class PhonemeBuilderPage implements Initializable {
     }    
 
     public String getFinal(){
-        return ""+word.getWord()+"("+(word.getLastIndex()+1)+") "+tfPBPhoneme.getText();
+        String temp;
+        if(word.getLastIndex()==0)
+            temp =word.getWord()+" "+tfPBPhoneme.getText();
+        else
+            temp =word.getWord()+"("+(+word.getLastIndex()+1)+") "+tfPBPhoneme.getText();
+        return temp;
     }
     public void show() {
         thisStage.showAndWait();
