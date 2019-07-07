@@ -22,6 +22,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javax.persistence.NoResultException;
+import readingready.dao.UserDao;
 
 /**
  * FXML Controller class
@@ -41,6 +43,8 @@ public class LoginPage implements Initializable {
     @FXML
     StackPane stackPane;
     private Stage thisStage;
+    
+    UserDao uDao = new UserDao();
 
 
     public LoginPage()throws IOException{
@@ -62,12 +66,12 @@ public class LoginPage implements Initializable {
         thisStage.setScene(scene);
         thisStage.setMaximized(true);
     }
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         stackPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
         stackPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
         
@@ -83,10 +87,39 @@ public class LoginPage implements Initializable {
         });
         
         btnLLogin.setOnAction((ActionEvent e) -> {
+            String uName = tfLUsername.getText();
+            String password = pfLPassword.getText();
+            boolean pass = false;
             
+            if(uName.isEmpty() || password.isEmpty()){
+                System.out.println("Please complete the form");
+            }
+            else{
+                try {
+                    User user = uDao.findByUName(uName);
+                    if(password.equals(user.getPassword()))
+                        pass = true;    
+                } catch (NoResultException ex){
+                } finally {
+                    tfLUsername.clear();
+                    pfLPassword.clear();
+                    if(pass)
+                        try {
+                            toHome();
+                    } catch (IOException ex) {
+                        Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    else
+                        System.out.println("Wrong username or password");
+                }
+            }
         });
     }    
     public void show(){
         thisStage.showAndWait();
+    }
+    
+    public void toHome() throws IOException{
+        HomePage home = new HomePage(thisStage);
     }
 }

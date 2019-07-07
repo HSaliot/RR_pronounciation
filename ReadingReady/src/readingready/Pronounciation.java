@@ -16,7 +16,6 @@ public class Pronounciation extends Application {
         LoginPage login = new LoginPage();
         login.show();
     }
-
     
     /**
      * @param args the command line arguments

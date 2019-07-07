@@ -30,10 +30,10 @@ public class HomePage implements Initializable {
     private Stage thisStage;
 
     public HomePage(Stage stage) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("HomePage.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
-        scene.getStylesheets().add(getClass().getResource("Home.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("HomePage.css").toExternalForm());
         
         thisStage = stage;
         thisStage.setScene(scene);
