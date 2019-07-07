@@ -22,8 +22,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -160,13 +158,14 @@ public class ResultPage{
                 wordsList.add(new Word(words[i]));
                 temp = new Hyperlink(words[i]+" ");
                 temp.setId(Integer.toString(i));
+                /*
                 if(wordsList.get(i).getScore()<800) {
                     temp.setFont(Font.font("",FontWeight.NORMAL,16)); 
                     //temp.setFill(Color.DARKBLUE); 
                 }else{
                     temp.setFont(Font.font("",FontWeight.BOLD,16)); 
                 
-                }
+                }*/
                 
                 int tempId = i;
                 temp.setOnAction((ActionEvent e) -> {
