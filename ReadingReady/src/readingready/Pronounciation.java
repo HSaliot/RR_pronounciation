@@ -13,8 +13,8 @@ public class Pronounciation extends Application {
 
 
   public void start(Stage stage) throws IOException {
-      AddStudentPage asp = new AddStudentPage();
-      asp.show();
+        LoginPage login = new LoginPage();
+        login.show();
     }
     
     /**
