@@ -60,14 +60,15 @@ public class ResultPage{
     private Button stopButton;
     @FXML
     private TextFlow tfReadings;
-    @FXML Label wordLabel;
+    @FXML 
+    private Label lRSWord;
     
     
     private SpeechResult speechResult;
     private final Stage thisStage = new Stage();
     private final Evaluation evaluation;
     private Clip clip;
-    private ArrayList<Word> wordsList = new ArrayList<>();
+    private ArrayList<Utterance> wordsList = new ArrayList<>();
     
     
     public ResultPage(Evaluation evaluation) throws IOException{
@@ -155,7 +156,7 @@ public class ResultPage{
         Hyperlink temp;
         
         for (int i=0; i<words.length;i++){
-                wordsList.add(new Word(words[i]));
+                wordsList.add(new Utterance(words[i]));
                 temp = new Hyperlink(words[i]+" ");
                 temp.setId(Integer.toString(i));
                 /*
@@ -180,8 +181,8 @@ public class ResultPage{
     
     @FXML
     private void selectedWord(int id){
-        Word sWord = wordsList.get(id);
-        wordLabel.setText(sWord.getWord());
+        Utterance sWord = wordsList.get(id);
+        lRSWord.setText(sWord.getWord());
     }
     
 }
