@@ -21,8 +21,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import readingready.dao.ReadingSelectionDao;
-import readingready.nodeFactory.ButtonFactory;
 import readingready.nodeFactory.Icon;
+import readingready.nodeFactory.IconFactory;
 
 /**
  * FXML Controller class
@@ -42,7 +42,7 @@ public class HomePage implements Initializable {
     private Button btnHAddSelection;
     
     private Stage thisStage;
-    private final ButtonFactory btnFactory = new ButtonFactory();
+    private final IconFactory iconF = new IconFactory();
     private final ReadingSelectionDao rsDao = new ReadingSelectionDao();
     private List<ReadingSelection> selections;
 
@@ -87,7 +87,7 @@ public class HomePage implements Initializable {
         tpReadingSelections.getChildren().clear();
         selections = rsDao.findAll(ReadingSelection.class);
         selections.forEach(selection -> {
-            Button button = btnFactory.createIconButton(Icon.BOOK, "  " + selection.getTitle());
+            Button button = iconF.createButtonL(Icon.BOOK, "  " + selection.getTitle(), "");
             button.getStyleClass().add("btnClear");
             button.setOnAction(e -> {
                 try {
