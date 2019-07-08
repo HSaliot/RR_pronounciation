@@ -5,6 +5,7 @@
  */
 package readingready;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -73,7 +74,7 @@ public class AddStudentPage implements Initializable {
         Student student = new Student(lName, fName, level);
         sDao.create(student);
         
-        //make directory for student
+        new File("src/ReadingReady/resources/evaluation/"+lName+","+fName).mkdirs();
         
         hp.updateStudents();
         close();
