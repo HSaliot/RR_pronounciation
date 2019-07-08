@@ -181,5 +181,9 @@ public class HomePage implements Initializable {
     public List<Student> getStudents(){
         return students;
     }
+    
+    public List<ReadingSelection> getSelections(){
+        return selections;
+    }
 
 }

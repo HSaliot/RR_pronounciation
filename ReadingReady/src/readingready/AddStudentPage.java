@@ -5,6 +5,7 @@
  */
 package readingready;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -40,6 +41,7 @@ public class AddStudentPage implements Initializable {
     private HomePage hp;
     private StudentDao sDao = new StudentDao();
     
+    
     public AddStudentPage(HomePage hp) throws IOException{
         this.hp = hp;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AddStudentPage.fxml"));
@@ -67,13 +69,13 @@ public class AddStudentPage implements Initializable {
     
     public void submit(){
         String lName = tfASSurname.getText().toUpperCase();
-        String fName = tfASFirstName.getText().toUpperCase();
+        String fName = tfASFirstName.getText().toLowerCase();
         int level = Integer.parseInt(cbASGrade.getValue().toString());
         
         Student student = new Student(lName, fName, level);
         sDao.create(student);
         
-        //make directory for student
+        new File("src/ReadingReady/resources/evaluations/" + student.toString()).mkdirs();
         
         hp.updateStudents();
         close();

@@ -99,7 +99,7 @@ public class AddReadingSelectionPage implements Initializable {
     @Override
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
         hBoxARSFile.setDisable(true);
         hBoxARSType.setDisable(true);
         rbARSFile.setOnAction(e -> {
@@ -168,9 +168,9 @@ public class AddReadingSelectionPage implements Initializable {
                 }
     }
     private void saveTextToFile() throws IOException{
-        BufferedWriter writer = new BufferedWriter(
-                                new FileWriter("src/readingready/resources/selections/"+tfARSTitle.getText()+".txt")
-                            ); 
+        new File("src/readingready/resources/selections/" + tfARSTitle.getText() + "/jsgf").mkdirs();
+        BufferedWriter writer = new BufferedWriter(new FileWriter("src/readingready/resources/selections/"+tfARSTitle.getText()
+                + "/passage.txt")); 
         writer.write(taARSPassage.getText());
         writer.close();
     }

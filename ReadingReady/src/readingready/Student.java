@@ -95,6 +95,6 @@ public class Student implements Serializable {
 
     @Override
     public String toString() {
-        return "readingready.Student[ " + lName + ", " + fNameEtc + " ]";
+        return lName + ", " + fNameEtc;
     }    
 }

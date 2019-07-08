@@ -5,6 +5,16 @@
  */
 package readingready;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +26,7 @@ public class Word {
     private ArrayList<String> pronunciations = new ArrayList<>();
     private ArrayList<String> lines = new ArrayList<>();
     private int lastIndex;
+    private ArrayList<String> raw = new ArrayList<>();
     
     public Word(String word){
         word = word.replace(".", ""); //replace all . character
@@ -76,6 +87,71 @@ public class Word {
     }
     public void increaseLastIndex(){
         lastIndex =lastIndex+1;
+    }
+    public void setPronounciations(String title,String dict) throws FileNotFoundException, IOException{
+        boolean exist;
+        
+        if(dict.equals("cmudict-en-us.DICT"))
+            exist = false;
+        else 
+            exist = true;
+        
+        String[] words=null;  //Intialize the word Array
+        File open = new File(dict);
+
+        FileReader fr = new FileReader(open);  //Creation of File Reader object
+        BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
+        String s;     
+        boolean found = false;   
+        String delimiters = "[ \\(\\s+]";
+        while((s=br.readLine())!=null)   //Reading Content from the file
+        {
+            words=s.split(delimiters);  //Split the word using space
+             
+            if (words[0].equals(word))   //Search for the given word
+            {                
+                addPronunciation(words);
+                raw.add(s);
+            }
+        }
+        if(!exist&&!isInDictionary(title))
+            toDictionary(title);
+        fr.close();
+    }
+    public boolean isInDictionary(String title) throws IOException{
+        boolean in = false;
+        Path out = Paths.get(title.replace(" ", "")+".DICT");
+        if(Files.exists(out)){
+            File open = new File(out.toString());
+            FileReader fr = new FileReader(open);  //Creation of File Reader object
+            BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
+            String s;     
+            boolean found = false;   
+            String delimiters = "[ \\(\\s+]";
+            String[] words;
+            while((s=br.readLine())!=null)   //Reading Content from the file
+            {
+                words=s.split(delimiters);  //Split the word using space
+
+                if (words[0].equals(word))   //Search for the given word
+                {                
+                    in=true;
+                }
+            }
+            fr.close();
+        }
+        else
+            in = false;
+        return in;
+    }
+    public void toDictionary(String title) throws IOException{
+        Path out = Paths.get(title.replace(" ", "")+".DICT");
+
+        if(Files.exists(out))
+            Files.write(out,raw,StandardOpenOption.APPEND);
+        else
+            Files.write(out,raw,Charset.defaultCharset());   
+
     }
 }
 

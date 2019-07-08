@@ -210,7 +210,7 @@ public class PhonemeBuilderPage implements Initializable {
     
     public void appendToFile(String textToAppend) throws IOException{  
     BufferedWriter writer = new BufferedWriter(
-                                new FileWriter(title+".DICT", true)  //Set true for append mode
+                                new FileWriter(title.replace(" ", "")+".DICT", true)  //Set true for append mode
                             ); 
     writer.newLine();   //Add new line
     writer.write(textToAppend);
