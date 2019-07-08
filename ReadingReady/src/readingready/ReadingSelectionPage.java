@@ -16,6 +16,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ResourceBundle;
@@ -113,30 +114,30 @@ public class ReadingSelectionPage implements Initializable {
             }
             hyperlink = new Hyperlink(words[i]+" ");
             wordsList.add(new Word(words[i]));
-
-            if(inDictionary(words[i])) {
+            
+            if(exist == true)
+                wordsList.get(i).setPronounciations(selection.getTitle(), selection.getTitle().replace(" ", "")+".DICT");
+            else
+                wordsList.get(i).setPronounciations(selection.getTitle(), "cmudict-en-us.DICT");
+            
+            if(wordsList.get(i).getPronunciations().size()>0) {
                 hyperlink.setFont(Font.font("",FontWeight.NORMAL,16));                     
             } else {
                 hyperlink.setFont(Font.font("",FontWeight.NORMAL,16)); 
                 hyperlink.setTextFill(Color.RED); 
             }
-            
             int tempInt = i;
             Word word = wordsList.get(i);
             hyperlink.setOnAction((ActionEvent e) -> {
                 setSelectedWord(word);
                 selectedWordIndex = tempInt;
             });
-            
             hyperlinks.add(hyperlink);     
             wordsList.get(i).setLastIndex();
-        }
-        
+        }        
         tfReadings.setTextAlignment(TextAlignment.JUSTIFY); 
         ObservableList list = tfReadings.getChildren(); 
         list.addAll(hyperlinks);
-        if(!exist)
-            createDICT();
     }
 
     @Override
@@ -167,44 +168,6 @@ public class ReadingSelectionPage implements Initializable {
         });
     }
     
-    public boolean inDictionary(String input) throws IOException {
-        input = input.trim();
-        input = input.replace(".", ""); //replace all . character
-        input = input.replace(",", ""); //replace all , character
-        input = input.replace("“", ""); //replace all “ character
-        input = input.replace("”", ""); //replace all ” character
-        input = input.replace("—", ""); //replace all — character
-        input = input.replace("’", ""); //replace all ’ character
-
-        String[] words=null;  //Intialize the word Array
-        File open;
-        if(exist)
-            open=new File(selection.getTitle()+".DICT"); //Creation of File Descriptor for input file
-        else
-            open=new File("cmudict-en-us.DICT"); //Creation of File Descriptor for input file
-        FileReader fr = new FileReader(open);  //Creation of File Reader object
-        BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
-        String s;     
-        boolean found = false;   
-        String delimiters = "[ \\(\\s+]";
-        while((s=br.readLine())!=null)   //Reading Content from the file
-        {
-            words=s.split(delimiters);  //Split the word using space
-             
-            if (words[0].equals(input.toLowerCase()))   //Search for the given word
-            {
-                wordsList.get(wordsList.size()-1).addPronunciation(words);
-                if(exist==false){
-                    if(!(strings.contains(s)))
-                        strings.add(s);
-                }
-                found = true;    //If Present, found is true
-            }
-
-        }
-        fr.close();
-        return found;
-    }
     private void setSelectedWord(Word word){
         vBoxPronunciations.getChildren().clear();
         String temp = word.getWord();
@@ -243,7 +206,7 @@ public class ReadingSelectionPage implements Initializable {
         setSelectedWord(word);
     }
     public void  deleteInFile(Word word,int index) throws FileNotFoundException, IOException{
-        File inputFile = new File(selection.getTitle()+".DICT");
+        File inputFile = new File(selection.getTitle().replace(" ", "")+".DICT");
         BufferedReader reader = new BufferedReader(new FileReader(inputFile));
         String currentLine;
         ArrayList<String> tempStrings = new ArrayList<>();
@@ -260,24 +223,22 @@ public class ReadingSelectionPage implements Initializable {
     
     public void addedPronunciation() throws IOException{
         wordsList.get(selectedWordIndex).increaseLastIndex();
-
     }
+    
     private boolean doesFileExist(){
-        boolean exist = false;
-        File file = new File(selection.getTitle() + ".DICT");
-        if(file.length() != 0)
+        boolean exist;
+        Path out = Paths.get(selection.getTitle().replace(" ", "")+".DICT");
+        if(Files.exists(out))
             exist = true;
+        else
+            exist = false;
         return exist;        
     }
     
     private void createDICT() throws IOException{
         Collections.sort(strings);
-        Path out = Paths.get(selection.getTitle() + ".DICT");
+        Path out = Paths.get(selection.getTitle().replace(" ", "") + ".DICT");
         Files.write(out,strings,Charset.defaultCharset());
     }
-    
-    
-    
-    
     
 }
