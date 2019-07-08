@@ -33,19 +33,24 @@ public class Pocketsphinx {
             // Process provides control of native processes started by ProcessBuilder.start and Runtime.exec.
             // getRuntime() returns the runtime object associated with the current Java application.
             Process p = Runtime.getRuntime().exec(command);
-
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
             BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
             String[] temp;
             Boolean save=false;
+            strings.add("***"+stdInput.readLine()+"***");
+            
             while ((s = stdError.readLine()) != null) {
                 s = s.replaceAll(" +"," ");
                 temp = s.split(" ");
                 
-                if(temp[0].equals("</s>"))
+                if(temp[0].equals("</s>")){
                     save=false;
+                    strings.add("");
+
+                }
                 if(save.equals(true)&&(!temp[0].equals("<sil>"))){
                     String tempString = temp[0]+" "+temp[1]+" "+temp[2]+" "+temp[4];
-                    strings.add(tempString);    
+                    strings.add(tempString);
                 }
                 if(temp[0].equals("<s>"))
                     save=true;
