@@ -12,7 +12,7 @@ package readingready.nodeFactory;
 public class Icon {
     
     //list icons
-    public static final String BOOK = "\uf02d";     
+    public static final String BOOK = "\uf02d";             //
     public static final String USER = "\uf007";             //
     public static final String USER_CIRCLE = "\uf2bd";      //
     public static final String QUOTE = "\uf10e";            //
