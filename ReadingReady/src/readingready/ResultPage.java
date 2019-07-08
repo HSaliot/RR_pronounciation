@@ -25,9 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -48,8 +46,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  */
 public class ResultPage implements Initializable {
     
-    @FXML
-    private MenuItem add;
     @FXML
     private Label labelSelection;
     @FXML
@@ -113,9 +109,7 @@ public class ResultPage implements Initializable {
 
         
         stopButton.setDisable(true);        
-        add.setOnAction((ActionEvent e) -> {
-            openReadingEvaluationPage();
-        });
+        
         /*
         evaluation.getEvaluatedSentences().forEach(c -> {
             c.getWords().forEach(i -> {
@@ -138,17 +132,6 @@ public class ResultPage implements Initializable {
         stopButton.setOnAction((ActionEvent e) -> {
             stopWavFile();
         });
-        
-    }
-
-    private void openReadingEvaluationPage() {
-        ReadingEvaluationPage readingEvaluation;
-        try {
-            readingEvaluation = new ReadingEvaluationPage();
-            readingEvaluation.show();
-        } catch (IOException ex) {
-            ;
-        }
         
     }
     

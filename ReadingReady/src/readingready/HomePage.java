@@ -91,13 +91,13 @@ public class HomePage implements Initializable {
         });
         
         btnHAddStudent.setOnAction(e -> {
-            AddReadingSelectionPage addReadingSelectionPage = null;
+            AddStudentPage addStudentPage = null;
             try {
-                addReadingSelectionPage = new AddReadingSelectionPage(this);
+                addStudentPage = new AddStudentPage(this);
             } catch (IOException ex) {
                 Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
             }
-            addReadingSelectionPage.show();
+            addStudentPage.show();
         });
         
         btnHAddEvaluation.setOnAction(e -> {
@@ -176,6 +176,10 @@ public class HomePage implements Initializable {
             });
             tpEvaluations.getChildren().add(button);
         });
+    }
+    
+    public List<Student> getStudents(){
+        return students;
     }
 
 }

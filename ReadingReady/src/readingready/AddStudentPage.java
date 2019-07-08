@@ -10,7 +10,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,7 +19,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import readingready.dao.StudentDao;
 
 /**
  * FXML Controller class
@@ -31,19 +30,18 @@ public class AddStudentPage implements Initializable {
 
     @FXML
     private TextField tfASSurname;
-    
     @FXML
     private TextField tfASFirstName;
-    
     @FXML
     private ChoiceBox cbASGrade;
-    
     @FXML
     private Button btnASSubmit;
-    
     private Stage thisStage = new Stage();
+    private HomePage hp;
+    private StudentDao sDao = new StudentDao();
     
-    public AddStudentPage() throws IOException{
+    public AddStudentPage(HomePage hp) throws IOException{
+        this.hp = hp;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AddStudentPage.fxml"));
         loader.setController(this);
         //thisStage.initStyle(StageStyle.TRANSPARENT);
@@ -68,11 +66,16 @@ public class AddStudentPage implements Initializable {
     }    
     
     public void submit(){
-        System.out.println(
-        tfASSurname.getText()+" "+
-        tfASFirstName.getText()+" "+
-        cbASGrade.getValue()
-        );
+        String lName = tfASSurname.getText().toUpperCase();
+        String fName = tfASFirstName.getText().toUpperCase();
+        int level = Integer.parseInt(cbASGrade.getValue().toString());
+        
+        Student student = new Student(lName, fName, level);
+        sDao.create(student);
+        
+        //make directory for student
+        
+        hp.updateStudents();
         close();
     }
     
