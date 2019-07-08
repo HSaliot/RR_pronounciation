@@ -29,7 +29,6 @@ public class ReadingSelection implements Serializable {
     @Basic(optional = false)
     private Integer id;    
     private String title;
-    private String text;
 
     public ReadingSelection() {
     }
@@ -38,10 +37,13 @@ public class ReadingSelection implements Serializable {
         this.id = id;
     }
 
-    public ReadingSelection(Integer id, String title, String text) {
+    public ReadingSelection(String title) {
+        this.title = title;
+    }
+    
+    public ReadingSelection(Integer id, String title) {
         this.id = id;
         this.title = title;
-        this.text = text;
     }
 
     public Integer getId() {
@@ -58,13 +60,5 @@ public class ReadingSelection implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 }

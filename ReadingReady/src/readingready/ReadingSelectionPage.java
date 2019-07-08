@@ -78,7 +78,7 @@ public class ReadingSelectionPage implements Initializable {
     }
     
     public String getPassage() throws FileNotFoundException, IOException{
-        String filename = "src/readingready/resources/" + selection.getTitle() + ".txt";
+        String filename = "src/readingready/resources/selections/" + selection.getTitle() + ".txt";
         File open = new File(filename);
         FileReader fr = new FileReader(open);  //Creation of File Reader object
         BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object

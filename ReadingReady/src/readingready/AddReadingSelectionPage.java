@@ -16,11 +16,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import static java.util.Collections.list;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,6 +32,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import readingready.dao.ReadingSelectionDao;
 
 /**
  * FXML Controller class
@@ -74,15 +73,22 @@ public class AddReadingSelectionPage implements Initializable {
     private final FileChooser fileChooser = new FileChooser();
     
     private File file;
+    
+    private boolean typed = false;
+    
+    private ReadingSelectionDao rsDao = new ReadingSelectionDao();
+    
+    private HomePage hp;
 
 
-    public AddReadingSelectionPage() throws IOException {
+    public AddReadingSelectionPage(HomePage hp) throws IOException {
         thisStage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AddReadingSelectionPage.fxml"));
         loader.setController(this);
         //thisStage.initStyle(StageStyle.TRANSPARENT);
         thisStage.setScene(new Scene(loader.load()));
         thisStage.initModality(Modality.APPLICATION_MODAL);    
+        this.hp = hp;
     }
     
     
@@ -100,11 +106,13 @@ public class AddReadingSelectionPage implements Initializable {
             rbARSType.setSelected(false);
             hBoxARSFile.setDisable(false);
             hBoxARSType.setDisable(true);
+            typed = false;
         });
         rbARSType.setOnAction(e -> {
             rbARSFile.setSelected(false);
             hBoxARSFile.setDisable(true);
             hBoxARSType.setDisable(false);
+            typed = true;
         });;
         btnARSChooseFile.setOnAction(e -> {
             file = fileChooser.showOpenDialog(thisStage);
@@ -112,22 +120,31 @@ public class AddReadingSelectionPage implements Initializable {
                 lARSFilename.setText(file.getName());
         });;
         btnARSSave.setOnAction(e -> {
-            if(tfARSTitle.getText().length()>0){
-                if(rbARSFile.isSelected()&&file!=null){
-                    try {
-                        saveFileToProject();
-                    } catch (IOException ex) {
-                        Logger.getLogger(AddReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }else if(rbARSType.isSelected()&&taARSPassage.getText().length()>0){
+            String title = tfARSTitle.getText();
+            if(title.length()>0){
+                if(typed && !taARSPassage.getText().isEmpty()){
                     try {
                         saveTextToFile();
                     } catch (IOException ex) {
                         Logger.getLogger(AddReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+                if(!typed && file.isFile()){
+                     try {
+                        saveFileToProject();
+                    } catch (IOException ex) {
+                        Logger.getLogger(AddReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+                ReadingSelection rs = new ReadingSelection(title);
+                rsDao.create(rs);
+                hp.updateSelections();
+                
+                
                 thisStage.close();
             }
+            
         });;
     }    
 
@@ -135,7 +152,7 @@ public class AddReadingSelectionPage implements Initializable {
         thisStage.showAndWait();
     }
     private void saveFileToProject() throws IOException {
-        File copied = new File("src/readingready/resources/"+tfARSTitle.getText()+".txt");
+        File copied = new File("src/readingready/resources/selections/"+tfARSTitle.getText()+".txt");
                 try (
                   InputStream in = new BufferedInputStream(
                     new FileInputStream(file));
@@ -152,7 +169,7 @@ public class AddReadingSelectionPage implements Initializable {
     }
     private void saveTextToFile() throws IOException{
         BufferedWriter writer = new BufferedWriter(
-                                new FileWriter("src/readingready/resources/"+tfARSTitle.getText()+".txt")
+                                new FileWriter("src/readingready/resources/selections/"+tfARSTitle.getText()+".txt")
                             ); 
         writer.write(taARSPassage.getText());
         writer.close();

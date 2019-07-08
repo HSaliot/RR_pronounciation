@@ -44,6 +44,7 @@ public class HomePage implements Initializable {
     private Stage thisStage;
     private final ButtonFactory btnFactory = new ButtonFactory();
     private final ReadingSelectionDao rsDao = new ReadingSelectionDao();
+    private List<ReadingSelection> selections;
 
     public HomePage(Stage stage, User user) throws IOException{
         thisStage = stage;
@@ -65,8 +66,26 @@ public class HomePage implements Initializable {
         vBoxHP.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
         vBoxHP.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
         
+        btnHAddSelection.setOnAction(e -> {
+                AddReadingSelectionPage addReadingSelectionPage = null;
+            try {
+                addReadingSelectionPage = new AddReadingSelectionPage(this);
+            } catch (IOException ex) {
+                Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                addReadingSelectionPage.show();
+        });
         
-        List<ReadingSelection> selections = rsDao.findAll(ReadingSelection.class);
+        updateSelections();
+    }    
+
+    private void toFocus(Stage thisStage, ReadingSelection selection) throws IOException {
+        ReadingSelectionPage selectionPage = new ReadingSelectionPage(thisStage, selection);
+    }
+    
+    public void updateSelections(){
+        tpReadingSelections.getChildren().clear();
+        selections = rsDao.findAll(ReadingSelection.class);
         selections.forEach(selection -> {
             Button button = btnFactory.createIconButton(Icon.BOOK, "  " + selection.getTitle());
             button.getStyleClass().add("btnClear");
@@ -79,19 +98,6 @@ public class HomePage implements Initializable {
             });
             tpReadingSelections.getChildren().add(button);
         });
-        btnHAddSelection.setOnAction(e -> {
-                AddReadingSelectionPage addReadingSelectionPage = null;
-            try {
-                addReadingSelectionPage = new AddReadingSelectionPage();
-            } catch (IOException ex) {
-                Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
-            }
-                addReadingSelectionPage.show();
-            });
-    }    
-
-    private void toFocus(Stage thisStage, ReadingSelection selection) throws IOException {
-        ReadingSelectionPage selectionPage = new ReadingSelectionPage(thisStage, selection);
     }
 
 }
