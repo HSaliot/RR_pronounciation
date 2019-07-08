@@ -17,10 +17,22 @@ public class Utterance {
     private int ascr;
     
     public Utterance(String word){
+        word = word.replace(".", ""); //replace all . character
+        word = word.replace(",", ""); //replace all , character
+        word = word.replace("“", ""); //replace all “ character
+        word = word.replace("”", ""); //replace all ” character
+        word = word.replace("’", ""); //replace all ’ character
+        word = word.toLowerCase();
         this.word = word;
     }
     
     public Utterance(String word, int start, int end, int ascr){
+        word = word.replace(".", ""); //replace all . character
+        word = word.replace(",", ""); //replace all , character
+        word = word.replace("“", ""); //replace all “ character
+        word = word.replace("”", ""); //replace all ” character
+        word = word.replace("’", ""); //replace all ’ character
+        word = word.toLowerCase();
         this.word=word;
         this.start=start;
         this.end=end;

@@ -57,6 +57,8 @@ public class ReadingSelectionPage implements Initializable {
     private Button btnRSaddPronunciation;
     @FXML
     private VBox vBoxPronunciations;
+    @FXML
+    private VBox vBoxRSParent;
     
     private Stage thisStage;
     ReadingSelection selection;
@@ -74,7 +76,6 @@ public class ReadingSelectionPage implements Initializable {
         Scene scene = new Scene(loader.load());
         scene.getStylesheets().add(getClass().getResource("ReadingSelectionPage.css").toExternalForm());
         thisStage.setScene(scene);
-        thisStage.setMaximized(true);
     }
     
     public String getPassage() throws FileNotFoundException, IOException{
@@ -141,9 +142,11 @@ public class ReadingSelectionPage implements Initializable {
     @Override
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        lRSTitle.setText(selection.getTitle());
+        vBoxRSParent.setPrefSize(Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
         tfReadings.setPrefWidth(Screen.getPrimary().getBounds().getWidth()/2);
         
+        lRSTitle.setText(selection.getTitle());
+                
         try {
             addSentences();
         } catch (IOException ex) {
