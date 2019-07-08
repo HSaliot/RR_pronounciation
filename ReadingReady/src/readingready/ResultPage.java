@@ -6,7 +6,10 @@
 package readingready;
 
 import edu.cmu.sphinx.api.SpeechResult;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -74,10 +77,10 @@ public class ResultPage implements Initializable {
     private Clip clip;
     private ArrayList<Utterance> wordsList = new ArrayList<>();
     
-    
-    public ResultPage(Evaluation evaluation) throws IOException{
+    private String filename="";
+    public ResultPage(String filename,Evaluation evaluation) throws IOException{
         this.evaluation = evaluation;
-        
+        this.filename = filename;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ResultPage.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
@@ -86,6 +89,7 @@ public class ResultPage implements Initializable {
         thisStage.setScene(scene);
         thisStage.setMaximized(true);
     }
+    
     
     public void show(){
         thisStage.showAndWait();
@@ -97,7 +101,11 @@ public class ResultPage implements Initializable {
         vBoxRPParent.setPrefSize(Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
         tfReadings.setPrefWidth(Screen.getPrimary().getBounds().getWidth()/2);
         
-        addSentences();
+        try {
+            setPassage();
+        } catch (IOException ex) {
+            Logger.getLogger(ResultPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
         labelSelection.setText("Dark Chocolate");
         labelStudent.setText("Cruz, Juan Dela");
         labelDateRecorded.setText("Date");
@@ -157,35 +165,39 @@ public class ResultPage implements Initializable {
         stopButton.setDisable(true);
     }
 
-    public void addSentences(){
-        String passage = "Dark chocolate finds its way into the best ice creams, biscuits and cakes. Although eating chocolate usually comes with a warning that it is fattening, it is also believed by some to have magical and medicinal effects. In fact, cacao trees are sometimes called Theobroma cacao which means “food of the gods.” Dark chocolate has been found out to be helpful in small quantities. One of its benefits is that it has some of the most important minerals and vitamins that people need. It has antioxidants that help protect the heart. Another important benefit is that the fat content of chocolate does not raise the level of cholesterol in the blood stream. A third benefit is that it helps address respiratory problems. Also, it has been found out to help ease coughs and respiratory concerns. Finally, chocolate increases serotonin levels in the brain. This is what gives us a feeling of well-being.";
-        String[] words = passage.split(" ");
+    public void setPassage() throws FileNotFoundException, IOException{
+        String filePath = "src/readingready/resources/pocketsphinx_output/"+filename;
+        File open = new File(filePath);
+        FileReader fr = new FileReader(open);  //Creation of File Reader object
+        BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
+        String s;
+        String passage = null;
         ArrayList<Hyperlink> texts = new ArrayList();
         Hyperlink temp;
-        
-        for (int i=0; i<words.length;i++){
-                wordsList.add(new Utterance(words[i]));
-                temp = new Hyperlink(words[i]+" ");
-                temp.setId(Integer.toString(i));
-                
-                if(wordsList.get(i).getAscr()<800) {
-                    temp.setFont(Font.font("",FontWeight.NORMAL,16)); 
-                    //temp.setFill(Color.DARKBLUE); 
-                }else{
-                    temp.setFont(Font.font("",FontWeight.BOLD,16)); 
-                
-                }
-                
-                int tempId = i;
-                temp.setOnAction((ActionEvent e) -> {
-                    selectedWord(tempId);
-                });
-                texts.add(temp);
+        int tempInt=0;
+        while((s=br.readLine())!=null){   //Reading Content from the file
+            String[] strArray = s.split(" ");
+            wordsList.add(new Utterance(strArray[0],Integer.parseInt(strArray[1]),Integer.parseInt(strArray[2]),Integer.parseInt(strArray[3])));
+            temp = new Hyperlink(wordsList.get(tempInt).getWord());
+            if(wordsList.get(tempInt).getAscr()>-1000)
+                temp.setFont(Font.font("",FontWeight.NORMAL,16)); 
+            else
+                temp.setFont(Font.font("",FontWeight.BOLD,16)); 
+            int index =tempInt;
+            temp.setOnAction((ActionEvent e) -> {
+                selectedWord(index);
+            });
+            texts.add(temp);
+            tempInt++;
         }
         tfReadings.setTextAlignment(TextAlignment.JUSTIFY); 
         ObservableList list = tfReadings.getChildren(); 
         list.addAll(texts);
+        
+        br.close();
+        fr.close();     
     }
+
     
     @FXML
     private void selectedWord(int id){

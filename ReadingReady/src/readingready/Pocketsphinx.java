@@ -44,8 +44,8 @@ public class Pocketsphinx {
                 if(temp[0].equals("</s>"))
                     save=false;
                 if(save.equals(true)&&(!temp[0].equals("<sil>"))){
-                    strings.add(s);
-                    utterances.add(new Utterance(temp[0],Integer.parseInt(temp[1]),Integer.parseInt(temp[2]),Integer.parseInt(temp[4])));
+                    String tempString = temp[0]+" "+temp[1]+" "+temp[2]+" "+temp[4];
+                    strings.add(tempString);    
                 }
                 if(temp[0].equals("<s>"))
                     save=true;
