@@ -58,7 +58,7 @@ and open the template in the editor.
 
 .progress-bar {
     -fx-padding: 5 10 0 0;
-    -fx-accent: orange;
+    -fx-accent: green;
 }   
 
 #wordLabel{
