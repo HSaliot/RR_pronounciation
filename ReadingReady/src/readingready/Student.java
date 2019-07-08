@@ -41,7 +41,6 @@ public class Student implements Serializable {
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
     private List<Evaluation> evaluations;
-
   
     public Student() {
     }
@@ -52,6 +51,12 @@ public class Student implements Serializable {
 
     public Student(Integer id, String fNameEtc, int level) {
         this.id = id;
+        this.fNameEtc = fNameEtc;
+        this.level = level;
+    }
+
+    public Student(String lName, String fNameEtc, int level) {
+        this.lName = lName;
         this.fNameEtc = fNameEtc;
         this.level = level;
     }

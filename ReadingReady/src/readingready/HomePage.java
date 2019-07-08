@@ -20,30 +20,45 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import readingready.dao.EvaluationDao;
 import readingready.dao.ReadingSelectionDao;
-import readingready.nodeFactory.ButtonFactory;
+import readingready.dao.StudentDao;
 import readingready.nodeFactory.Icon;
+import readingready.nodeFactory.IconFactory;
 
 /**
  * FXML Controller class
  *
  * @author Lorenz
+ * @author Hannah Saliot
  */
 
 public class HomePage implements Initializable {
     
     @FXML
     private VBox vBoxHP;
-    
     @FXML
     private TilePane tpReadingSelections;
-    
+    @FXML
+    private TilePane tpStudents;
+    @FXML
+    private TilePane tpEvaluations;
     @FXML
     private Button btnHAddSelection;
+    @FXML
+    private Button btnHAddStudent;
+    @FXML
+    private Button btnHAddEvaluation;
     
     private Stage thisStage;
-    private final ButtonFactory btnFactory = new ButtonFactory();
+    private List<ReadingSelection> selections;
+    private List<Student> students;
+    private List<Evaluation> evaluations;
+    private final IconFactory iconF = new IconFactory();
     private final ReadingSelectionDao rsDao = new ReadingSelectionDao();
+    private final StudentDao sDao = new StudentDao();
+    private final EvaluationDao eDao = new EvaluationDao();
+  
 
     public HomePage(Stage stage, User user) throws IOException{
         thisStage = stage;
@@ -65,10 +80,58 @@ public class HomePage implements Initializable {
         vBoxHP.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
         vBoxHP.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
         
+        btnHAddSelection.setOnAction(e -> {
+            AddReadingSelectionPage addReadingSelectionPage = null;
+            try {
+                addReadingSelectionPage = new AddReadingSelectionPage(this);
+            } catch (IOException ex) {
+                Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            addReadingSelectionPage.show();
+        });
         
-        List<ReadingSelection> selections = rsDao.findAll(ReadingSelection.class);
+        btnHAddStudent.setOnAction(e -> {
+            AddStudentPage addStudentPage = null;
+            try {
+                addStudentPage = new AddStudentPage(this);
+            } catch (IOException ex) {
+                Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            addStudentPage.show();
+        });
+        
+        btnHAddEvaluation.setOnAction(e -> {
+            ReadingEvaluationPage addReadingEvaluationPage = null;
+            try {
+                addReadingEvaluationPage = new ReadingEvaluationPage(this);
+            } catch (IOException ex) {
+                Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            addReadingEvaluationPage.show();
+        });
+        
+        updateSelections();
+        updateStudents();
+        updateEvaluations();
+    }    
+
+    private void toFocus(Stage thisStage, ReadingSelection selection) throws IOException {
+        ReadingSelectionPage selectionPage = new ReadingSelectionPage(thisStage, selection);
+    }
+    
+    private void toFocus(Stage thisStage, Student student) throws IOException {
+        ;
+    }
+    
+    private void toFocus(Stage thisStage, Evaluation evaluation) throws IOException {
+        ;
+    }
+    
+    public void updateSelections(){
+        tpReadingSelections.getChildren().clear();
+        selections = rsDao.findAll(ReadingSelection.class);
         selections.forEach(selection -> {
-            Button button = btnFactory.createIconButton(Icon.BOOK, "  " + selection.getTitle());
+            Button button = iconF.createButtonL(Icon.BOOK, "  " + selection.getTitle(), "");
             button.getStyleClass().add("btnClear");
             button.setOnAction(e -> {
                 try {
@@ -79,19 +142,44 @@ public class HomePage implements Initializable {
             });
             tpReadingSelections.getChildren().add(button);
         });
-        btnHAddSelection.setOnAction(e -> {
-                AddReadingSelectionPage addReadingSelectionPage = null;
-            try {
-                addReadingSelectionPage = new AddReadingSelectionPage();
-            } catch (IOException ex) {
-                Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
-            }
-                addReadingSelectionPage.show();
+    }
+    
+    public void updateStudents(){
+        tpStudents.getChildren().clear();
+        students = sDao.findAll(Student.class);
+        students.forEach(student -> {
+            Button button = iconF.createButtonL(Icon.USER, "  " + student.getLName() + ", " + student.getFnameetc(), "");
+            button.getStyleClass().add("btnClear");
+            button.setOnAction(e -> {
+                try {
+                    toFocus(thisStage, student);
+                } catch (IOException ex) {
+                    Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+                }
             });
-    }    
-
-    private void toFocus(Stage thisStage, ReadingSelection selection) throws IOException {
-        ReadingSelectionPage selectionPage = new ReadingSelectionPage(thisStage, selection);
+            tpStudents.getChildren().add(button);
+        });
+    }
+    
+    public void updateEvaluations(){
+        tpEvaluations.getChildren().clear();
+        evaluations = eDao.findAll(Evaluation.class);
+        evaluations.forEach(evaluation -> {
+            Button button = iconF.createButtonL(Icon.CHECK_DOUBLE, "  Eval", "");
+            button.getStyleClass().add("btnClear");
+            button.setOnAction(e -> {
+                try {
+                    toFocus(thisStage, evaluation);
+                } catch (IOException ex) {
+                    Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+            tpEvaluations.getChildren().add(button);
+        });
+    }
+    
+    public List<Student> getStudents(){
+        return students;
     }
 
 }

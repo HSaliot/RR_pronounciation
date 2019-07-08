@@ -5,7 +5,6 @@
  */
 package readingready;
 
-import java.awt.Desktop;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -30,13 +29,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -65,8 +62,10 @@ public class ReadingEvaluationPage implements Initializable {
     private String[] selections = {"Dark Chocolate", "Sneezing", "Dust", "Pain", "Diving"};
     private List<File> list;
     private ArrayList<String> filenames = new ArrayList<>();
+    private HomePage hp;
     
-    public ReadingEvaluationPage() throws IOException{
+    public ReadingEvaluationPage(HomePage hp) throws IOException{
+        this.hp = hp;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ReadingEvaluationPage.fxml"));
         loader.setController(this);
         //thisStage.initStyle(StageStyle.TRANSPARENT);
@@ -148,6 +147,7 @@ public class ReadingEvaluationPage implements Initializable {
             }
         }
     }
+    
     public void submit() throws IOException{
         saveFileToProject();
         for(int i=0; i<filenames.size(); i++){

@@ -1,13 +1,16 @@
 package readingready;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -28,8 +31,11 @@ public class ReadingSelection implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     private Integer id;    
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "selection")
+    private List<Evaluation> evaluations;
+    
     private String title;
-    private String text;
 
     public ReadingSelection() {
     }
@@ -38,10 +44,13 @@ public class ReadingSelection implements Serializable {
         this.id = id;
     }
 
-    public ReadingSelection(Integer id, String title, String text) {
+    public ReadingSelection(String title) {
+        this.title = title;
+    }
+    
+    public ReadingSelection(Integer id, String title) {
         this.id = id;
         this.title = title;
-        this.text = text;
     }
 
     public Integer getId() {
@@ -58,13 +67,5 @@ public class ReadingSelection implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 }

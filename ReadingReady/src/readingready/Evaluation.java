@@ -39,6 +39,10 @@ public class Evaluation implements Serializable {
     @JoinColumn(name = "STUDENT", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Student student;
+    
+    @JoinColumn(name = "SELECTION", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private ReadingSelection selection;
 
     public Evaluation() {
     }

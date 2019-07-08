@@ -30,7 +30,12 @@
                <content>
                   <VBox>
                     <children>
-                        <TilePane fx:id="tpEvaluatStudents" styleClass="tp" />
+                        <HBox alignment="CENTER_RIGHT">
+                           <children>
+                              <Button fx:id="btnHAddStudent" mnemonicParsing="false" text="Add" />
+                           </children>
+                        </HBox>
+                        <TilePane fx:id="tpStudents" styleClass="tp" />
                     </children>
                   </VBox>
                </content>
@@ -39,6 +44,11 @@
                <content>
                   <VBox>
                     <children>
+                        <HBox alignment="CENTER_RIGHT">
+                           <children>
+                              <Button fx:id="btnHAddEvaluation" mnemonicParsing="false" text="Add" />
+                           </children>
+                        </HBox>
                         <TilePane fx:id="tpEvaluations" styleClass="tp" />
                     </children>
                   </VBox>
