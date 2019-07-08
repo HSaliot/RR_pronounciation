@@ -3,7 +3,7 @@
  */
 
 .mainFxmlClass {
-    #hbox1{
+    #vBox1{
         -fx-background-color: white;
     }
     #label1{
