@@ -14,6 +14,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,5 +73,27 @@ public class Sphinx{
         if(aligner == null)
             aligner = new SpeechAligner(configuration.getAcousticModelPath(), configuration.getDictionaryPath(), null);
         return aligner.align(new File(wav).toURI().toURL(), transcript);
+    }
+    
+    public void makeReport(List<WordResult> wordResults, String selection, String studentName) throws IOException{
+        ArrayList<String> strings = new ArrayList<>();
+        String sentence = "";
+        strings.add("");
+        for(int i = 0 ; i < wordResults.size() ; i++){
+            if(wordResults.get(i).getWord().getSpelling().equals("<sil>"))
+            ;
+            else{
+            String string = wordResults.get(i).getWord().getSpelling()+" "+wordResults.get(i).getTimeFrame().getStart()+" "+wordResults.get(i).getTimeFrame().getEnd()+" "+wordResults.get(i).getScore();
+            strings.add(string);
+            sentence = sentence + " " + wordResults.get(i).getWord().getSpelling();
+            }
+        }
+        strings.add("");
+        strings.set(0, "***"+sentence+"***");
+        Path out = Paths.get("src/readingready/resources/"+selection+"_"+studentName+".txt");
+        if(Files.exists(out))
+            Files.write(out,strings,StandardOpenOption.APPEND);
+        else
+            Files.write(out,strings,Charset.defaultCharset());
     }
 }
