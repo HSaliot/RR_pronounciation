@@ -35,7 +35,7 @@
                               <Button fx:id="btnHAddStudent" mnemonicParsing="false" text="Add" />
                            </children>
                         </HBox>
-                        <TilePane fx:id="tpEvaluatStudents" styleClass="tp" />
+                        <TilePane fx:id="tpStudents" styleClass="tp" />
                     </children>
                   </VBox>
                </content>
