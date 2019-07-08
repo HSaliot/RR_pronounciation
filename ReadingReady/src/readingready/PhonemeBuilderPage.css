@@ -1,10 +1,38 @@
 /*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 07 2, 19, 1:53:12 PM
-    Author     : Lorenz
-*/
+ * Empty Stylesheet file.
+ */
 
+.mainFxmlClass {
+    #vBox1{
+        -fx-alignment: CENTER;
+        -fx-background-color: #087830;
+    }
+    #tfARSTitle{
+        -fx-background-color: transparent;
+    }
+    #label1{
+        -fx-font-size: 20;
+        -fx-font-weight: BOLD;
+        -fx-text-fill: grey;
+    }
+    #btnPBCancel,#btnPBSubmit{
+        -fx-background-color: white;
+        -fx-border-color: #087830;
+        -fx-border-width: 1.5;
+    }
+    #hBox1{
+        -fx-border-width: 0 0 2;
+        -fx-border-color: #087830;
+    }
+}
+.PBlabels{
+        -fx-font-family: Courier New; -fx-font-size: 16;
+}
+.btnPhonemes{
+    -fx-background-color:  transparent;
+    -fx-border-radius:  20;
+    -fx-border-color:  #087830;
+}
+.PBseperators{
+    -fx-background-color:  #087830;
+}

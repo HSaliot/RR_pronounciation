@@ -3,5 +3,33 @@
  */
 
 .mainFxmlClass {
-
+    #vBox1{
+        -fx-alignment: CENTER;
+        -fx-background-color: #087830;
+    }
+    #tfARSTitle{
+        -fx-background-color: transparent;
+    }
+    #label1{
+        -fx-font-size: 20;
+        -fx-font-weight: BOLD;
+        -fx-text-fill: grey;
+    }
+    #seperator1{
+        -fx-background-color:  #087830;
+    }
+    #btnARSChooseFile{
+        -fx-background-color: white;
+        -fx-border-color: #087830;
+        -fx-border-width: 1.5;
+        -fx-border-radius: 15;
+        -fx-background-radius: 15;
+    }
+    #hBox1{
+        -fx-border-width: 0 0 2;
+        -fx-border-color: #087830;
+    }
+}
+.ARSPLabels{
+        -fx-font-family: Courier New; -fx-font-size: 16;
 }

@@ -37,6 +37,9 @@ public class AddStudentPage implements Initializable {
     private ChoiceBox cbASGrade;
     @FXML
     private Button btnASSubmit;
+    @FXML
+    private Button btnASPCancel;
+    
     private Stage thisStage = new Stage();
     private HomePage hp;
     private StudentDao sDao = new StudentDao();
@@ -45,9 +48,9 @@ public class AddStudentPage implements Initializable {
         this.hp = hp;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AddStudentPage.fxml"));
         loader.setController(this);
-        //thisStage.initStyle(StageStyle.TRANSPARENT);
-        thisStage.setScene(new Scene(loader.load()));
-        thisStage.initModality(Modality.APPLICATION_MODAL);
+        Scene scene = new Scene(loader.load());
+        scene.getStylesheets().add(getClass().getResource("AddStudentPage.css").toExternalForm());
+        thisStage.setScene(scene);
     }
     
     /**
@@ -63,6 +66,10 @@ public class AddStudentPage implements Initializable {
         btnASSubmit.setOnAction((ActionEvent e) -> {
             if(tfASFirstName.getText().length()!=0&&tfASSurname.getText().length()!=0&&cbASGrade.getValue()!=null)
                 submit();
+        });
+        
+        btnASPCancel.setOnAction((ActionEvent e) -> {
+            close();
         });
     }    
     

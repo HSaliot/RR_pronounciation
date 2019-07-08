@@ -42,6 +42,8 @@ public class PhonemeBuilderPage implements Initializable {
     private Button btnPB31,btnPB32,btnPB33,btnPB34,btnPB35,btnPB36,btnPB37,btnPB38,btnPB39,btnPB40;
     @FXML
     private TextField tfPBPhoneme;
+    @FXML
+    private Button btnPBCancel;
     
     private String title;
     private Word word;
@@ -188,6 +190,10 @@ public class PhonemeBuilderPage implements Initializable {
         });
         btnPB40.setOnAction((ActionEvent e) -> {
             tfPBPhoneme.appendText(btnPB40.getText()+" ");
+        });
+        
+        btnPBCancel.setOnAction((ActionEvent e) -> {
+            close();
         });
 
     }    
