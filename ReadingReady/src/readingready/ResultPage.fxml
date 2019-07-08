@@ -98,7 +98,7 @@
                               <HBox>
                                  <children>
                                     <Label fx:id="progressLabel" text="Progress bar:" />
-                                    <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.33" />
+                                    <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.5" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />

@@ -61,13 +61,12 @@ public class ReadingEvaluationPage implements Initializable {
 
     private final FileChooser fileChooser = new FileChooser();
     private ObservableList<File> files = null;
-    private Stage thisStage;
+    private Stage thisStage = new Stage();
     private String[] selections = {"Dark Chocolate", "Sneezing", "Dust", "Pain", "Diving"};
     private List<File> list;
+    private ArrayList<String> filenames = new ArrayList<>();
     
     public ReadingEvaluationPage() throws IOException{
-        
-        thisStage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ReadingEvaluationPage.fxml"));
         loader.setController(this);
         //thisStage.initStyle(StageStyle.TRANSPARENT);
@@ -130,7 +129,9 @@ public class ReadingEvaluationPage implements Initializable {
         if (fileListView.getItems().size() != 0) {
             for ( int i =0; i<fileListView.getItems().size();i++) {
                 current = fileListView.getItems().get(i);
-                File copied = new File("src/readingready/resources/"+current.getName());
+                String filename = "src/readingready/resources/wav/"+lastName.getText()+"_"+firstName.getText()+"_"+readingSelection.getValue().toString().replace(" ", "")+"_"+(i+1)+".wav";
+                File copied = new File(filename);
+                filenames.add(filename);
                 try (
                   InputStream in = new BufferedInputStream(
                     new FileInputStream(current));
@@ -148,10 +149,13 @@ public class ReadingEvaluationPage implements Initializable {
         }
     }
     public void submit() throws IOException{
-        
-        System.out.println(readingSelection.getValue());
-        System.out.println(getLastName()+", "+getFirstName());
         saveFileToProject();
+        for(int i=0; i<filenames.size(); i++){
+            Pocketsphinx ps = new Pocketsphinx();
+            ps.main(readingSelection.getValue().toString().replace(" ", ""), lastName.getText()+"_"+firstName.getText(), filenames.get(i));
+        }
+        close();
+        
     }
     private String getFirstName(){
         return firstName.getText();
