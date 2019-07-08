@@ -8,13 +8,16 @@ package readingready;
 import edu.cmu.sphinx.api.SpeechResult;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
@@ -24,6 +27,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javax.sound.sampled.AudioInputStream;
@@ -36,14 +40,10 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  *
  * @author Hannah Saliot
  */
-public class ResultPage{
+public class ResultPage implements Initializable {
     
     @FXML
     private MenuItem add;
-    @FXML
-    private HBox leftHB;
-    @FXML
-    private VBox rightTopVB;
     @FXML
     private Label labelSelection;
     @FXML
@@ -53,21 +53,21 @@ public class ResultPage{
     @FXML
     private Label labelID;
     @FXML
-    private HBox rightBottomHB;
-    @FXML
     private Button playButton;
     @FXML
     private Button stopButton;
     @FXML
     private TextFlow tfReadings;
-    @FXML Label wordLabel;
-    
+    @FXML 
+    private Label lRSWord;
+    @FXML
+    private VBox vBoxRPParent;
     
     private SpeechResult speechResult;
     private final Stage thisStage = new Stage();
     private final Evaluation evaluation;
     private Clip clip;
-    private ArrayList<Word> wordsList = new ArrayList<>();
+    private ArrayList<Utterance> wordsList = new ArrayList<>();
     
     
     public ResultPage(Evaluation evaluation) throws IOException{
@@ -86,8 +86,12 @@ public class ResultPage{
         thisStage.showAndWait();
     }
     
+    @Override
     @FXML
-    private void initialize() throws IOException{
+    public void initialize(URL location, ResourceBundle resources) {
+        vBoxRPParent.setPrefSize(Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
+        tfReadings.setPrefWidth(Screen.getPrimary().getBounds().getWidth()/2);
+        
         addSentences();
         labelSelection.setText("Dark Chocolate");
         labelStudent.setText("Cruz, Juan Dela");
@@ -155,7 +159,7 @@ public class ResultPage{
         Hyperlink temp;
         
         for (int i=0; i<words.length;i++){
-                wordsList.add(new Word(words[i]));
+                wordsList.add(new Utterance(words[i]));
                 temp = new Hyperlink(words[i]+" ");
                 temp.setId(Integer.toString(i));
                 /*
@@ -180,8 +184,8 @@ public class ResultPage{
     
     @FXML
     private void selectedWord(int id){
-        Word sWord = wordsList.get(id);
-        wordLabel.setText(sWord.getWord());
+        Utterance sWord = wordsList.get(id);
+        lRSWord.setText(sWord.getWord());
     }
     
 }
