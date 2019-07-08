@@ -251,8 +251,7 @@ public class ReadingSelectionPage implements Initializable {
         passage = passage.replace(";", "");
         passage = passage.replace("'", "");
         
-        String[] sentences = passage.split(".");
-        
+        String[] sentences = passage.split("\\.");
         String jsgf;
         BufferedWriter writer;
         for(int i = 0; i < sentences.length; i++){
@@ -260,11 +259,15 @@ public class ReadingSelectionPage implements Initializable {
             jsgf = "#JSGF V1.0;grammar word;public <wholeutt> = sil " + sentences[i] + " [ sil ];";
             System.out.println(jsgf);
             writer = new BufferedWriter(new FileWriter("src/readingready/resources/selections/" + selection.getTitle() 
-                            + "/jsgf/" + String.format("%02d.jsgf", i)));
+                            + "/jsgf/"+ String.format("%02d.jsgf", i)));
                 
             writer.write(jsgf);
             writer.close();
         }
+    }
+    
+    public void show(){
+        thisStage.showAndWait();
     }
     
 }
