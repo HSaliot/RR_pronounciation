@@ -114,7 +114,7 @@ public class Word {
                 raw.add(s);
             }
         }
-        if(!exist)
+        if(!exist&&!isInDictionary(title))
             toDictionary(title);
         fr.close();
     }
