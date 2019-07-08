@@ -1,7 +1,7 @@
-Mon Jul 08 21:49:08 CST 2019 : Apache Derby Network Server - 10.11.1.2 - (1629631) started and ready to accept connections on port 1527
+Tue Jul 09 00:28:48 CST 2019 : Apache Derby Network Server - 10.11.1.2 - (1629631) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Mon Jul 08 21:49:20 CST 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-016b-d1d8-2e1f-ffffa7cd77d7 
+Tue Jul 09 00:41:41 CST 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-016b-d26a-5772-ffffa7cd77d7 
 on database directory C:\Users\Hannah Saliot\Documents\GitHub\RR_pronounciation\rrDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
 Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_171/db/lib/derby.jar
 java.vendor=Oracle Corporation

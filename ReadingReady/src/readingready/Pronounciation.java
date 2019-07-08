@@ -13,7 +13,7 @@ public class Pronounciation extends Application {
 
 
   public void start(Stage stage) throws IOException {
-        OS.set();
+        OSCheck.set();
         LoginPage login = new LoginPage();
         login.show();
     }

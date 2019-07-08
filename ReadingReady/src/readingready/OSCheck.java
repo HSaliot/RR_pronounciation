@@ -9,7 +9,7 @@ package readingready;
  *
  * @author Hannah Saliot
  */
-public class OS {
+public class OSCheck {
     public static boolean isWindows;
     
     public static void set(){
