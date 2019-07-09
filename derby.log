@@ -12,3 +12,5 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=C:\Users\Lorenz\Documents\GitHub\RR_pronounciation
 Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Tue Jul 09 22:47:47 CST 2019: Shutting down Derby engine
