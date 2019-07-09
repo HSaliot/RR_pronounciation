@@ -61,10 +61,11 @@ public class Sphinx{
         FileReader fr = new FileReader(open);  //Creation of File Reader object
         BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
         String passage;
-        while((passage = br.readLine())!=null){}   //Reading Content from the file
+        while((passage = br.readLine())!=null){        System.out.println(passage);
+}   //Reading Content from the file
+       
         br.close();
         fr.close();
-        
         String[] sentences = passage.split("\\.");
         passage = sentences[i];
         String iString = String.format("%02d.wav", i);

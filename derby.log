@@ -1,14 +1,14 @@
-Tue Jul 09 00:28:48 CST 2019 : Apache Derby Network Server - 10.11.1.2 - (1629631) started and ready to accept connections on port 1527
+Tue Jul 09 22:29:40 CST 2019 : Apache Derby Network Server - 10.11.1.2 - (1629631) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Tue Jul 09 00:41:41 CST 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-016b-d26a-5772-ffffa7cd77d7 
-on database directory C:\Users\Hannah Saliot\Documents\GitHub\RR_pronounciation\rrDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_171/db/lib/derby.jar
+Tue Jul 09 22:29:42 CST 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-016b-d723-b30a-ffffa54afd53 
+on database directory C:\Users\Lorenz\Documents\GitHub\RR_pronounciation\rrDB with class loader sun.misc.Launcher$AppClassLoader@6f94fa3e 
+Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_111/db/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_171-b11
-user.dir=C:\Program Files\Java\jdk1.8.0_171\db
+java.runtime.version=1.8.0_111-b14
+user.dir=C:\Program Files\Java\jdk1.8.0_111\db
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0
-derby.system.home=C:\Users\Hannah Saliot\Documents\GitHub\RR_pronounciation
+derby.system.home=C:\Users\Lorenz\Documents\GitHub\RR_pronounciation
 Database Class Loader started - derby.database.classpath=''
