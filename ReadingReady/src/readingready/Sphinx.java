@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -60,18 +61,26 @@ public class Sphinx{
         File open = new File(filename);
         FileReader fr = new FileReader(open);  //Creation of File Reader object
         BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
-        String passage;
-        while((passage = br.readLine())!=null){}   //Reading Content from the file
+        String passage = "";
+        String s;
+        while((s = br.readLine()) != null){
+            passage = passage + s;
+        }
         br.close();
         fr.close();
         
-        String[] sentences = passage.split("\\.");
+        String[] sentences = passage.toLowerCase().split("\\.");
         passage = sentences[i];
+        
+        System.out.println("sentence:\n" + passage);
         String iString = String.format("%02d.wav", i);
         if(aligner == null)
             aligner = new SpeechAligner(configuration.getAcousticModelPath(), configuration.getDictionaryPath(), null);
-        List<WordResult> wrs = aligner.align(new File(path + "/wavs/" + iString).toURI().toURL(), passage);
         
+        String strPath = path + "/wavs/" + iString;
+        System.out.println(strPath);
+        
+        List<WordResult> wrs = aligner.align(URI.create(strPath).toURL(), passage);
         makeReport(wrs, path, true);
    }
     
@@ -88,10 +97,13 @@ public class Sphinx{
         ArrayList<String> strings = new ArrayList<>();
         String sentence = "";
         strings.add("");
+        System.out.print(wordResults.size());
         for(int i = 0 ; i < wordResults.size() ; i++){
+          
             if(wordResults.get(i).getWord().getSpelling().equals("<sil>"))
             ;
             else{
+                System.out.println(wordResults.get(i).toString());
             String string = wordResults.get(i).getWord().getSpelling()+" "+wordResults.get(i).getTimeFrame().getStart()+" "+wordResults.get(i).getTimeFrame().getEnd()+" "+wordResults.get(i).getScore();
             strings.add(string);
             sentence = sentence + " " + wordResults.get(i).getWord().getSpelling();
@@ -99,7 +111,7 @@ public class Sphinx{
         }
         strings.add("");
         strings.set(0, "***"+sentence+"***");
-        Path out = (isAligned) ? Paths.get(path + "resultForced.txt") : Paths.get(path + "resultNormal.txt");
+        Path out = (isAligned) ? Paths.get(path + "/resultForced.txt") : Paths.get(path + "/resultNormal.txt");
         
         if(Files.exists(out))
             Files.write(out,strings,StandardOpenOption.APPEND);

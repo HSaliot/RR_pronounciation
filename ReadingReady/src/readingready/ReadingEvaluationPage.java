@@ -155,8 +155,8 @@ public class ReadingEvaluationPage implements Initializable {
         if (fileListView.getItems().size() != 0) {
             for ( int i =0; i<fileListView.getItems().size();i++) {
                 current = fileListView.getItems().get(i);
-                String filename = "src/readingready/resources/evaluations/" + evaluation.getStudent().toString() + "/" 
-                        + String.format("%02d/wavs%02d.wav", evaluation.getId(), i);
+                String filename = "src/readingready/resources/evaluations/" + evaluation.getStudent().toString() 
+                        + "/" + String.format("%02d/wavs/%02d.wav", evaluation.getId(), i);
                 File copied = new File(filename);
                 filenames.add(filename);
                 try (
