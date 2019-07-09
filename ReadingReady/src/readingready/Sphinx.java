@@ -10,10 +10,18 @@ import edu.cmu.sphinx.api.SpeechAligner;
 import edu.cmu.sphinx.api.SpeechResult;
 import edu.cmu.sphinx.api.StreamSpeechRecognizer;
 import edu.cmu.sphinx.result.WordResult;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,27 +53,57 @@ public class Sphinx{
         recognizer = new StreamSpeechRecognizer(configuration);
     }
     
-    public List<WordResult> getWordResults(String wav) throws FileNotFoundException, IOException{
+    public void evaluateForced(String path, int i, String selection) throws FileNotFoundException, IOException{
         initialize();
-        recognizer.startRecognition(new FileInputStream(new File("src/readingready/resources/"+"aron.wav")));
-        SpeechResult results = recognizer.getResult();
-        recognizer.stopRecognition();
+
+        String filename = "src/readingready/resources/selections/" + selection + "/passage.txt";
+        File open = new File(filename);
+        FileReader fr = new FileReader(open);  //Creation of File Reader object
+        BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
+        String passage;
+        while((passage = br.readLine())!=null){}   //Reading Content from the file
+        br.close();
+        fr.close();
         
-        return results.getWords();
-    }
-    
-    public SpeechResult getSpeechResult(String wav) throws FileNotFoundException, IOException{
-        initialize();
-        recognizer.startRecognition(new FileInputStream(new File("src/readingready/resources/"+"aron.wav")));
-        SpeechResult results = recognizer.getResult();
-        recognizer.stopRecognition();
-        
-        return results;
-    }
-    
-    public List<WordResult> getWordResultsWithAlignment(String wav, String transcript) throws IOException{
+        String[] sentences = passage.split("\\.");
+        passage = sentences[i];
+        String iString = String.format("%02d.wav", i);
         if(aligner == null)
             aligner = new SpeechAligner(configuration.getAcousticModelPath(), configuration.getDictionaryPath(), null);
-        return aligner.align(new File(wav).toURI().toURL(), transcript);
+        List<WordResult> wrs = aligner.align(new File(path + "/wavs/" + iString).toURI().toURL(), passage);
+        
+        makeReport(wrs, path, true);
+   }
+    
+    public void evaluateNormal(String path, String iString) throws IOException{
+        initialize();
+        recognizer.startRecognition(new FileInputStream(new File(path + "/wavs/" + iString + ".wav")));
+        SpeechResult results = recognizer.getResult();
+        recognizer.stopRecognition();
+        
+        makeReport(results.getWords(), path, false);
+    }
+    
+    public void makeReport(List<WordResult> wordResults, String path, boolean isAligned) throws IOException{
+        ArrayList<String> strings = new ArrayList<>();
+        String sentence = "";
+        strings.add("");
+        for(int i = 0 ; i < wordResults.size() ; i++){
+            if(wordResults.get(i).getWord().getSpelling().equals("<sil>"))
+            ;
+            else{
+            String string = wordResults.get(i).getWord().getSpelling()+" "+wordResults.get(i).getTimeFrame().getStart()+" "+wordResults.get(i).getTimeFrame().getEnd()+" "+wordResults.get(i).getScore();
+            strings.add(string);
+            sentence = sentence + " " + wordResults.get(i).getWord().getSpelling();
+            }
+        }
+        strings.add("");
+        strings.set(0, "***"+sentence+"***");
+        Path out = (isAligned) ? Paths.get(path + "resultForced.txt") : Paths.get(path + "resultNormal.txt");
+        
+        if(Files.exists(out))
+            Files.write(out,strings,StandardOpenOption.APPEND);
+        else
+            Files.write(out,strings,Charset.defaultCharset());
     }
 }

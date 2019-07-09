@@ -26,7 +26,7 @@ public class Pocketsphinx {
     public void evaluateNormal(String path, String wav) throws IOException {
         String s;
         String command= "pocketsphinx_continuous -hmm en-us-download -infile " +
-                wav + " -dict darkchocolate.dict -backtrace yes -fsgusefiller no -bestpath no";
+                path + "/wavs/" + wav + ".wav" + " -dict darkchocolate.dict -backtrace yes -fsgusefiller no -bestpath no";
         try {
 
             // Process provides control of native processes started by ProcessBuilder.start and Runtime.exec.
@@ -65,16 +65,11 @@ public class Pocketsphinx {
             Files.write(out,strings,Charset.defaultCharset());   
     }
     
-    public void evaluateForced(String path, String studentName, String wav) throws IOException {
+    public void evaluateForced(String path, String i, String selection) throws IOException {
         String s;
-        String command= "pocketsphinx_continuous " 
-                + "-infile with.wav " 
-                + "-jsgf with-word.jsgf "
-                + "-dict " + ""
-                + "-backtrace yes " 
-                + "-fsgusefiller no "
-                + "-bestpath no";
-        
+        String command= "pocketsphinx_continuous -infile " + path + "/wavs/" + i + ".wav" + " -jsgf " +
+                "src/readingready/resources/selections/" + selection + "/jsgf/" + i + ".jsgf" + 
+                " -dict darkchocolate.dict -backtrace yes -fsgusefiller no -bestpath no";
         try {
 
             // Process provides control of native processes started by ProcessBuilder.start and Runtime.exec.
