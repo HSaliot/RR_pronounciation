@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -61,15 +62,7 @@ public class Sphinx{
         File open = new File(filename);
         FileReader fr = new FileReader(open);  //Creation of File Reader object
         BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
-<<<<<<< HEAD
-        String passage;
-        while((passage = br.readLine())!=null){        System.out.println(passage);
-}   //Reading Content from the file
-       
-        br.close();
-        fr.close();
-        String[] sentences = passage.split("\\.");
-=======
+
         String passage = "";
         String s;
         while((s = br.readLine()) != null){
@@ -79,7 +72,7 @@ public class Sphinx{
         fr.close();
         
         String[] sentences = passage.toLowerCase().split("\\.");
->>>>>>> hannah]-pls-run
+
         passage = sentences[i];
         
         System.out.println("sentence:\n" + passage);
@@ -90,8 +83,7 @@ public class Sphinx{
         String strPath = path + "/wavs/" + iString;
         System.out.println(strPath);
         
-        List<WordResult> wrs = aligner.align(URI.create(strPath).toURL(), passage);
-        makeReport(wrs, path, true);
+        aligner.align(new URL(strPath), passage);
    }
     
     public void evaluateNormal(String path, String iString) throws IOException{
