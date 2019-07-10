@@ -35,7 +35,7 @@ public class Sphinx{
     private Configuration configuration;
     private StreamSpeechRecognizer recognizer;
     private SpeechAligner aligner;
-    
+
     public void initialize() throws IOException{
         configuration = new Configuration();
         configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
@@ -74,16 +74,19 @@ public class Sphinx{
         String[] sentences = passage.toLowerCase().split("\\.");
 
         passage = sentences[i];
-        
+        passage = passage.replace(",", "");
         System.out.println("sentence:\n" + passage);
         String iString = String.format("%02d.wav", i);
         if(aligner == null)
             aligner = new SpeechAligner(configuration.getAcousticModelPath(), configuration.getDictionaryPath(), null);
-        
         String strPath = path + "/wavs/" + iString;
         System.out.println(strPath);
         
-        aligner.align(new URL(strPath), passage);
+        File file = new File(strPath);
+        List<WordResult> results = aligner.align(file.toURI().toURL(), passage);
+        
+        makeReport(results, path, true);
+
    }
     
     public void evaluateNormal(String path, String iString) throws IOException{
