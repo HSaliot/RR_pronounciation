@@ -46,8 +46,6 @@ public class Pocketsphinx {
                 
                 if(temp[0].equals("</s>")){
                     save=false;
-                    strings.add("");
-
                 }
                 if(save.equals(true)&&(!temp[0].equals("<sil>"))){
                     String tempString = temp[0]+" "+temp[1]+" "+temp[2]+" "+temp[4];
@@ -90,7 +88,6 @@ public class Pocketsphinx {
                 
                 if(temp[0].contains("INFO:")){
                     save=false;
-
                 }
                 if(save.equals(true)){
                     if(temp[0].equals("sil"))
