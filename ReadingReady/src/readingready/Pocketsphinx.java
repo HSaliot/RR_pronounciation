@@ -27,6 +27,8 @@ public class Pocketsphinx {
         String s;
         String command= "pocketsphinx_continuous -hmm en-us-download -infile " +
                 path + "/wavs/" + wav + ".wav" + " -dict darkchocolate.dict -backtrace yes -fsgusefiller no -bestpath no";
+        System.out.println(command);
+        
         try {
 
             // Process provides control of native processes started by ProcessBuilder.start and Runtime.exec.
@@ -68,8 +70,9 @@ public class Pocketsphinx {
     public void evaluateForced(String path, String i, String selection) throws IOException {
         String s;
         String command= "pocketsphinx_continuous -infile " + path + "/wavs/" + i + ".wav" + " -jsgf " +
-                "src/readingready/resources/selections/" + selection + "/jsgf/" + i + ".jsgf" + 
+                "src/readingready/resources/selections/" + selection.replace(" ", "").toLowerCase() + "/jsgf/" + i + ".jsgf" + 
                 " -dict darkchocolate.dict -backtrace yes -fsgusefiller no -bestpath no";
+        System.out.println(command);
         try {
 
             // Process provides control of native processes started by ProcessBuilder.start and Runtime.exec.
@@ -85,16 +88,21 @@ public class Pocketsphinx {
                 s = s.replaceAll(" +"," ");
                 temp = s.split(" ");
                 
-                if(temp[0].equals("</s>")){
+                if(temp[0].contains("INFO:")){
                     save=false;
-                    strings.add("");
 
                 }
-                if(save.equals(true)&&(!temp[0].equals("<sil>"))){
+                if(save.equals(true)){
+                    if(temp[0].equals("sil"))
+                        System.out.println("sil");
+                    else if(temp[0].equals("(NULL)"))
+                        System.out.println("(NULL)");
+                    else{
                     String tempString = temp[0]+" "+temp[1]+" "+temp[2]+" "+temp[4];
                     strings.add(tempString);
+                    }
                 }
-                if(temp[0].equals("<s>"))
+                if(temp[0].contains("word"))
                     save=true;
                 
             }

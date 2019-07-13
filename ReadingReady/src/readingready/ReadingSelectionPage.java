@@ -82,7 +82,7 @@ public class ReadingSelectionPage implements Initializable {
     
     public String getPassage() throws FileNotFoundException, IOException{
         
-        String filename = "src/readingready/resources/selections/" + selection.getTitle() + "/passage.txt";
+        String filename = "src/readingready/resources/selections/" + selection.getTitle().replace(" ", "").toLowerCase() + "/passage.txt";
         File open = new File(filename);
         FileReader fr = new FileReader(open);  //Creation of File Reader object
         BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
@@ -112,7 +112,6 @@ public class ReadingSelectionPage implements Initializable {
         Hyperlink hyperlink;
         
         exist = doesFileExist();
-        
         for (int i = 0; i < words.length; i++){
             if(i==0){
                    words[0]=words[0].replace(Character.toString(words[0].charAt(0)), "");
@@ -120,10 +119,12 @@ public class ReadingSelectionPage implements Initializable {
             hyperlink = new Hyperlink(words[i]+" ");
             wordsList.add(new Word(words[i]));
             
-            if(exist == true)
-                wordsList.get(i).setPronounciations(selection.getTitle(), selection.getTitle().replace(" ", "")+".DICT");
-            else
-                wordsList.get(i).setPronounciations(selection.getTitle(), "cmudict-en-us.DICT");
+            if(exist == true){
+                wordsList.get(i).setPronounciations(selection.getTitle(), selection.getTitle().replace(" ", "").toLowerCase()+".dict");
+            }
+            else{
+                wordsList.get(i).setPronounciations(selection.getTitle(), "cmudict-en-us.dict");
+            }
             
             if(wordsList.get(i).getPronunciations().size()>0) {
                 hyperlink.setFont(Font.font("",FontWeight.NORMAL,16));                     
@@ -139,7 +140,8 @@ public class ReadingSelectionPage implements Initializable {
             });
             hyperlinks.add(hyperlink);     
             wordsList.get(i).setLastIndex();
-        }        
+        }
+        
         tfReadings.setTextAlignment(TextAlignment.JUSTIFY); 
         ObservableList list = tfReadings.getChildren(); 
         list.addAll(hyperlinks);
@@ -180,6 +182,8 @@ public class ReadingSelectionPage implements Initializable {
         temp = temp.replace(",", ""); //replace all , character
         temp = temp.replace("“", ""); //replace all “ character
         temp = temp.replace("”", ""); //replace all ” character
+        temp = temp.replace("’", ""); //replace all ’ character
+        
         temp = temp.toLowerCase();
         lRSWord.setText(temp);        
         ArrayList<HBox> hboxes = new ArrayList<>();
@@ -211,7 +215,7 @@ public class ReadingSelectionPage implements Initializable {
         setSelectedWord(word);
     }
     public void  deleteInFile(Word word,int index) throws FileNotFoundException, IOException{
-        File inputFile = new File(selection.getTitle().replace(" ", "")+".DICT");
+        File inputFile = new File(selection.getTitle().replace(" ", "").toLowerCase()+".dict");
         BufferedReader reader = new BufferedReader(new FileReader(inputFile));
         String currentLine;
         ArrayList<String> tempStrings = new ArrayList<>();
@@ -232,25 +236,27 @@ public class ReadingSelectionPage implements Initializable {
     
     private boolean doesFileExist(){
         boolean exist;
-        Path out = Paths.get(selection.getTitle().replace(" ", "")+".DICT");
+        Path out = Paths.get(selection.getTitle().replace(" ", "").toLowerCase()+".dict");
         if(Files.exists(out))
             exist = true;
-        else
+        else 
             exist = false;
         return exist;        
     }
     
     private void createDICT() throws IOException{
         Collections.sort(strings);
-        Path out = Paths.get(selection.getTitle().replace(" ", "") + ".DICT");
+        Path out = Paths.get(selection.getTitle().replace(" ", "").toLowerCase() + ".dict");
         Files.write(out,strings,Charset.defaultCharset());
     }
 
     private void generateJSGF(String passage) throws IOException {
         passage = passage.replace(",", "");
         passage = passage.replace(";", "");
-        passage = passage.replace("'", "");
-        
+        passage = passage.replace("“", ""); //replace all “ character
+        passage = passage.replace("”", ""); //replace all ” character
+        passage = passage.replace("’", ""); //replace all ’ character
+        passage = passage.toLowerCase();
         String[] sentences = passage.split("\\.");
         String jsgf;
         BufferedWriter writer;
@@ -258,7 +264,7 @@ public class ReadingSelectionPage implements Initializable {
             sentences[i] = sentences[i].replaceAll(" ", " [ sil ] ");
             jsgf = "#JSGF V1.0;grammar word;public <wholeutt> = sil " + sentences[i] + " [ sil ];";
             System.out.println(jsgf);
-            writer = new BufferedWriter(new FileWriter("src/readingready/resources/selections/" + selection.getTitle() 
+            writer = new BufferedWriter(new FileWriter("src/readingready/resources/selections/" + selection.getTitle().replace(" ", "").toLowerCase()
                             + "/jsgf/"+ String.format("%02d.jsgf", i)));
                 
             writer.write(jsgf);
