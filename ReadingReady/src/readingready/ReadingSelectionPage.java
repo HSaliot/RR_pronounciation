@@ -247,10 +247,6 @@ public class ReadingSelectionPage implements Initializable {
     }
 
     private void generateJSGF(String passage) throws IOException {
-        passage = passage.replace(",", "");
-        passage = passage.replace(";", "");
-        passage = passage.replace("'", "");
-        
         String[] sentences = passage.split("\\.");
         String jsgf;
         BufferedWriter writer;

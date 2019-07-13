@@ -8,7 +8,7 @@
     <class>readingready.User</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/rrDB"/>
-      <property name="javax.persistence.jdbc.user" value="rrbadmin"/>
+      <property name="javax.persistence.jdbc.user" value="rrdbadmin"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
       <property name="javax.persistence.jdbc.password" value="r3oot"/>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

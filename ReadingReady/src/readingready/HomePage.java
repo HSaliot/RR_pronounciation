@@ -165,7 +165,7 @@ public class HomePage implements Initializable {
         tpEvaluations.getChildren().clear();
         evaluations = eDao.findAll(Evaluation.class);
         evaluations.forEach(evaluation -> {
-            Button button = iconF.createButtonL(Icon.CHECK_DOUBLE, "  Eval", "");
+            Button button = iconF.createButtonL(Icon.CHECK_DOUBLE, evaluation.getLabel(), "");
             button.getStyleClass().add("btnClear");
             button.setOnAction(e -> {
                 try {

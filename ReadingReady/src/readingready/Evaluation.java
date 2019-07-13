@@ -94,4 +94,12 @@ public class Evaluation implements Serializable {
     public void setFile(String file) {
         this.file = file;
     }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
 }
