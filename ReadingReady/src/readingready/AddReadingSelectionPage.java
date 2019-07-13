@@ -152,7 +152,8 @@ public class AddReadingSelectionPage implements Initializable {
         thisStage.showAndWait();
     }
     private void saveFileToProject() throws IOException {
-        File copied = new File("src/readingready/resources/selections/"+tfARSTitle.getText()+".txt");
+        new File("src/readingready/resources/selections/" + tfARSTitle.getText().replace(" ", "").toLowerCase() + "/jsgf").mkdirs();
+        File copied = new File("src/readingready/resources/selections/"+tfARSTitle.getText().replace(" ", "").toLowerCase()+"/passage.txt");
                 try (
                   InputStream in = new BufferedInputStream(
                     new FileInputStream(file));
@@ -168,8 +169,8 @@ public class AddReadingSelectionPage implements Initializable {
                 }
     }
     private void saveTextToFile() throws IOException{
-        new File("src/readingready/resources/selections/" + tfARSTitle.getText() + "/jsgf").mkdirs();
-        BufferedWriter writer = new BufferedWriter(new FileWriter("src/readingready/resources/selections/"+tfARSTitle.getText()
+        new File("src/readingready/resources/selections/" + tfARSTitle.getText().replace(" ", "").toLowerCase() + "/jsgf").mkdirs();
+        BufferedWriter writer = new BufferedWriter(new FileWriter("src/readingready/resources/selections/"+tfARSTitle.getText().replace(" ", "").toLowerCase()
                 + "/passage.txt")); 
         writer.write(taARSPassage.getText());
         writer.close();

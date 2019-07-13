@@ -191,11 +191,13 @@ public class ReadingEvaluationPage implements Initializable {
             if(usePocketSphinx) {
                 Pocketsphinx ps = new Pocketsphinx();
                 ps.evaluateNormal(dir, String.format("%02d", i));
+                ps = new Pocketsphinx();
                 ps.evaluateForced(dir, String.format("%02d", i), selection.getTitle());
             }
             else {
                 Sphinx s = new Sphinx();
                 s.evaluateNormal(dir, String.format("%02d", i));
+                s = new Sphinx();                
                 s.evaluateForced(dir, i, selection.getTitle());
             }
         }

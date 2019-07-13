@@ -102,4 +102,8 @@ public class Evaluation implements Serializable {
     public void setLabel(String label) {
         this.label = label;
     }
+    
+    public ReadingSelection getSelection(){
+        return selection;
+    }
 }

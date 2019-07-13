@@ -25,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -66,24 +67,28 @@ public class ResultPage implements Initializable {
     private VBox vBoxRPParent;
     @FXML
     private ProgressBar progressBar;
+    @FXML
+    private MenuItem btnBack;
     
     private SpeechResult speechResult;
-    private final Stage thisStage = new Stage();
-    private final Evaluation evaluation;
+    private Stage thisStage;
+    private Evaluation evaluation;
     private Clip clip;
     private ArrayList<Utterance> wordsList = new ArrayList<>();
-    
     private String filename="";
-    public ResultPage(String filename,Evaluation evaluation) throws IOException{
+    public ResultPage(Stage stage,String filename,Evaluation evaluation) throws IOException{
+        thisStage = stage;
         this.evaluation = evaluation;
-        this.filename = filename;
+        String pathFile = "src/readingready/resources/evaluations/" + evaluation.getStudent().toString()+"/"+String.format("%02d", evaluation.getId())+"/" + "pocketSphinxResultNormal.txt";
+        this.filename = pathFile;
+        System.out.println(pathFile);
+        thisStage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ResultPage.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
         scene.getStylesheets().add(getClass().getResource("ResultPage.css").toExternalForm());
-        thisStage.initStyle(StageStyle.TRANSPARENT);
         thisStage.setScene(scene);
-        thisStage.setMaximized(true);
+        
     }
     
     
@@ -102,10 +107,10 @@ public class ResultPage implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(ResultPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-        labelSelection.setText("Dark Chocolate");
-        labelStudent.setText("Cruz, Juan Dela");
-        labelDateRecorded.setText("Date");
-        labelID.setText("ID 1");
+        labelSelection.setText(evaluation.getSelection().getTitle());
+        labelStudent.setText(evaluation.getStudent().getLName()+", "+evaluation.getStudent().getFnameetc());
+        labelDateRecorded.setText(evaluation.getDatedone().toString());
+        labelID.setText(evaluation.getId().toString());
 
         
         stopButton.setDisable(true);        
@@ -133,6 +138,15 @@ public class ResultPage implements Initializable {
             stopWavFile();
         });
         
+        btnBack.setOnAction((ActionEvent e) -> {
+            try {
+                HomePage home = new HomePage(thisStage);
+            } catch (IOException ex) {
+                Logger.getLogger(ReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+
+        
     }
     
     private void playWavFile() throws LineUnavailableException, IOException, UnsupportedAudioFileException{
@@ -149,7 +163,7 @@ public class ResultPage implements Initializable {
     }
 
     public void setPassage() throws FileNotFoundException, IOException{
-        String filePath = "src/readingready/resources/pocketsphinx_output/"+filename;
+        String filePath = filename;
         File open = new File(filePath);
         FileReader fr = new FileReader(open);  //Creation of File Reader object
         BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
@@ -160,7 +174,7 @@ public class ResultPage implements Initializable {
         int tempInt=0;
         while((s=br.readLine())!=null){   //Reading Content from the file
             String[] strArray = s.split(" ");
-            wordsList.add(new Utterance(strArray[0],Integer.parseInt(strArray[1]),Integer.parseInt(strArray[2]),Integer.parseInt(strArray[3])));
+            wordsList.add(new Utterance(strArray[0]));
             temp = new Hyperlink(wordsList.get(tempInt).getWord());
             if(wordsList.get(tempInt).getAscr()>-1000)
                 temp.setFont(Font.font("",FontWeight.NORMAL,16)); 

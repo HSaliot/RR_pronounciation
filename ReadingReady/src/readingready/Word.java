@@ -91,7 +91,7 @@ public class Word {
     public void setPronounciations(String title,String dict) throws FileNotFoundException, IOException{
         boolean exist;
         
-        if(dict.equals("cmudict-en-us.DICT"))
+        if(dict.equals("cmudict-en-us.dict"))
             exist = false;
         else 
             exist = true;
@@ -120,7 +120,7 @@ public class Word {
     }
     public boolean isInDictionary(String title) throws IOException{
         boolean in = false;
-        Path out = Paths.get(title.replace(" ", "")+".DICT");
+        Path out = Paths.get(title.replace(" ", "").toLowerCase()+".dict");
         if(Files.exists(out)){
             File open = new File(out.toString());
             FileReader fr = new FileReader(open);  //Creation of File Reader object
@@ -145,7 +145,7 @@ public class Word {
         return in;
     }
     public void toDictionary(String title) throws IOException{
-        Path out = Paths.get(title.replace(" ", "")+".DICT");
+        Path out = Paths.get(title.replace(" ", "").toLowerCase()+".dict");
 
         if(Files.exists(out))
             Files.write(out,raw,StandardOpenOption.APPEND);
