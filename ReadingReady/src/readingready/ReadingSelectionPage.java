@@ -240,7 +240,13 @@ public class ReadingSelectionPage implements Initializable {
         createDICT();
     }
     
-    public void addedPronunciation() throws IOException{
+    public void addedPronunciation(String word, String pronunciation) throws IOException{
+        for(int i = 0; i<wordsList.size(); i++){
+            if(wordsList.get(i).getWord().equals(word)){
+                wordsList.get(i).addPronunciation(pronunciation.split(" "),true);
+            }
+        }
+        setSelectedWord(wordsList.get(selectedWordIndex));
         wordsList.get(selectedWordIndex).increaseLastIndex();
     }
     

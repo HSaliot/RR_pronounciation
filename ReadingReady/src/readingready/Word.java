@@ -46,10 +46,18 @@ public class Word {
         return pronunciations;
     }
 
-    public void addPronunciation(String[] pronunciation) {
+    public void addPronunciation(String[] pronunciation,Boolean created) {
         lastIndex++;
         StringBuilder stringBuilder = new StringBuilder();
         String temp;
+        if(created){
+            System.out.print(pronunciation);
+            for(int i=0;i<pronunciation.length;i++)
+                if(i==pronunciation.length-1)
+                stringBuilder.append(pronunciation[i]);
+            else
+                stringBuilder.append(pronunciation[i]+" ");
+        } else {
         lines.add(pronunciation[1]);
         if(!Character.isDigit(pronunciation[1].charAt(0)))
             for(int i =1;i<pronunciation.length;i++)
@@ -63,10 +71,11 @@ public class Word {
                 stringBuilder.append(pronunciation[i]);
             else
                 stringBuilder.append(pronunciation[i]+" ");
+        }
         temp = stringBuilder.toString();
         pronunciations.add(temp);
     }
-
+    
     public void removePronunciation(int i) {
         pronunciations.remove(i);
     }
@@ -110,7 +119,7 @@ public class Word {
              
             if (words[0].equals(word))   //Search for the given word
             {                
-                addPronunciation(words);
+                addPronunciation(words,false);
                 raw.add(s);
             }
         }

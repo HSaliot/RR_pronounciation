@@ -66,7 +66,7 @@ public class PhonemeBuilderPage implements Initializable {
         btnPBSubmit.setOnAction((ActionEvent e) -> {
             try {
                 appendToFile(getFinal());
-                rsp.addedPronunciation();
+                rsp.addedPronunciation(word.getWord(),tfPBPhoneme.getText());
                 close();
             } catch (IOException ex) {
                 Logger.getLogger(PhonemeBuilderPage.class.getName()).log(Level.SEVERE, null, ex);
@@ -210,7 +210,7 @@ public class PhonemeBuilderPage implements Initializable {
     
     public void appendToFile(String textToAppend) throws IOException{  
     BufferedWriter writer = new BufferedWriter(
-                                new FileWriter(title.replace(" ", "")+".DICT", true)  //Set true for append mode
+                                new FileWriter(title.replace(" ", "").toLowerCase()+".dict", true)  //Set true for append mode
                             ); 
     writer.newLine();   //Add new line
     writer.write(textToAppend);
