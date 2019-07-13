@@ -94,4 +94,8 @@ public class Evaluation implements Serializable {
     public void setFile(String file) {
         this.file = file;
     }
+    
+    public ReadingSelection getSelection(){
+        return selection;
+    }
 }

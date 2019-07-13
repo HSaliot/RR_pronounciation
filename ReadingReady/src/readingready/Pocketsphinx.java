@@ -58,7 +58,7 @@ public class Pocketsphinx {
         } catch (IOException e) {
         }
         
-        Path out = Paths.get(path + "/resultNormal.txt");
+        Path out = Paths.get(path + "/pocketSphinxResultNormal.txt");
         if(Files.exists(out))
             Files.write(out,strings,StandardOpenOption.APPEND);
         else
@@ -106,7 +106,7 @@ public class Pocketsphinx {
         } catch (IOException e) {
         }
         
-        Path out = Paths.get(path + "/resultForced.txt");
+        Path out = Paths.get(path + "/pocketSphinxResultForced.txt");
         if(Files.exists(out))
             Files.write(out,strings,StandardOpenOption.APPEND);
         else

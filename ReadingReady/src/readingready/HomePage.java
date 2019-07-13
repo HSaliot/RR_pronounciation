@@ -71,6 +71,19 @@ public class HomePage implements Initializable {
         thisStage.setScene(scene);
         thisStage.setMaximized(true);        
     }
+        public HomePage(Stage stage) throws IOException{
+        thisStage = stage;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("HomePage.fxml"));
+        loader.setController(this);
+        Scene scene = new Scene(loader.load());
+        scene.getStylesheets().add(getClass().getResource("HomePage.css").toExternalForm());
+        
+        thisStage = stage;
+        thisStage.setScene(scene);
+        thisStage.setMaximized(true);        
+    }
+
+    
     /**
      * Initializes the controller class.
      */
@@ -124,7 +137,7 @@ public class HomePage implements Initializable {
     }
     
     private void toFocus(Stage thisStage, Evaluation evaluation) throws IOException {
-        ;
+        ResultPage resultPage = new ResultPage(thisStage,evaluation.getFile(),evaluation);
     }
     
     public void updateSelections(){

@@ -32,6 +32,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -61,7 +62,8 @@ public class ReadingSelectionPage implements Initializable {
     private VBox vBoxPronunciations;
     @FXML
     private VBox vBoxRSParent;
-    
+    @FXML
+    private MenuItem btnBack;
     private Stage thisStage;
     ReadingSelection selection;
     private ArrayList<Word> wordsList = new ArrayList<>();
@@ -173,6 +175,14 @@ public class ReadingSelectionPage implements Initializable {
             phonemeBuilderPage.show();
             
         });
+        btnBack.setOnAction((ActionEvent e) -> {
+            try {
+                HomePage home = new HomePage(thisStage);
+            } catch (IOException ex) {
+                Logger.getLogger(ReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+
     }
     
     private void setSelectedWord(Word word){
