@@ -55,10 +55,13 @@ public class Sphinx{
         recognizer = new StreamSpeechRecognizer(configuration);
     }
     
-    public void evaluateForced(String path, int i, String selection) throws FileNotFoundException, IOException{
+    public void evaluateForced(String path, int i, String selection, boolean trained) throws FileNotFoundException, IOException{
         initialize();
-
-        String filename = "src/readingready/resources/selections/" + selection + "/passage.txt";
+        if(trained)
+            setAcousticModel("en-us-trained");
+        else
+            setAcousticModel("en-us-untrained");
+        String filename = "src/readingready/resources/selections/" + selection.replace(" ", "").toLowerCase() + "/passage.txt";
         File open = new File(filename);
         FileReader fr = new FileReader(open);  //Creation of File Reader object
         BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
@@ -89,8 +92,13 @@ public class Sphinx{
 
    }
     
-    public void evaluateNormal(String path, String iString) throws IOException{
+    public void evaluateNormal(String path, String iString, boolean trained) throws IOException{
         initialize();
+        if(trained)
+            setAcousticModel("en-us-trained");
+        else
+            setAcousticModel("en-us-untrained");
+
         recognizer.startRecognition(new FileInputStream(new File(path + "/wavs/" + iString + ".wav")));
         SpeechResult results = recognizer.getResult();
         recognizer.stopRecognition();

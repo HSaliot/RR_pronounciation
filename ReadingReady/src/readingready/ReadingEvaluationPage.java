@@ -61,6 +61,10 @@ public class ReadingEvaluationPage implements Initializable {
     private RadioButton rbSphinx4;
     @FXML
     private RadioButton rbPocketSphinx;
+    @FXML
+    private RadioButton rbTrained;
+    @FXML
+    private RadioButton rbUntrained;
 
     private final FileChooser fileChooser = new FileChooser();
     private ObservableList<File> files = null;
@@ -70,6 +74,7 @@ public class ReadingEvaluationPage implements Initializable {
     private ArrayList<String> filenames = new ArrayList<>();
     private HomePage hp;
     private boolean usePocketSphinx = false;
+    private boolean useTrained = true;
     private EvaluationDao eDao = new EvaluationDao();
     private String dir;
     
@@ -97,6 +102,8 @@ public class ReadingEvaluationPage implements Initializable {
         
         rbSphinx4.setSelected(true);
         rbPocketSphinx.setSelected(false);
+        rbTrained.setSelected(true);
+        rbUntrained.setSelected(false);
         
         if(OSCheck.isWindows)
             rbPocketSphinx.setDisable(true);
@@ -110,7 +117,14 @@ public class ReadingEvaluationPage implements Initializable {
             rbSphinx4.setSelected(false);
             usePocketSphinx = true;
         });
-        
+        rbTrained.setOnAction(e -> {
+            rbUntrained.setSelected(false);
+            useTrained = true;
+        });
+        rbUntrained.setOnAction(e -> {
+            rbTrained.setSelected(false);
+            useTrained = false;
+        });
         uploadButton.setOnAction(
             new EventHandler<ActionEvent>() {
                 @Override
@@ -190,15 +204,15 @@ public class ReadingEvaluationPage implements Initializable {
         for(int i=0; i < filenames.size(); i++){
             if(usePocketSphinx) {
                 Pocketsphinx ps = new Pocketsphinx();
-                ps.evaluateNormal(dir, String.format("%02d", i));
+                ps.evaluateNormal(dir, String.format("%02d", i),useTrained);
                 ps = new Pocketsphinx();
-                ps.evaluateForced(dir, String.format("%02d", i), selection.getTitle());
+                ps.evaluateForced(dir, String.format("%02d", i), selection.getTitle(),useTrained);
             }
             else {
                 Sphinx s = new Sphinx();
-                s.evaluateNormal(dir, String.format("%02d", i));
+                s.evaluateNormal(dir, String.format("%02d", i),useTrained);
                 s = new Sphinx();                
-                s.evaluateForced(dir, i, selection.getTitle());
+                s.evaluateForced(dir, i, selection.getTitle(),useTrained);
             }
         }
         

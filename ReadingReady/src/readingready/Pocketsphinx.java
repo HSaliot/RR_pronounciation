@@ -23,9 +23,13 @@ public class Pocketsphinx {
     
     private String selection;
     
-    public void evaluateNormal(String path, String wav) throws IOException {
-        String s;
-        String command= "pocketsphinx_continuous -hmm en-us-download -infile " +
+    public void evaluateNormal(String path, String wav, Boolean trained) throws IOException {
+        String s,acousticModel;
+        if(trained)
+            acousticModel = "en-us-trained";
+        else
+            acousticModel = "en-us-untrained";
+        String command= "pocketsphinx_continuous -hmm "+acousticModel+" -infile " +
                 path + "/wavs/" + wav + ".wav" + " -dict darkchocolate.dict -backtrace yes -fsgusefiller no -bestpath no";
         System.out.println(command);
         
@@ -65,9 +69,13 @@ public class Pocketsphinx {
             Files.write(out,strings,Charset.defaultCharset());   
     }
     
-    public void evaluateForced(String path, String i, String selection) throws IOException {
-        String s;
-        String command= "pocketsphinx_continuous -infile " + path + "/wavs/" + i + ".wav" + " -jsgf " +
+    public void evaluateForced(String path, String i, String selection,boolean trained) throws IOException {
+        String s,acousticModel;
+        if(trained)
+            acousticModel = "en-us-trained";
+        else
+            acousticModel = "en-us-untrained";
+        String command= "pocketsphinx_continuous -hmm "+acousticModel+" -infile " + path + "/wavs/" + i + ".wav" + " -jsgf " +
                 "src/readingready/resources/selections/" + selection.replace(" ", "").toLowerCase() + "/jsgf/" + i + ".jsgf" + 
                 " -dict darkchocolate.dict -backtrace yes -fsgusefiller no -bestpath no";
         System.out.println(command);
