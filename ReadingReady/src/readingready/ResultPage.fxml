@@ -10,6 +10,8 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
@@ -62,14 +64,31 @@
                         <Label fx:id="wavLabel" prefHeight="25.0" prefWidth="349.0" style="-fx-font-size: 12;" text="Dark Chocolate.wav" />
                      </children>
                   </HBox>
-                  <ScrollPane fx:id="spReadings" VBox.vgrow="ALWAYS">
-                     <content>
-                        <TextFlow fx:id="tfReadings" style="-fx-text-alignment: justify; -fx-line-spacing: 1;" textAlignment="JUSTIFY" />
-                     </content>
+                  <TabPane VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="2.5" />
                      </VBox.margin>
-                  </ScrollPane>
+                     <tabs>
+                        <Tab text="Normal">
+                           <content>
+                              <ScrollPane fx:id="spReadings">
+                                 <content>
+                                    <TextFlow fx:id="tfReadingsNormal" style="-fx-text-alignment: justify; -fx-line-spacing: 1;" textAlignment="JUSTIFY" />
+                                 </content>
+                              </ScrollPane>
+                           </content>
+                        </Tab>
+                        <Tab text="Forced">
+                           <content>
+                              <ScrollPane fx:id="spReadings1">
+                                 <content>
+                                    <TextFlow fx:id="tfReadingsForced" style="-fx-text-alignment: justify; -fx-line-spacing: 1;" textAlignment="JUSTIFY" />
+                                 </content>
+                              </ScrollPane>
+                           </content>
+                        </Tab>
+                     </tabs>
+                  </TabPane>
                </children>
             </VBox>
             <Separator orientation="VERTICAL" prefHeight="200.0" />

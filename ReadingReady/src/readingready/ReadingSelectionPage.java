@@ -114,6 +114,9 @@ public class ReadingSelectionPage implements Initializable {
         Hyperlink hyperlink;
         
         exist = doesFileExist();
+        wordsList.add(new Word("sil"));
+        String[] tempStrArr = { "SIL" };
+        wordsList.get(0).addPronunciation(tempStrArr, true);
         for (int i = 0; i < words.length; i++){
             if(i==0){
                    words[0]=words[0].replace(Character.toString(words[0].charAt(0)), "");
@@ -123,6 +126,7 @@ public class ReadingSelectionPage implements Initializable {
             
             if(exist == true){
                 wordsList.get(i).setPronounciations(selection.getTitle(), selection.getTitle().replace(" ", "").toLowerCase()+".dict");
+                
             }
             else{
                 wordsList.get(i).setPronounciations(selection.getTitle(), "cmudict-en-us.dict");

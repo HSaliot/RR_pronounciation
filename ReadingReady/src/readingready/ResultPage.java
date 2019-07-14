@@ -27,6 +27,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -60,7 +61,9 @@ public class ResultPage implements Initializable {
     @FXML
     private Button stopButton;
     @FXML
-    private TextFlow tfReadings;
+    private TextFlow tfReadingsNormal;
+    @FXML
+    private TextFlow tfReadingsForced;
     @FXML 
     private Label lRSWord;
     @FXML
@@ -74,14 +77,17 @@ public class ResultPage implements Initializable {
     private Stage thisStage;
     private Evaluation evaluation;
     private Clip clip;
-    private ArrayList<Utterance> wordsList = new ArrayList<>();
-    private String filename="";
+    private ArrayList<Utterance> wordsListNormal = new ArrayList<>();
+    private ArrayList<Utterance> wordsListForced = new ArrayList<>();
+    private String filenameNormal="";
+    private String filenameForced="";
     public ResultPage(Stage stage,String filename,Evaluation evaluation) throws IOException{
         thisStage = stage;
         this.evaluation = evaluation;
-        String pathFile = "src/readingready/resources/evaluations/" + evaluation.getStudent().toString()+"/"+String.format("%02d", evaluation.getId())+"/" + "pocketSphinxResultNormal.txt";
-        this.filename = pathFile;
-        System.out.println(pathFile);
+        String pathFileNormal = "src/readingready/resources/evaluations/" + evaluation.getStudent().toString()+"/"+String.format("%02d", evaluation.getId())+"/" + "pocketSphinxResultNormal.txt";
+        String pathFileForced = "src/readingready/resources/evaluations/" + evaluation.getStudent().toString()+"/"+String.format("%02d", evaluation.getId())+"/" + "pocketSphinxResultForced.txt";
+        this.filenameNormal = pathFileNormal;
+        this.filenameForced = pathFileForced;        
         thisStage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ResultPage.fxml"));
         loader.setController(this);
@@ -100,10 +106,11 @@ public class ResultPage implements Initializable {
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         vBoxRPParent.setPrefSize(Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
-        tfReadings.setPrefWidth(Screen.getPrimary().getBounds().getWidth()/2);
-        
+        tfReadingsNormal.setPrefWidth(Screen.getPrimary().getBounds().getWidth()/2);
+        tfReadingsForced.setPrefWidth(Screen.getPrimary().getBounds().getWidth()/2);
         try {
-            setPassage();
+            setPassage(true);
+            setPassage(false);
         } catch (IOException ex) {
             Logger.getLogger(ResultPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -162,8 +169,15 @@ public class ResultPage implements Initializable {
         stopButton.setDisable(true);
     }
 
-    public void setPassage() throws FileNotFoundException, IOException{
-        String filePath = filename;
+    public void setPassage(Boolean normal) throws FileNotFoundException, IOException{
+        String filePath;
+        ArrayList<Utterance> wordsList = new ArrayList<>();
+        
+        if(normal)
+            filePath = filenameNormal;
+        else
+            filePath = filenameForced;
+        
         File open = new File(filePath);
         FileReader fr = new FileReader(open);  //Creation of File Reader object
         BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
@@ -174,22 +188,33 @@ public class ResultPage implements Initializable {
         int tempInt=0;
         while((s=br.readLine())!=null){   //Reading Content from the file
             String[] strArray = s.split(" ");
-            wordsList.add(new Utterance(strArray[0]));
-            temp = new Hyperlink(wordsList.get(tempInt).getWord());
-            if(wordsList.get(tempInt).getAscr()>-1000)
-                temp.setFont(Font.font("",FontWeight.NORMAL,16)); 
-            else
-                temp.setFont(Font.font("",FontWeight.BOLD,16)); 
-            int index =tempInt;
-            temp.setOnAction((ActionEvent e) -> {
-                selectedWord(index);
-            });
-            texts.add(temp);
-            tempInt++;
+            if(!strArray[0].contains("***")){
+                wordsList.add(new Utterance(strArray[0]));
+                temp = new Hyperlink(wordsList.get(tempInt).getWord());
+                if(wordsList.get(tempInt).getAscr()>-1000)
+                    temp.setFont(Font.font("",FontWeight.NORMAL,16)); 
+                else
+                    temp.setFont(Font.font("",FontWeight.BOLD,16)); 
+                int index =tempInt;
+                temp.setOnAction((ActionEvent e) -> {
+                    selectedWord(index,normal);
+                });
+                texts.add(temp);
+                tempInt++;
+            }
         }
-        tfReadings.setTextAlignment(TextAlignment.JUSTIFY); 
-        ObservableList list = tfReadings.getChildren(); 
-        list.addAll(texts);
+        if(normal){
+            wordsListNormal = wordsList;
+            tfReadingsNormal.setTextAlignment(TextAlignment.JUSTIFY); 
+            ObservableList list = tfReadingsNormal.getChildren(); 
+            list.addAll(texts);
+        }
+        else{
+            wordsListForced = wordsList;
+            tfReadingsForced.setTextAlignment(TextAlignment.JUSTIFY); 
+            ObservableList list = tfReadingsForced.getChildren(); 
+            list.addAll(texts);
+        }
         
         br.close();
         fr.close();     
@@ -197,10 +222,14 @@ public class ResultPage implements Initializable {
 
     
     @FXML
-    private void selectedWord(int id){
-        Utterance sWord = wordsList.get(id);
+    private void selectedWord(int id,boolean normal){
+        Utterance sWord;
+        if(normal)
+            sWord = wordsListNormal.get(id);
+        else
+            sWord = wordsListForced.get(id);
+        
         lRSWord.setText(sWord.getWord());
-        progressBar.setProgress((double)(sWord.getAscr())/-1797);
 
     }
     
