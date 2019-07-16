@@ -116,13 +116,13 @@ public class Sphinx{
             ;
             else{
                 System.out.println(wordResults.get(i).toString());
-            String string = wordResults.get(i).getWord().getSpelling()+" "+wordResults.get(i).getTimeFrame().getStart()+" "+wordResults.get(i).getTimeFrame().getEnd()+" "+wordResults.get(i).getScore();
+            String string = wordResults.get(i).getWord().getSpelling()+" "+wordResults.get(i).getTimeFrame().getStart()+" "+wordResults.get(i).getTimeFrame().getEnd()+" "+wordResults.get(i).getScore()+" "+wordResults.get(i).getPronunciation().toString();
             strings.add(string);
             sentence = sentence + " " + wordResults.get(i).getWord().getSpelling();
             }
         }
         strings.set(0, "***"+sentence+"***");
-        Path out = (isAligned) ? Paths.get(path + "/sphinxResultForced.txt") : Paths.get(path + "/sphinxResultNormal.txt");
+        Path out = (isAligned) ? Paths.get(path + "/resultForced.txt") : Paths.get(path + "/resultNormal.txt");
         
         if(Files.exists(out))
             Files.write(out,strings,StandardOpenOption.APPEND);
