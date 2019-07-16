@@ -137,7 +137,7 @@ public class HomePage implements Initializable {
     }
     
     private void toFocus(Stage thisStage, Evaluation evaluation) throws IOException {
-        ResultPage resultPage = new ResultPage(thisStage,evaluation.getFile(),evaluation);
+        ResultPage resultPage = new ResultPage(thisStage, evaluation);
     }
     
     public void updateSelections(){
@@ -178,7 +178,7 @@ public class HomePage implements Initializable {
         tpEvaluations.getChildren().clear();
         evaluations = eDao.findAll(Evaluation.class);
         evaluations.forEach(evaluation -> {
-            Button button = iconF.createButtonL(Icon.CHECK_DOUBLE, "  Eval", "");
+            Button button = iconF.createButtonL(Icon.CHECK_DOUBLE, evaluation.getLabel(), "");
             button.getStyleClass().add("btnClear");
             button.setOnAction(e -> {
                 try {

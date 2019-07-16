@@ -47,7 +47,9 @@ public class Evaluation implements Serializable {
     
     private String label;
     
-    private String file;
+    private String folder;
+    
+    private boolean sphinxUsed;
 
     public Evaluation() {
     }
@@ -56,11 +58,20 @@ public class Evaluation implements Serializable {
         this.id = id;
     }
 
-    public Evaluation(Student student, ReadingSelection selection, String label) {
+    public Evaluation(Student student, ReadingSelection selection, String label, boolean sphinxUsed) {
+        this.folder = "src/resources/evaluations/" + student.toString() + "/";
         this.student = student;
         this.selection = selection;
-        this.file = String.format("%02d%02d", student.getId(), selection.getId());
-        this.label = (label.isEmpty()) ? "Eval(" + file + ")" : label;
+        this.label = (label.isEmpty()) ? "Eval(" + folder + ")" : label;
+        this.sphinxUsed = sphinxUsed;
+    }
+
+    public boolean isSphinxUsed() {
+        return sphinxUsed;
+    }
+
+    public void setSphinxUsed(boolean sphinxUsed) {
+        this.sphinxUsed = sphinxUsed;
     }
 
     public Integer getId() {
@@ -87,12 +98,20 @@ public class Evaluation implements Serializable {
         this.student = student;
     }
 
-    public String getFile() {
-        return file;
+    public String getFolder() {
+        return folder;
     }
 
-    public void setFile(String file) {
-        this.file = file;
+    public void setFolder(String folder) {
+        this.folder = folder;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
     
     public ReadingSelection getSelection(){

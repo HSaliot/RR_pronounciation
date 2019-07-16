@@ -199,7 +199,7 @@ public class ReadingEvaluationPage implements Initializable {
         String label = tfLabel.getText();
         
         
-        Evaluation evaluation = new Evaluation(student, selection, label);
+        Evaluation evaluation = new Evaluation(student, selection, label,!usePocketSphinx);
         eDao.create(evaluation);
         
         saveFileToProject();
