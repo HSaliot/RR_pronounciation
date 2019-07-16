@@ -83,7 +83,10 @@ public class ReadingEvaluationPage implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ReadingEvaluationPage.fxml"));
         loader.setController(this);
         //thisStage.initStyle(StageStyle.TRANSPARENT);
-        thisStage.setScene(new Scene(loader.load()));
+        Scene scene = new Scene(loader.load());
+        scene.getStylesheets().add(getClass().getResource("ReadingEvaluationPage.css").toExternalForm());
+        
+        thisStage.setScene(scene);
         thisStage.initModality(Modality.APPLICATION_MODAL);        
     }   
     /**
