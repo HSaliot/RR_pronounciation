@@ -109,7 +109,6 @@ public class Sphinx{
     public void makeReport(List<WordResult> wordResults, String path, boolean isAligned) throws IOException{
         ArrayList<String> strings = new ArrayList<>();
         String sentence = "";
-        strings.add("");
         System.out.print(wordResults.size());
         for(int i = 0 ; i < wordResults.size() ; i++){
           
@@ -122,9 +121,8 @@ public class Sphinx{
             sentence = sentence + " " + wordResults.get(i).getWord().getSpelling();
             }
         }
-        strings.add("");
         strings.set(0, "***"+sentence+"***");
-        Path out = (isAligned) ? Paths.get(path + "/resultForced.txt") : Paths.get(path + "/resultNormal.txt");
+        Path out = (isAligned) ? Paths.get(path + "/sphinxResultForced.txt") : Paths.get(path + "/sphinxResultNormal.txt");
         
         if(Files.exists(out))
             Files.write(out,strings,StandardOpenOption.APPEND);

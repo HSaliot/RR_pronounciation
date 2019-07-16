@@ -68,6 +68,8 @@ public class AddReadingSelectionPage implements Initializable {
     @FXML
     private Label lARSFilename;
     
+    @FXML
+    private Button btnARSCancel;
     private Stage thisStage = new Stage();
     
     private final FileChooser fileChooser = new FileChooser();
@@ -86,8 +88,11 @@ public class AddReadingSelectionPage implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AddReadingSelectionPage.fxml"));
         loader.setController(this);
         //thisStage.initStyle(StageStyle.TRANSPARENT);
-        thisStage.setScene(new Scene(loader.load()));
-        thisStage.initModality(Modality.APPLICATION_MODAL);    
+        Scene scene = new Scene(loader.load());
+        scene.getStylesheets().add(getClass().getResource("AddReadingSelectionPage.css").toExternalForm());
+        
+        thisStage.setScene(scene);
+                thisStage.initModality(Modality.APPLICATION_MODAL);    
         this.hp = hp;
     }
     
@@ -145,6 +150,9 @@ public class AddReadingSelectionPage implements Initializable {
                 thisStage.close();
             }
             
+        });;
+        btnARSCancel.setOnAction(e -> {
+            thisStage.close();
         });;
     }    
 
