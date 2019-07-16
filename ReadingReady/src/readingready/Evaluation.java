@@ -59,7 +59,7 @@ public class Evaluation implements Serializable {
     }
 
     public Evaluation(Student student, ReadingSelection selection, String label, boolean sphinxUsed) {
-        this.folder = "src/resources/evaluations/" + student.toString() + "/";
+        this.folder = "src/readingready/resources/evaluations/" + student.toString() + "/";
         this.student = student;
         this.selection = selection;
         this.label = (label.isEmpty()) ? "Eval(" + folder + ")" : label;

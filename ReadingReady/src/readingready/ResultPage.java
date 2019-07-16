@@ -21,7 +21,9 @@ import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -79,7 +81,7 @@ public class ResultPage implements Initializable {
     private List<Clip> clips = new ArrayList<>();
     
     private boolean sphinxUsed;
-    private double threshold;
+    private double threshold=-5.0E8;
     
     public ResultPage(Stage stage, Evaluation evaluation) throws IOException{
         thisStage = stage;
@@ -87,6 +89,12 @@ public class ResultPage implements Initializable {
         this.sphinxUsed = evaluation.isSphinxUsed();
         folder = evaluation.getFolder() + String.format("%02d/", evaluation.getId()); // folder <-- "src/resources/evaluations/<user.toString()>/"
         System.out.println(folder);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ResultPage.fxml"));
+        loader.setController(this);
+        Scene scene = new Scene(loader.load());
+        scene.getStylesheets().add(getClass().getResource("ResultPage.css").toExternalForm());
+        thisStage.setScene(scene);
+
     }
     
     public void show(){
@@ -98,8 +106,11 @@ public class ResultPage implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         setStaticUI();
         try {
+            System.out.println("0");
             setPassageNormal(); 
+            System.out.println("1");
             setPassageForced();
+            System.out.println("2");
         } catch (IOException ex) {
             Logger.getLogger(ResultPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedAudioFileException ex) {
@@ -147,7 +158,7 @@ public class ResultPage implements Initializable {
                 strArray = line.split(" ");
                 word = strArray[0];
                 ascr = Double.parseDouble(strArray[3]);
-                pronunciation = (sphinxUsed) ? strArray[4] : null;
+                pronunciation = (sphinxUsed) ? "temp" : null;//strArray[4] : null;
 
                 hLink = new Hyperlink(word);
                 hLink.setFont((ascr > threshold) ? reg : bold); 
@@ -178,7 +189,7 @@ public class ResultPage implements Initializable {
         
     public void setPassageForced() throws FileNotFoundException, IOException, UnsupportedAudioFileException, LineUnavailableException{
         BufferedReader br = new BufferedReader(new FileReader(new File(folder + "resultForced.txt"))); 
-
+        System.out.println("error");
         String line, word, pronunciation;
         String[] strArray;
         Hyperlink hLink;
@@ -186,15 +197,20 @@ public class ResultPage implements Initializable {
         AudioInputStream audioInputStream;
         List<Hyperlink> readings = new ArrayList<>();
         int idx = 0, sentence = -1;
-        
+        System.out.println("abot nga ba?");
         while((line = br.readLine()) != null){
             if(line.startsWith("***"))
                 sentence++;
             else {
+                System.out.println("abot?");
                 strArray = line.split(" ");
+                System.out.println("o hindi");
                 word = strArray[0];
+                System.out.println("0");
                 ascr = Double.parseDouble(strArray[3]);
+                System.out.println("1");
                 pronunciation = (sphinxUsed) ? strArray[4] : null;
+                System.out.println("2");
 
                 hLink = new Hyperlink(word);
                 hLink.setFont((ascr > threshold) ? reg : bold); 
@@ -217,6 +233,7 @@ public class ResultPage implements Initializable {
 
                 idx++;
             }
+            System.out.println("aabot nga ba?");
         }
         
         ObservableList list = tfReadingsForced.getChildren(); 
