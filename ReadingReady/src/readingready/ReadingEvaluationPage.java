@@ -27,6 +27,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
@@ -112,19 +113,23 @@ public class ReadingEvaluationPage implements Initializable {
             rbPocketSphinx.setDisable(true);
         
         rbSphinx4.setOnAction(e -> {
+            rbSphinx4.setSelected(true);
             rbPocketSphinx.setSelected(false);
             usePocketSphinx = false;
         });
         
         rbPocketSphinx.setOnAction(e -> {
+            rbPocketSphinx.setSelected(true);
             rbSphinx4.setSelected(false);
             usePocketSphinx = true;
         });
         rbTrained.setOnAction(e -> {
+            rbTrained.setSelected(true);
             rbUntrained.setSelected(false);
             useTrained = true;
         });
         rbUntrained.setOnAction(e -> {
+            rbUntrained.setSelected(true);
             rbTrained.setSelected(false);
             useTrained = false;
         });
@@ -148,7 +153,15 @@ public class ReadingEvaluationPage implements Initializable {
         
         submitButton.setOnAction(e -> {
             try {
-                submit();
+                if(list!=null&&cbSelection.getValue()!=null&&cbStudent.getValue()!=null)
+                    submit();
+                else {                   
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error dialog");
+                    alert.setHeaderText("Please complete the form.");
+                    alert.setContentText(null);
+                    alert.showAndWait();
+                }
             } catch (IOException ex) {
                 Logger.getLogger(ReadingEvaluationPage.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -194,22 +207,35 @@ public class ReadingEvaluationPage implements Initializable {
     }
     
     public void submit() throws IOException{
+        
         ReadingSelection selection = (ReadingSelection) cbSelection.getValue();
         Student student = (Student) cbStudent.getValue();
         String label = tfLabel.getText();
-        
-        
-        Evaluation evaluation = new Evaluation(student, selection, label,!usePocketSphinx);
+        Evaluation evaluation;
+        int tempInt= 1;
+        if(eDao.findAll(Evaluation.class).size()>0){
+            evaluation = eDao.findNewest();
+            tempInt = (int)evaluation.getId().intValue()+1;
+        }
+
+        if(label.isEmpty()){
+            label =  "Eval("+String.format("%02d", tempInt)+" "+student.getLName()+")";
+            evaluation = new Evaluation(student, selection,label,!usePocketSphinx);
+        }
+        else
+            evaluation = new Evaluation(student, selection, label,!usePocketSphinx);
         eDao.create(evaluation);
         
         saveFileToProject();
-        
+        String tempSelection = cbSelection.getValue().toString();
+        tempSelection = tempSelection.replace(" ", "");
+        tempSelection = tempSelection.toLowerCase();
         for(int i=0; i < filenames.size(); i++){
             if(usePocketSphinx) {
                 Pocketsphinx ps = new Pocketsphinx();
-                ps.evaluateNormal(dir, String.format("%02d", i),useTrained);
+                ps.evaluateNormal(dir, String.format("%02d", i),useTrained,tempSelection);
                 ps = new Pocketsphinx();
-                ps.evaluateForced(dir, String.format("%02d", i), selection.getTitle(),useTrained);
+                ps.evaluateForced(dir, String.format("%02d", i), selection.getTitle(),useTrained,tempSelection);
             }
             else {
                 Sphinx s = new Sphinx();

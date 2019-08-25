@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -69,6 +70,13 @@ public class AddStudentPage implements Initializable {
         btnASSubmit.setOnAction((ActionEvent e) -> {
             if(tfASFirstName.getText().length()!=0&&tfASSurname.getText().length()!=0&&cbASGrade.getValue()!=null)
                 submit();
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error dialog");
+                alert.setHeaderText("Please complete the form.");
+                alert.setContentText(null);
+                alert.showAndWait();
+            }
         });
         btnASPCancel.setOnAction(e -> {
             close();

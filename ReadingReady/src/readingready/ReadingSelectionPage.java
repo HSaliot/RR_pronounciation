@@ -34,6 +34,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -61,9 +62,10 @@ public class ReadingSelectionPage implements Initializable {
     @FXML
     private VBox vBoxPronunciations;
     @FXML
-    private VBox vBoxRSParent;
+    private StackPane stackPane;
     @FXML
-    private MenuItem btnBack;
+    private Button btnBack;
+    
     private Stage thisStage;
     ReadingSelection selection;
     private ArrayList<Word> wordsList = new ArrayList<>();
@@ -115,18 +117,15 @@ public class ReadingSelectionPage implements Initializable {
         
         exist = doesFileExist();
         for (int i = 0; i < words.length; i++){
-            if(i==0){
-                   words[0]=words[0].replace(Character.toString(words[0].charAt(0)), "");
-            }
             hyperlink = new Hyperlink(words[i]+" ");
             wordsList.add(new Word(words[i]));
             
             if(exist == true){
-                wordsList.get(i).setPronounciations(selection.getTitle(), selection.getTitle().replace(" ", "").toLowerCase()+".dict");
+                wordsList.get(i).setPronounciations(selection.getTitle(), "dict/"+selection.getTitle().replace(" ", "").toLowerCase()+".dict");
                 
             }
             else{
-                wordsList.get(i).setPronounciations(selection.getTitle(), "cmudict-en-us.dict");
+                wordsList.get(i).setPronounciations(selection.getTitle(), "dict/"+"cmudict-en-us.dict");
             }
             
             if(wordsList.get(i).getPronunciations().size()>0) {
@@ -145,7 +144,7 @@ public class ReadingSelectionPage implements Initializable {
             wordsList.get(i).setLastIndex();
         }
         Word word = new Word("sil");
-        word.setPronounciations(selection.getTitle(),"cmudict-en-us.dict");
+        word.setPronounciations(selection.getTitle(),"dict/"+"cmudict-en-us.dict");
 
         tfReadings.setTextAlignment(TextAlignment.JUSTIFY); 
         ObservableList list = tfReadings.getChildren(); 
@@ -155,7 +154,7 @@ public class ReadingSelectionPage implements Initializable {
     @Override
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        vBoxRSParent.setPrefSize(Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
+        stackPane.setPrefSize(Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
         tfReadings.setPrefWidth(Screen.getPrimary().getBounds().getWidth()/2);
         
         lRSTitle.setText(selection.getTitle());
@@ -178,6 +177,7 @@ public class ReadingSelectionPage implements Initializable {
             phonemeBuilderPage.show();
             
         });
+        
         btnBack.setOnAction((ActionEvent e) -> {
             try {
                 HomePage home = new HomePage(thisStage);
@@ -185,6 +185,7 @@ public class ReadingSelectionPage implements Initializable {
                 Logger.getLogger(ReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        
 
     }
     
@@ -195,7 +196,8 @@ public class ReadingSelectionPage implements Initializable {
         temp = temp.replace(",", ""); //replace all , character
         temp = temp.replace("“", ""); //replace all “ character
         temp = temp.replace("”", ""); //replace all ” character
-        temp = temp.replace("’", ""); //replace all ’ character
+        temp = temp.replace("?", ""); //replace all ? character
+        temp = temp.replace("’", "'"); //replace all ? character
         
         temp = temp.toLowerCase();
         lRSWord.setText(temp);        
@@ -255,7 +257,7 @@ public class ReadingSelectionPage implements Initializable {
     
     private boolean doesFileExist(){
         boolean exist;
-        Path out = Paths.get(selection.getTitle().replace(" ", "").toLowerCase()+".dict");
+        Path out = Paths.get("dict/"+selection.getTitle().replace(" ", "").toLowerCase()+".dict");
         if(Files.exists(out))
             exist = true;
         else 
@@ -265,7 +267,7 @@ public class ReadingSelectionPage implements Initializable {
     
     private void createDICT() throws IOException{
         Collections.sort(strings);
-        Path out = Paths.get(selection.getTitle().replace(" ", "").toLowerCase() + ".dict");
+        Path out = Paths.get("dict/"+selection.getTitle().replace(" ", "").toLowerCase() + ".dict");
         Files.write(out,strings,Charset.defaultCharset());
     }
 
@@ -274,7 +276,8 @@ public class ReadingSelectionPage implements Initializable {
         passage = passage.replace(";", "");
         passage = passage.replace("“", ""); //replace all “ character
         passage = passage.replace("”", ""); //replace all ” character
-        passage = passage.replace("’", ""); //replace all ’ character
+        passage = passage.replace("?", ""); //replace all ? character
+        passage = passage.replace("’", "'"); //replace all ’ character with '
         passage = passage.toLowerCase();
         String[] sentences = passage.split("\\.");
         String jsgf;

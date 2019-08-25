@@ -125,3 +125,41 @@ and open the template in the editor.
 .iconClass{
     -fx-padding: 5 10 5 10;
 }
+#vBox1{
+    -fx-background-color: #087830;
+}
+
+#vBox2{
+    -fx-background-color: #087830;
+}
+
+#vBox3{
+    -fx-alignment: CENTER;
+}
+
+#vBox4{
+    -fx-alignment: TOP_CENTER;
+    -fx-background-color: white;
+    -fx-padding: 25 25 25 25;
+}
+
+#label1{
+    -fx-font-size: 2em;
+    -fx-font-weight: bold;
+    -fx-text-fill: whitesmoke;
+}
+#hBox2{
+ -fx-alignment: BOTTOM_CENTER;   
+}
+
+#btnBack {
+    -fx-border-radius: 30;
+    -fx-font-size: 20px;
+    -fx-background-color: transparent;
+}
+.glyph-icon{
+    -fx-fill:#DEB887;
+}
+#btnBack:hover .glyph-icon{
+    -fx-fill: highlight;
+}

@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -108,12 +109,14 @@ public class AddReadingSelectionPage implements Initializable {
         hBoxARSFile.setDisable(true);
         hBoxARSType.setDisable(true);
         rbARSFile.setOnAction(e -> {
+            rbARSFile.setSelected(true);
             rbARSType.setSelected(false);
             hBoxARSFile.setDisable(false);
             hBoxARSType.setDisable(true);
             typed = false;
         });
         rbARSType.setOnAction(e -> {
+            rbARSType.setSelected(true);
             rbARSFile.setSelected(false);
             hBoxARSFile.setDisable(true);
             hBoxARSType.setDisable(false);
@@ -134,20 +137,30 @@ public class AddReadingSelectionPage implements Initializable {
                         Logger.getLogger(AddReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                if(!typed && file.isFile()){
+                if(!typed && file!=null){
                      try {
                         saveFileToProject();
+                        ReadingSelection rs = new ReadingSelection(title);
+                        rsDao.create(rs);
+                        hp.updateSelections();
+                        thisStage.close();
                     } catch (IOException ex) {
                         Logger.getLogger(AddReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
-                
-                ReadingSelection rs = new ReadingSelection(title);
-                rsDao.create(rs);
-                hp.updateSelections();
-                
-                
-                thisStage.close();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error dialog");
+                    alert.setHeaderText("Please enter the passage or choose a file with the passage.");
+                    alert.setContentText(null);
+                    alert.showAndWait();
+                }              
+            }
+            else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error dialog");
+                    alert.setHeaderText("Please enter the reading selection title");
+                    alert.setContentText(null);
+                    alert.showAndWait();
             }
             
         });;

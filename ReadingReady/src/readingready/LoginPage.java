@@ -15,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -111,14 +113,22 @@ public class LoginPage implements Initializable {
             
             if(uName.isEmpty() || password.isEmpty()){
                 System.out.println("Please complete the form");
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error dialog");
+                alert.setHeaderText("Please complete the form");
+                alert.setContentText(null);
+                alert.showAndWait();
             }
             else{
-                tfLUsername.clear();
-                pfLPassword.clear();
             
                 User user = uDao.findAndAuthenticate(uName, password);
-                if(user == null)
-                    System.out.println("Wrong username or password");
+                if(user == null) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error dialog");
+                    alert.setHeaderText("Wrong username or password");
+                    alert.setContentText(null);
+                    alert.showAndWait();
+                }
                 else
                     try {
                         toHome(user);
@@ -126,6 +136,7 @@ public class LoginPage implements Initializable {
                     Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
                     }
             }
+            pfLPassword.clear();
         });
     }    
     

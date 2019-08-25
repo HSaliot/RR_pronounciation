@@ -35,12 +35,14 @@ public class Sphinx{
     private Configuration configuration;
     private StreamSpeechRecognizer recognizer;
     private SpeechAligner aligner;
+    private String strTrained = "models/en-us-both80";
+    private String strUntrained = "models/en-us-untrained";
 
     public void initialize() throws IOException{
         configuration = new Configuration();
         configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
         //configuration.setAcousticModelPath("en-us-adapt"); //adapted
-        configuration.setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
+        configuration.setDictionaryPath("cmudict-en-us.dict");
         configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
         recognizer = new StreamSpeechRecognizer(configuration);
     }
@@ -58,9 +60,13 @@ public class Sphinx{
     public void evaluateForced(String path, int i, String selection, boolean trained) throws FileNotFoundException, IOException{
         initialize();
         if(trained)
-            setAcousticModel("en-us-trained");
+            configuration.setAcousticModelPath(strTrained);
         else
-            setAcousticModel("en-us-untrained");
+            configuration.setAcousticModelPath(strUntrained);
+        
+        recognizer = new StreamSpeechRecognizer(configuration);
+
+        
         String filename = "src/readingready/resources/selections/" + selection.replace(" ", "").toLowerCase() + "/passage.txt";
         File open = new File(filename);
         FileReader fr = new FileReader(open);  //Creation of File Reader object
@@ -95,9 +101,11 @@ public class Sphinx{
     public void evaluateNormal(String path, String iString, boolean trained) throws IOException{
         initialize();
         if(trained)
-            setAcousticModel("en-us-trained");
+            configuration.setAcousticModelPath(strTrained);
         else
-            setAcousticModel("en-us-untrained");
+            configuration.setAcousticModelPath(strUntrained);
+        
+        recognizer = new StreamSpeechRecognizer(configuration);
 
         recognizer.startRecognition(new FileInputStream(new File(path + "/wavs/" + iString + ".wav")));
         SpeechResult results = recognizer.getResult();
@@ -121,7 +129,8 @@ public class Sphinx{
             sentence = sentence + " " + wordResults.get(i).getWord().getSpelling();
             }
         }
-        strings.set(0, "***"+sentence+"***");
+        if(strings.size()!=0)
+            strings.set(0, "***"+sentence+"***");
         Path out = (isAligned) ? Paths.get(path + "/resultForced.txt") : Paths.get(path + "/resultNormal.txt");
         
         if(Files.exists(out))

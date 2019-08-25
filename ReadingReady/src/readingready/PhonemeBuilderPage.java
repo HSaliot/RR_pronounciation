@@ -42,7 +42,8 @@ public class PhonemeBuilderPage implements Initializable {
     private Button btnPB31,btnPB32,btnPB33,btnPB34,btnPB35,btnPB36,btnPB37,btnPB38,btnPB39,btnPB40;
     @FXML
     private TextField tfPBPhoneme;
-    
+    @FXML
+    private Button btnCancel;
     private String title;
     private Word word;
     private ReadingSelectionPage rsp;
@@ -71,6 +72,9 @@ public class PhonemeBuilderPage implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(PhonemeBuilderPage.class.getName()).log(Level.SEVERE, null, ex);
             }
+        });
+        btnCancel.setOnAction((ActionEvent e) -> {
+            close();
         });
         btnPB2.setOnAction((ActionEvent e) -> {
             tfPBPhoneme.appendText(btnPB2.getText()+" ");
@@ -210,7 +214,7 @@ public class PhonemeBuilderPage implements Initializable {
     
     public void appendToFile(String textToAppend) throws IOException{  
     BufferedWriter writer = new BufferedWriter(
-                                new FileWriter(title.replace(" ", "").toLowerCase()+".dict", true)  //Set true for append mode
+                                new FileWriter("dict/"+title.replace(" ", "").toLowerCase()+".dict", true)  //Set true for append mode
                             ); 
     writer.newLine();   //Add new line
     writer.write(textToAppend);

@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,10 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +33,9 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -40,16 +46,19 @@ import javafx.stage.Stage;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import readingready.nodeFactory.Icon;
+import readingready.nodeFactory.IconFactory;
 
 /**
  *
  * @author Hannah Saliot
  */
 public class ResultPage implements Initializable {
-    @FXML    private VBox vBoxRPParent;
-    @FXML    private MenuItem btnBack;
+    @FXML    private StackPane stackPane;
+    @FXML    private Button btnBack;
 
     @FXML    private Label labelID;
     @FXML    private Label labelSelection;
@@ -60,17 +69,23 @@ public class ResultPage implements Initializable {
     @FXML    private Label lRSWord;
     @FXML    private Button playButton;
     @FXML    private Button stopButton;
-    @FXML    private ProgressBar progressBar;
+    @FXML    private Button pauseButton;
+    @FXML    private Label lblScore;
 
     @FXML   private Tab tabNormal;
     @FXML   private Tab tabForced;
     @FXML   private TextFlow tfReadingsNormal;
     @FXML   private TextFlow tfReadingsForced;
+    @FXML   private ScrollPane spReadings;
+    @FXML   private ProgressBar progress;
     
     private Stage thisStage;
     private Evaluation evaluation;
     private String folder;
     private Clip clip;
+    private long pauseTime;
+    private final IconFactory iconF = new IconFactory();
+
     
     private final Font reg = Font.font("", FontWeight.NORMAL, 16);
     private final Font bold = Font.font("", FontWeight.BOLD, 16);
@@ -78,17 +93,15 @@ public class ResultPage implements Initializable {
     private List<Utterance> utterancesNormal = new ArrayList<>();
     private List<Utterance> utterancesForced = new ArrayList<>();
     private Map<Utterance, Integer> wordSentenceMap = new HashMap<>();
-    private List<Clip> clips = new ArrayList<>();
-    
+    private List<String> clipsDir = new ArrayList<>();
+    private String currentClipDir;
     private boolean sphinxUsed;
-    private double threshold=-5.0E8;
     
     public ResultPage(Stage stage, Evaluation evaluation) throws IOException{
         thisStage = stage;
         this.evaluation = evaluation;
         this.sphinxUsed = evaluation.isSphinxUsed();
         folder = evaluation.getFolder() + String.format("%02d/", evaluation.getId()); // folder <-- "src/resources/evaluations/<user.toString()>/"
-        System.out.println(folder);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ResultPage.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
@@ -106,11 +119,8 @@ public class ResultPage implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         setStaticUI();
         try {
-            System.out.println("0");
             setPassageNormal(); 
-            System.out.println("1");
             setPassageForced();
-            System.out.println("2");
         } catch (IOException ex) {
             Logger.getLogger(ResultPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedAudioFileException ex) {
@@ -118,25 +128,68 @@ public class ResultPage implements Initializable {
         } catch (LineUnavailableException ex) {
             Logger.getLogger(ResultPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+        playButton.setOnAction((ActionEvent e) -> {
+            try {
+                playWavFile();
+            } catch (LineUnavailableException ex) {
+            } catch (IOException ex) {
+            } catch (UnsupportedAudioFileException ex) {
+            }
+            
+        });
+        stopButton.setOnAction((ActionEvent e) -> {
+            stopWavFile();          
+        });
+        pauseButton.setOnAction((ActionEvent e) -> {
+            pauseWavFile();         
+        });
     }
     
     private void playWavFile() throws LineUnavailableException, IOException, UnsupportedAudioFileException{
-    /*
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/readingready/resources/"+"aron.wav").getAbsoluteFile()); 
-        clip = AudioSystem.getClip(); 
-        clip.open(audioInputStream); ; 
-        clip.setLoopPoints(0, -1);
-        clip.start();
+        if(clip!=null)
+            clip.stop();
+        pauseButton.setDisable(false);
         stopButton.setDisable(false);
-    */
+        
+        if(pauseTime == 0){
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(currentClipDir).getAbsoluteFile()); 
+            clip = AudioSystem.getClip(); 
+            clip.open(audioInputStream); ; 
+            clip.setLoopPoints(0, -1);
+            clip.start();
+        }
+        else
+        {
+            clip.setMicrosecondPosition(pauseTime);
+            clip.start();
+        }
+        
+        Task task = taskCreator(clip.getMicrosecondLength()/1000000,pauseTime/1000000);
+        progress.progressProperty().unbind();
+        progress.progressProperty().bind(task.progressProperty());
+        new Thread(task).start();
     }
     private void stopWavFile(){
-        clip.stop();
+        pauseButton.setDisable(true);
         stopButton.setDisable(true);
+        pauseTime = 0;
+        clip.stop();
+        Task task = taskCreator(1,0.9);
+        progress.progressProperty().unbind();
+        progress.progressProperty().bind(task.progressProperty());
+        new Thread(task).start();
+    }
+    private void pauseWavFile(){
+        pauseButton.setDisable(true);
+        pauseTime = clip.getMicrosecondPosition();
+        clip.stop();
+        Task task = taskCreator(1,0.9);
+        progress.progressProperty().unbind();
+        progress.progressProperty().bind(task.progressProperty());
+        new Thread(task).start();
     }
 
     public void setPassageNormal() throws FileNotFoundException, IOException, UnsupportedAudioFileException, LineUnavailableException{
-        System.out.println(folder);
         BufferedReader br = new BufferedReader(new FileReader(new File(folder + "resultNormal.txt"))); 
         String line, word, pronunciation;
         String[] strArray;
@@ -149,10 +202,8 @@ public class ResultPage implements Initializable {
         while((line = br.readLine()) != null){
             if(line.startsWith("***")){
                 sentence++;
-                audioInputStream = AudioSystem.getAudioInputStream(
-                        new File(folder + String.format("wavs/%02d.wav", sentence))
-                        .getAbsoluteFile()); 
-                clips.add(AudioSystem.getClip());
+                String temp = folder + String.format("wavs/%02d.wav", sentence);
+                clipsDir.add(temp);
             }
             else {
                 strArray = line.split(" ");
@@ -161,7 +212,6 @@ public class ResultPage implements Initializable {
                 pronunciation = (sphinxUsed) ? "temp" : null;//strArray[4] : null;
 
                 hLink = new Hyperlink(word);
-                hLink.setFont((ascr > threshold) ? reg : bold); 
                 readings.add(hLink);
 
                 Utterance utterance = new Utterance(
@@ -185,11 +235,11 @@ public class ResultPage implements Initializable {
         
         ObservableList list = tfReadingsNormal.getChildren(); 
         list.addAll(readings);
+        setCurrWav(0);
     }
         
     public void setPassageForced() throws FileNotFoundException, IOException, UnsupportedAudioFileException, LineUnavailableException{
         BufferedReader br = new BufferedReader(new FileReader(new File(folder + "resultForced.txt"))); 
-        System.out.println("error");
         String line, word, pronunciation;
         String[] strArray;
         Hyperlink hLink;
@@ -197,23 +247,16 @@ public class ResultPage implements Initializable {
         AudioInputStream audioInputStream;
         List<Hyperlink> readings = new ArrayList<>();
         int idx = 0, sentence = -1;
-        System.out.println("abot nga ba?");
         while((line = br.readLine()) != null){
             if(line.startsWith("***"))
                 sentence++;
             else {
-                System.out.println("abot?");
                 strArray = line.split(" ");
-                System.out.println("o hindi");
                 word = strArray[0];
-                System.out.println("0");
                 ascr = Double.parseDouble(strArray[3]);
-                System.out.println("1");
                 pronunciation = (sphinxUsed) ? strArray[4] : null;
-                System.out.println("2");
 
                 hLink = new Hyperlink(word);
-                hLink.setFont((ascr > threshold) ? reg : bold); 
                 readings.add(hLink);
 
                 Utterance utterance = new Utterance(
@@ -233,7 +276,6 @@ public class ResultPage implements Initializable {
 
                 idx++;
             }
-            System.out.println("aabot nga ba?");
         }
         
         ObservableList list = tfReadingsForced.getChildren(); 
@@ -243,20 +285,20 @@ public class ResultPage implements Initializable {
     private void selectedWordNormal(int id){
         Utterance sWord = utterancesNormal.get(id);
         lRSWord.setText(sWord.getWord());
-        progressBar.setProgress((double)(sWord.getAscr()) / threshold);
+        lblScore.setText(Double.toString(sWord.getAscr()));
     }
     
     private void selectedWordForced(int id){
         Utterance sWord = utterancesForced.get(id);
         lRSWord.setText(sWord.getWord());
-        progressBar.setProgress((double)(sWord.getAscr()) / threshold);
+        lblScore.setText(Double.toString(sWord.getAscr()));
     }
 
     private void setStaticUI() {
-        vBoxRPParent.setPrefSize(Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
+        stackPane.setPrefSize(Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
         tfReadingsNormal.setPrefWidth(Screen.getPrimary().getBounds().getWidth()/2);
         tfReadingsForced.setPrefWidth(Screen.getPrimary().getBounds().getWidth()/2);
-        
+
         labelSelection.setText(evaluation.getSelection().getTitle());
         labelStudent.setText(evaluation.getStudent().toString());
         labelDateRecorded.setText(evaluation.getDatedone().toString());
@@ -272,9 +314,30 @@ public class ResultPage implements Initializable {
         
         tfReadingsNormal.setTextAlignment(TextAlignment.JUSTIFY); 
         tfReadingsForced.setTextAlignment(TextAlignment.JUSTIFY); 
+        
+        pauseButton.setDisable(true);
+        stopButton.setDisable(true);
+
     }
 
     private void setCurrWav(int sentence) {
-        clip = clips.get(sentence);
+        pauseButton.setDisable(true);
+        stopButton.setDisable(true);
+        currentClipDir = clipsDir.get(sentence);
+        pauseTime = 0;
     }
+    
+    private Task taskCreator(long seconds,double start){
+        return new Task() {
+            @Override
+            protected Object call() throws Exception {
+                for(double i=start; i<seconds;i++){
+                 Thread.sleep(1000);
+                 updateProgress(i+1, seconds);
+                }
+                return true;
+            }
+        };
+    }
+
 }

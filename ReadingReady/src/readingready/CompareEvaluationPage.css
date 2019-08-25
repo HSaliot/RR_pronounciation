@@ -1,0 +1,45 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+#vBox1{
+    -fx-background-color: #087830;
+}
+
+#vBox2{
+    -fx-background-color: #087830;
+}
+
+#vBox3{
+    -fx-alignment: CENTER;
+}
+
+#vBox4{
+    -fx-alignment: TOP_CENTER;
+    -fx-background-color: white;
+    -fx-padding: 25 25 25 25;
+}
+
+#label1{
+    -fx-font-size: 2em;
+    -fx-font-weight: bold;
+    -fx-text-fill: whitesmoke;
+}
+#hBox2{
+ -fx-alignment: BOTTOM_CENTER;   
+}
+
+#lblStudent1,#lblStudent2,#lblEval1,#lblEval2 {
+    -fx-font-size: 1.5em;
+    -fx-text-fill: #DEB887;
+}
+#listViewEval2,#listViewEval1 {
+    -fx-font-size: 1.25em;
+}
+.list-view .list-cell {
+-fx-text-fill: #087830;
+}
+.list-view .list-cell:selected{
+-fx-background-color: lightgrey;
+-fx-text-fill: #087830;
+}
