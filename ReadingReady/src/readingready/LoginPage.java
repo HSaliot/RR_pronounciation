@@ -112,7 +112,6 @@ public class LoginPage implements Initializable {
             String password = pfLPassword.getText();
             
             if(uName.isEmpty() || password.isEmpty()){
-                System.out.println("Please complete the form");
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error dialog");
                 alert.setHeaderText("Please complete the form");

@@ -42,7 +42,7 @@ public class Sphinx{
         configuration = new Configuration();
         configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
         //configuration.setAcousticModelPath("en-us-adapt"); //adapted
-        configuration.setDictionaryPath("cmudict-en-us.dict");
+        configuration.setDictionaryPath("dict/cmudict-en-us.dict");
         configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
         recognizer = new StreamSpeechRecognizer(configuration);
     }

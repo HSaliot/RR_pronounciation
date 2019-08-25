@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -65,12 +66,21 @@ public class PhonemeBuilderPage implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         lPBWord.setText(word.getWord());
         btnPBSubmit.setOnAction((ActionEvent e) -> {
-            try {
-                appendToFile(getFinal());
-                rsp.addedPronunciation(word.getWord(),tfPBPhoneme.getText());
-                close();
-            } catch (IOException ex) {
-                Logger.getLogger(PhonemeBuilderPage.class.getName()).log(Level.SEVERE, null, ex);
+            if(tfPBPhoneme.getText().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error dialog");
+                alert.setHeaderText("Please complete the form");
+                alert.setContentText(null);
+                alert.showAndWait();
+            }
+            else {
+                try {
+                    appendToFile(getFinal());
+                    rsp.addedPronunciation(word.getWord(),tfPBPhoneme.getText());
+                    close();
+                } catch (IOException ex) {
+                    Logger.getLogger(PhonemeBuilderPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         btnCancel.setOnAction((ActionEvent e) -> {

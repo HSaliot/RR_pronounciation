@@ -230,7 +230,7 @@ public class ReadingSelectionPage implements Initializable {
         setSelectedWord(word);
     }
     public void  deleteInFile(Word word,int index) throws FileNotFoundException, IOException{
-        File inputFile = new File(selection.getTitle().replace(" ", "").toLowerCase()+".dict");
+        File inputFile = new File("dict/"+selection.getTitle().replace(" ", "").toLowerCase()+".dict");
         BufferedReader reader = new BufferedReader(new FileReader(inputFile));
         String currentLine;
         ArrayList<String> tempStrings = new ArrayList<>();
