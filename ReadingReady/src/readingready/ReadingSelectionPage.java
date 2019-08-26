@@ -6,9 +6,11 @@
 package readingready;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -30,7 +32,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -58,7 +62,9 @@ public class ReadingSelectionPage implements Initializable {
     @FXML
     private VBox vBoxPronunciations;
     @FXML
-    private VBox vBoxRSParent;
+    private StackPane stackPane;
+    @FXML
+    private Button btnBack;
     
     private Stage thisStage;
     ReadingSelection selection;
@@ -79,7 +85,8 @@ public class ReadingSelectionPage implements Initializable {
     }
     
     public String getPassage() throws FileNotFoundException, IOException{
-        String filename = "src/readingready/resources/selections/" + selection.getTitle() + ".txt";
+        
+        String filename = "src/readingready/resources/selections/" + selection.getTitle().replace(" ", "").toLowerCase() + "/passage.txt";
         File open = new File(filename);
         FileReader fr = new FileReader(open);  //Creation of File Reader object
         BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
@@ -100,49 +107,54 @@ public class ReadingSelectionPage implements Initializable {
     public void addSentences() throws IOException, URISyntaxException{
         String passage = getPassage();
         passage = passage.replace("-", " ");
+        
+        generateJSGF(passage);
+        
         String[] words = passage.split(" ");
         
         ArrayList<Hyperlink> hyperlinks = new ArrayList<>();
         Hyperlink hyperlink;
         
         exist = doesFileExist();
-        
         for (int i = 0; i < words.length; i++){
-            if(i==0){
-                   words[0]=words[0].replace(Character.toString(words[0].charAt(0)), "");
-            }
             hyperlink = new Hyperlink(words[i]+" ");
             wordsList.add(new Word(words[i]));
-
-            if(inDictionary(words[i])) {
+            
+            if(exist == true){
+                wordsList.get(i).setPronounciations(selection.getTitle(), "dict/"+selection.getTitle().replace(" ", "").toLowerCase()+".dict");
+                
+            }
+            else{
+                wordsList.get(i).setPronounciations(selection.getTitle(), "dict/"+"cmudict-en-us.dict");
+            }
+            
+            if(wordsList.get(i).getPronunciations().size()>0) {
                 hyperlink.setFont(Font.font("",FontWeight.NORMAL,16));                     
             } else {
                 hyperlink.setFont(Font.font("",FontWeight.NORMAL,16)); 
                 hyperlink.setTextFill(Color.RED); 
             }
-            
             int tempInt = i;
             Word word = wordsList.get(i);
             hyperlink.setOnAction((ActionEvent e) -> {
                 setSelectedWord(word);
                 selectedWordIndex = tempInt;
             });
-            
             hyperlinks.add(hyperlink);     
             wordsList.get(i).setLastIndex();
         }
-        
+        Word word = new Word("sil");
+        word.setPronounciations(selection.getTitle(),"dict/"+"cmudict-en-us.dict");
+
         tfReadings.setTextAlignment(TextAlignment.JUSTIFY); 
         ObservableList list = tfReadings.getChildren(); 
         list.addAll(hyperlinks);
-        if(!exist)
-            createDICT();
     }
 
     @Override
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        vBoxRSParent.setPrefSize(Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
+        stackPane.setPrefSize(Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
         tfReadings.setPrefWidth(Screen.getPrimary().getBounds().getWidth()/2);
         
         lRSTitle.setText(selection.getTitle());
@@ -165,46 +177,18 @@ public class ReadingSelectionPage implements Initializable {
             phonemeBuilderPage.show();
             
         });
+        
+        btnBack.setOnAction((ActionEvent e) -> {
+            try {
+                HomePage home = new HomePage(thisStage);
+            } catch (IOException ex) {
+                Logger.getLogger(ReadingSelectionPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
+
     }
     
-    public boolean inDictionary(String input) throws IOException {
-        input = input.trim();
-        input = input.replace(".", ""); //replace all . character
-        input = input.replace(",", ""); //replace all , character
-        input = input.replace("“", ""); //replace all “ character
-        input = input.replace("”", ""); //replace all ” character
-        input = input.replace("—", ""); //replace all — character
-        input = input.replace("’", ""); //replace all ’ character
-
-        String[] words=null;  //Intialize the word Array
-        File open;
-        if(exist)
-            open=new File(selection.getTitle()+".DICT"); //Creation of File Descriptor for input file
-        else
-            open=new File("cmudict-en-us.DICT"); //Creation of File Descriptor for input file
-        FileReader fr = new FileReader(open);  //Creation of File Reader object
-        BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
-        String s;     
-        boolean found = false;   
-        String delimiters = "[ \\(\\s+]";
-        while((s=br.readLine())!=null)   //Reading Content from the file
-        {
-            words=s.split(delimiters);  //Split the word using space
-             
-            if (words[0].equals(input.toLowerCase()))   //Search for the given word
-            {
-                wordsList.get(wordsList.size()-1).addPronunciation(words);
-                if(exist==false){
-                    if(!(strings.contains(s)))
-                        strings.add(s);
-                }
-                found = true;    //If Present, found is true
-            }
-
-        }
-        fr.close();
-        return found;
-    }
     private void setSelectedWord(Word word){
         vBoxPronunciations.getChildren().clear();
         String temp = word.getWord();
@@ -212,6 +196,9 @@ public class ReadingSelectionPage implements Initializable {
         temp = temp.replace(",", ""); //replace all , character
         temp = temp.replace("“", ""); //replace all “ character
         temp = temp.replace("”", ""); //replace all ” character
+        temp = temp.replace("?", ""); //replace all ? character
+        temp = temp.replace("’", "'"); //replace all ? character
+        
         temp = temp.toLowerCase();
         lRSWord.setText(temp);        
         ArrayList<HBox> hboxes = new ArrayList<>();
@@ -243,7 +230,7 @@ public class ReadingSelectionPage implements Initializable {
         setSelectedWord(word);
     }
     public void  deleteInFile(Word word,int index) throws FileNotFoundException, IOException{
-        File inputFile = new File(selection.getTitle()+".DICT");
+        File inputFile = new File("dict/"+selection.getTitle().replace(" ", "").toLowerCase()+".dict");
         BufferedReader reader = new BufferedReader(new FileReader(inputFile));
         String currentLine;
         ArrayList<String> tempStrings = new ArrayList<>();
@@ -258,26 +245,57 @@ public class ReadingSelectionPage implements Initializable {
         createDICT();
     }
     
-    public void addedPronunciation() throws IOException{
+    public void addedPronunciation(String word, String pronunciation) throws IOException{
+        for(int i = 0; i<wordsList.size(); i++){
+            if(wordsList.get(i).getWord().equals(word)){
+                wordsList.get(i).addPronunciation(pronunciation.split(" "),true);
+            }
+        }
+        setSelectedWord(wordsList.get(selectedWordIndex));
         wordsList.get(selectedWordIndex).increaseLastIndex();
-
     }
+    
     private boolean doesFileExist(){
-        boolean exist = false;
-        File file = new File(selection.getTitle() + ".DICT");
-        if(file.length() != 0)
+        boolean exist;
+        Path out = Paths.get("dict/"+selection.getTitle().replace(" ", "").toLowerCase()+".dict");
+        if(Files.exists(out))
             exist = true;
+        else 
+            exist = false;
         return exist;        
     }
     
     private void createDICT() throws IOException{
         Collections.sort(strings);
-        Path out = Paths.get(selection.getTitle() + ".DICT");
+        Path out = Paths.get("dict/"+selection.getTitle().replace(" ", "").toLowerCase() + ".dict");
         Files.write(out,strings,Charset.defaultCharset());
     }
+
+    private void generateJSGF(String passage) throws IOException {
+        passage = passage.replace(",", "");
+        passage = passage.replace(";", "");
+        passage = passage.replace("“", ""); //replace all “ character
+        passage = passage.replace("”", ""); //replace all ” character
+        passage = passage.replace("?", ""); //replace all ? character
+        passage = passage.replace("’", "'"); //replace all ’ character with '
+        passage = passage.toLowerCase();
+        String[] sentences = passage.split("\\.");
+        String jsgf;
+        BufferedWriter writer;
+        for(int i = 0; i < sentences.length; i++){
+            sentences[i] = sentences[i].replaceAll(" ", " [ sil ] ");
+            jsgf = "#JSGF V1.0;grammar word;public <wholeutt> = sil " + sentences[i] + " [ sil ];";
+            System.out.println(jsgf);
+            writer = new BufferedWriter(new FileWriter("src/readingready/resources/selections/" + selection.getTitle().replace(" ", "").toLowerCase()
+                            + "/jsgf/"+ String.format("%02d.jsgf", i)));
+                
+            writer.write(jsgf);
+            writer.close();
+        }
+    }
     
-    
-    
-    
+    public void show(){
+        thisStage.showAndWait();
+    }
     
 }

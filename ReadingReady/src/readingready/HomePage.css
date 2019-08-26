@@ -10,3 +10,83 @@
     -fx-hgap: 15;
     -fx-vgap: 5;
 }
+
+.titled-pane 
+{
+-fx-text-fill: #087830;
+}
+.titled-pane > .title 
+{
+-fx-color: white;
+}
+
+.titled-pane:focused > .title 
+{
+-fx-color: #DEB887;
+}
+
+.titled-pane > .title > .arrow-button 
+{
+-fx-background-color: null;
+}
+
+.titled-pane > .title > .arrow-button .arrow 
+{
+-fx-background-color: black;
+-fx-background-insets: 1 0 -1 0, 0;
+-fx-padding: 0.25em 0.3125em 0.25em 0.3125em; /* 3 3.75 3 3.75 */
+-fx-shape: "M 0 0 h 7 l -3.5 4 z";
+}
+
+.titled-pane:collapsed > .title > .arrow-button .arrow 
+{
+-fx-rotate: -90;
+}
+
+.titled-pane > *.content 
+{
+-fx-background-color: white;
+-fx-background-insets: 0, 0 1 1 1;
+-fx-padding: 0.167em;
+ }
+
+.titled-pane:focused > .title > .arrow-button .arrow 
+{
+-fx-background-color: white;
+}
+
+.BtnAdd
+{
+-fx-color: #00992e;
+}
+
+.button:hover
+{
+-fx-text-fill: #087830;
+}
+
+.BtnAdd:hover
+{
+-fx-color: #087830;
+-fx-text-fill: #a2a2a2;
+}
+
+#vBox1{
+    -fx-background-color: #087830;
+}
+
+#vBox2{
+    -fx-background-color: #087830;
+}
+
+#label1{
+    -fx-font-size: 2em;
+    -fx-font-weight: bold;
+    -fx-text-fill: whitesmoke;
+}
+#btnSignout{
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+    -fx-text-fill: #DEB887;
+    -fx-underline: true;
+}

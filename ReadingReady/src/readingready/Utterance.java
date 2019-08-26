@@ -14,7 +14,8 @@ public class Utterance {
     private String word;
     private int start;
     private int end;
-    private int ascr;
+    private double ascr;
+    private String pronunciation;
     
     public Utterance(String word){
         word = word.replace(".", ""); //replace all . character
@@ -26,7 +27,7 @@ public class Utterance {
         this.word = word;
     }
     
-    public Utterance(String word, int start, int end, int ascr){
+    public Utterance(String word, int start, int end, double ascr, String pronunciation){
         word = word.replace(".", ""); //replace all . character
         word = word.replace(",", ""); //replace all , character
         word = word.replace("“", ""); //replace all “ character
@@ -37,6 +38,7 @@ public class Utterance {
         this.start=start;
         this.end=end;
         this.ascr=ascr;
+        this.pronunciation = pronunciation;
     }
     
     public String getWord() {
@@ -47,11 +49,11 @@ public class Utterance {
         return start;
     }
 
-    public int getEnd() {
+    public double getEnd() {
         return end;
     }
 
-    public int getAscr() {
+    public double getAscr() {
         return ascr;
     }
 }

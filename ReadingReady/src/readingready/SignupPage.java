@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
@@ -85,22 +86,38 @@ public class SignupPage implements Initializable {
             String password1 = pfSPassword.getText();
             String password2 = pfSConfirmPassword.getText();
             
-            if(fName.isEmpty() || lName.isEmpty() || uName.isEmpty() || password1.isEmpty() || password1.isEmpty()) 
-                System.out.println("Please complete the form");
-            
+            if(fName.isEmpty() || lName.isEmpty() || uName.isEmpty() || password1.isEmpty() || password1.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error dialog");
+                alert.setHeaderText("Please complete the form");
+                alert.setContentText(null);
+                alert.showAndWait();
+            }
             else {
                 if(password1.equals(password2)) {
                     try {
                         User user = uDao.findByUName(uName);
-                        System.out.println("Username already taken. Please choose another username");
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error dialog");
+                        alert.setHeaderText("Username already taken. Please choose another username");
+                        alert.setContentText(null);
+                        alert.showAndWait();
                     } catch (NoResultException ex) {
                         User user = new User(fName.toUpperCase(), lName.toUpperCase(), uName, password1);
                         uDao.create(user);
-                        notifyCompletion();
+                        try {
+                            notifyCompletion();
+                        } catch (IOException ex1) {
+                            Logger.getLogger(SignupPage.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
                     }
                 }
                 else {
-                    System.out.println("Password Mismatch. Please re-confirm password.");
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error dialog");
+                    alert.setHeaderText("Password Mismatch. Please re-confirm password.");
+                    alert.setContentText(null);
+                    alert.showAndWait();
                 }
             }
             
@@ -112,14 +129,12 @@ public class SignupPage implements Initializable {
     }
     
     public void clearFields(){
-        tfSFirstName.clear();
-        tfSLastName.clear();
-        tfSUsername.clear();
         pfSPassword.clear();
         pfSConfirmPassword.clear();
     }
     
-    public void notifyCompletion(){
+    public void notifyCompletion() throws IOException{
         System.out.println("User registered");
+        toLogin();
     }
 }

@@ -10,10 +10,20 @@ import edu.cmu.sphinx.api.SpeechAligner;
 import edu.cmu.sphinx.api.SpeechResult;
 import edu.cmu.sphinx.api.StreamSpeechRecognizer;
 import edu.cmu.sphinx.result.WordResult;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,12 +35,14 @@ public class Sphinx{
     private Configuration configuration;
     private StreamSpeechRecognizer recognizer;
     private SpeechAligner aligner;
-    
+    private String strTrained = "models/en-us-both80";
+    private String strUntrained = "models/en-us-untrained";
+
     public void initialize() throws IOException{
         configuration = new Configuration();
         configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
         //configuration.setAcousticModelPath("en-us-adapt"); //adapted
-        configuration.setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
+        configuration.setDictionaryPath("dict/cmudict-en-us.dict");
         configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
         recognizer = new StreamSpeechRecognizer(configuration);
     }
@@ -45,27 +57,85 @@ public class Sphinx{
         recognizer = new StreamSpeechRecognizer(configuration);
     }
     
-    public List<WordResult> getWordResults(String wav) throws FileNotFoundException, IOException{
+    public void evaluateForced(String path, int i, String selection, boolean trained) throws FileNotFoundException, IOException{
         initialize();
-        recognizer.startRecognition(new FileInputStream(new File("src/readingready/resources/"+"aron.wav")));
-        SpeechResult results = recognizer.getResult();
-        recognizer.stopRecognition();
+        if(trained)
+            configuration.setAcousticModelPath(strTrained);
+        else
+            configuration.setAcousticModelPath(strUntrained);
         
-        return results.getWords();
-    }
-    
-    public SpeechResult getSpeechResult(String wav) throws FileNotFoundException, IOException{
-        initialize();
-        recognizer.startRecognition(new FileInputStream(new File("src/readingready/resources/"+"aron.wav")));
-        SpeechResult results = recognizer.getResult();
-        recognizer.stopRecognition();
+        recognizer = new StreamSpeechRecognizer(configuration);
+
         
-        return results;
-    }
-    
-    public List<WordResult> getWordResultsWithAlignment(String wav, String transcript) throws IOException{
+        String filename = "src/readingready/resources/selections/" + selection.replace(" ", "").toLowerCase() + "/passage.txt";
+        File open = new File(filename);
+        FileReader fr = new FileReader(open);  //Creation of File Reader object
+        BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
+
+        String passage = "";
+        String s;
+        while((s = br.readLine()) != null){
+            passage = passage + s;
+        }
+        br.close();
+        fr.close();
+        
+        String[] sentences = passage.toLowerCase().split("\\.");
+
+        passage = sentences[i];
+        passage = passage.replace(",", "");
+        System.out.println("sentence:\n" + passage);
+        String iString = String.format("%02d.wav", i);
         if(aligner == null)
             aligner = new SpeechAligner(configuration.getAcousticModelPath(), configuration.getDictionaryPath(), null);
-        return aligner.align(new File(wav).toURI().toURL(), transcript);
+        String strPath = path + "/wavs/" + iString;
+        System.out.println(strPath);
+        
+        File file = new File(strPath);
+        List<WordResult> results = aligner.align(file.toURI().toURL(), passage);
+        
+        makeReport(results, path, true);
+
+   }
+    
+    public void evaluateNormal(String path, String iString, boolean trained) throws IOException{
+        initialize();
+        if(trained)
+            configuration.setAcousticModelPath(strTrained);
+        else
+            configuration.setAcousticModelPath(strUntrained);
+        
+        recognizer = new StreamSpeechRecognizer(configuration);
+
+        recognizer.startRecognition(new FileInputStream(new File(path + "/wavs/" + iString + ".wav")));
+        SpeechResult results = recognizer.getResult();
+        recognizer.stopRecognition();
+        
+        makeReport(results.getWords(), path, false);
+    }
+    
+    public void makeReport(List<WordResult> wordResults, String path, boolean isAligned) throws IOException{
+        ArrayList<String> strings = new ArrayList<>();
+        String sentence = "";
+        System.out.print(wordResults.size());
+        for(int i = 0 ; i < wordResults.size() ; i++){
+          
+            if(wordResults.get(i).getWord().getSpelling().equals("<sil>"))
+            ;
+            else{
+                System.out.println(wordResults.get(i).toString());
+            String string = wordResults.get(i).getWord().getSpelling()+" "+wordResults.get(i).getTimeFrame().getStart()+" "+wordResults.get(i).getTimeFrame().getEnd()+" "+wordResults.get(i).getScore()+" "+wordResults.get(i).getPronunciation().toString();
+            strings.add(string);
+            sentence = sentence + " " + wordResults.get(i).getWord().getSpelling();
+            }
+        }
+        if(strings.size()!=0)
+            strings.set(0, "***"+sentence+"***");
+        Path out = (isAligned) ? Paths.get(path + "/resultForced.txt") : Paths.get(path + "/resultNormal.txt");
+        
+        if(Files.exists(out))
+            Files.write(out,strings,StandardOpenOption.APPEND);
+        else
+            Files.write(out,strings,Charset.defaultCharset());
     }
 }

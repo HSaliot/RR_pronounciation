@@ -12,4 +12,7 @@ import readingready.Evaluation;
  * @author Hannah Saliot
  */
 public class EvaluationDao extends Dao<Evaluation>{
+    public Evaluation findNewest(){
+        return getEM().createNamedQuery("Evaluation.findMostRecent", Evaluation.class).getResultList().get(0);
+    }
 }

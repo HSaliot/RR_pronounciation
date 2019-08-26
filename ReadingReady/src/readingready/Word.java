@@ -5,6 +5,16 @@
  */
 package readingready;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
 /**
@@ -16,13 +26,15 @@ public class Word {
     private ArrayList<String> pronunciations = new ArrayList<>();
     private ArrayList<String> lines = new ArrayList<>();
     private int lastIndex;
+    private ArrayList<String> raw = new ArrayList<>();
     
     public Word(String word){
         word = word.replace(".", ""); //replace all . character
         word = word.replace(",", ""); //replace all , character
         word = word.replace("“", ""); //replace all “ character
         word = word.replace("”", ""); //replace all ” character
-        word = word.replace("’", ""); //replace all ’ character
+        word = word.replace("?", ""); //replace all ? character
+        word = word.replace("’", "'"); //replace all ’ character with '
         word = word.toLowerCase();
         this.word = word;
     }
@@ -35,10 +47,18 @@ public class Word {
         return pronunciations;
     }
 
-    public void addPronunciation(String[] pronunciation) {
+    public void addPronunciation(String[] pronunciation,Boolean created) {
         lastIndex++;
         StringBuilder stringBuilder = new StringBuilder();
         String temp;
+        if(created){
+            System.out.print(pronunciation);
+            for(int i=0;i<pronunciation.length;i++)
+                if(i==pronunciation.length-1)
+                stringBuilder.append(pronunciation[i]);
+            else
+                stringBuilder.append(pronunciation[i]+" ");
+        } else {
         lines.add(pronunciation[1]);
         if(!Character.isDigit(pronunciation[1].charAt(0)))
             for(int i =1;i<pronunciation.length;i++)
@@ -52,10 +72,11 @@ public class Word {
                 stringBuilder.append(pronunciation[i]);
             else
                 stringBuilder.append(pronunciation[i]+" ");
+        }
         temp = stringBuilder.toString();
         pronunciations.add(temp);
     }
-
+    
     public void removePronunciation(int i) {
         pronunciations.remove(i);
     }
@@ -76,6 +97,71 @@ public class Word {
     }
     public void increaseLastIndex(){
         lastIndex =lastIndex+1;
+    }
+    public void setPronounciations(String title,String dict) throws FileNotFoundException, IOException{
+        boolean exist;
+        
+        if(dict.equals("dict/"+"cmudict-en-us.dict"))
+            exist = false;
+        else 
+            exist = true;
+        
+        String[] words=null;  //Intialize the word Array
+        File open = new File(dict);
+
+        FileReader fr = new FileReader(open);  //Creation of File Reader object
+        BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
+        String s;     
+        boolean found = false;   
+        String delimiters = "[ \\(\\s+]";
+        while((s=br.readLine())!=null)   //Reading Content from the file
+        {
+            words=s.split(delimiters);  //Split the word using space
+             
+            if (words[0].equals(word))   //Search for the given word
+            {                
+                addPronunciation(words,false);
+                raw.add(s);
+            }
+        }
+        if(!exist&&!isInDictionary(title))
+            toDictionary(title);
+        fr.close();
+    }
+    public boolean isInDictionary(String title) throws IOException{
+        boolean in = false;
+        Path out = Paths.get("dict/"+title.replace(" ", "").toLowerCase()+".dict");
+        if(Files.exists(out)){
+            File open = new File(out.toString());
+            FileReader fr = new FileReader(open);  //Creation of File Reader object
+            BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
+            String s;     
+            boolean found = false;   
+            String delimiters = "[ \\(\\s+]";
+            String[] words;
+            while((s=br.readLine())!=null)   //Reading Content from the file
+            {
+                words=s.split(delimiters);  //Split the word using space
+
+                if (words[0].equals(word))   //Search for the given word
+                {                
+                    in=true;
+                }
+            }
+            fr.close();
+        }
+        else
+            in = false;
+        return in;
+    }
+    public void toDictionary(String title) throws IOException{
+        Path out = Paths.get("dict/"+title.replace(" ", "").toLowerCase()+".dict");
+
+        if(Files.exists(out))
+            Files.write(out,raw,StandardOpenOption.APPEND);
+        else
+            Files.write(out,raw,Charset.defaultCharset());   
+
     }
 }
 

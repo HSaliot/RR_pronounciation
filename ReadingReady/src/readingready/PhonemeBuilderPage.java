@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -42,7 +43,8 @@ public class PhonemeBuilderPage implements Initializable {
     private Button btnPB31,btnPB32,btnPB33,btnPB34,btnPB35,btnPB36,btnPB37,btnPB38,btnPB39,btnPB40;
     @FXML
     private TextField tfPBPhoneme;
-    
+    @FXML
+    private Button btnCancel;
     private String title;
     private Word word;
     private ReadingSelectionPage rsp;
@@ -64,13 +66,25 @@ public class PhonemeBuilderPage implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         lPBWord.setText(word.getWord());
         btnPBSubmit.setOnAction((ActionEvent e) -> {
-            try {
-                appendToFile(getFinal());
-                rsp.addedPronunciation();
-                close();
-            } catch (IOException ex) {
-                Logger.getLogger(PhonemeBuilderPage.class.getName()).log(Level.SEVERE, null, ex);
+            if(tfPBPhoneme.getText().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error dialog");
+                alert.setHeaderText("Please complete the form");
+                alert.setContentText(null);
+                alert.showAndWait();
             }
+            else {
+                try {
+                    appendToFile(getFinal());
+                    rsp.addedPronunciation(word.getWord(),tfPBPhoneme.getText());
+                    close();
+                } catch (IOException ex) {
+                    Logger.getLogger(PhonemeBuilderPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        btnCancel.setOnAction((ActionEvent e) -> {
+            close();
         });
         btnPB2.setOnAction((ActionEvent e) -> {
             tfPBPhoneme.appendText(btnPB2.getText()+" ");
@@ -210,7 +224,7 @@ public class PhonemeBuilderPage implements Initializable {
     
     public void appendToFile(String textToAppend) throws IOException{  
     BufferedWriter writer = new BufferedWriter(
-                                new FileWriter(title+".DICT", true)  //Set true for append mode
+                                new FileWriter("dict/"+title.replace(" ", "").toLowerCase()+".dict", true)  //Set true for append mode
                             ); 
     writer.newLine();   //Add new line
     writer.write(textToAppend);
