@@ -169,7 +169,7 @@ public class AddReadingSelectionPage implements Initializable {
         });;
     }    
 
-    void show() {
+    public void show() {
         thisStage.showAndWait();
     }
     private void saveFileToProject() throws IOException {

@@ -99,11 +99,11 @@ public class CompareEvaluationPage implements Initializable {
         lblEval2.setText(evaluations.get(1).getLabel());
         lblStudent1.setText(evaluations.get(0).getStudent().getLName()+", "+evaluations.get(0).getStudent().getFnameetc());
         lblStudent2.setText(evaluations.get(1).getStudent().getLName()+", "+evaluations.get(1).getStudent().getFnameetc());
-        setPassage(evaluations.get(0),1);
-        setPassage(evaluations.get(1),2);
+        setEvaluation(evaluations.get(0),1);
+        setEvaluation(evaluations.get(1),2);
     }
     
-    public void setPassage(Evaluation eval,int num) throws FileNotFoundException, IOException{
+    public void setEvaluation(Evaluation eval,int num) throws FileNotFoundException, IOException{
         String folder = eval.getFolder() + String.format("%02d/", eval.getId()); // folder <-- "src/resources/evaluations/<user.toString()>/"
         BufferedReader br = new BufferedReader(new FileReader(new File(folder + "resultNormal.txt"))); 
         String line;

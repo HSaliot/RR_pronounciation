@@ -77,7 +77,7 @@ public class HomePage implements Initializable {
         thisStage.setScene(scene);
         thisStage.setMaximized(true);        
     }
-        public HomePage(Stage stage) throws IOException{
+    public HomePage(Stage stage) throws IOException{
         thisStage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("HomePage.fxml"));
         loader.setController(this);

@@ -67,7 +67,7 @@ public class ReadingSelectionPage implements Initializable {
     private Button btnBack;
     
     private Stage thisStage;
-    ReadingSelection selection;
+    private ReadingSelection selection;
     private ArrayList<Word> wordsList = new ArrayList<>();
     
     private int selectedWordIndex;
@@ -292,10 +292,6 @@ public class ReadingSelectionPage implements Initializable {
             writer.write(jsgf);
             writer.close();
         }
-    }
-    
-    public void show(){
-        thisStage.showAndWait();
     }
     
 }

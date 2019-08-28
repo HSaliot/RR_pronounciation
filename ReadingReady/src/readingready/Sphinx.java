@@ -60,9 +60,9 @@ public class Sphinx{
     public void evaluateForced(String path, int i, String selection, boolean trained) throws FileNotFoundException, IOException{
         initialize();
         if(trained)
-            configuration.setAcousticModelPath(strTrained);
+            setAcousticModel(strTrained);
         else
-            configuration.setAcousticModelPath(strUntrained);
+            setAcousticModel(strUntrained);
         
         recognizer = new StreamSpeechRecognizer(configuration);
 

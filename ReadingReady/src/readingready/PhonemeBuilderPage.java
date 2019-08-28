@@ -30,7 +30,7 @@ import javafx.stage.StageStyle;
  * @author Lorenz
  */
 public class PhonemeBuilderPage implements Initializable {
-    Stage thisStage = new Stage();
+    private Stage thisStage = new Stage();
     @FXML
     private Label lPBWord;
     @FXML
@@ -48,7 +48,7 @@ public class PhonemeBuilderPage implements Initializable {
     private String title;
     private Word word;
     private ReadingSelectionPage rsp;
-    PhonemeBuilderPage(ReadingSelectionPage rsp,String title, Word selected) throws IOException {
+    public PhonemeBuilderPage(ReadingSelectionPage rsp,String title, Word selected) throws IOException {
         this.rsp=rsp;
         this.title = title;
         word = selected;

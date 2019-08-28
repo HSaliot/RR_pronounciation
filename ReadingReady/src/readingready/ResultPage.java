@@ -65,18 +65,14 @@ public class ResultPage implements Initializable {
     @FXML    private Label labelStudent;
     @FXML    private Label labelDateRecorded;
     
-    @FXML    private TextFlow tfReadings;
     @FXML    private Label lRSWord;
     @FXML    private Button playButton;
     @FXML    private Button stopButton;
     @FXML    private Button pauseButton;
     @FXML    private Label lblScore;
 
-    @FXML   private Tab tabNormal;
-    @FXML   private Tab tabForced;
     @FXML   private TextFlow tfReadingsNormal;
     @FXML   private TextFlow tfReadingsForced;
-    @FXML   private ScrollPane spReadings;
     @FXML   private ProgressBar progress;
     
     private Stage thisStage;
@@ -85,10 +81,6 @@ public class ResultPage implements Initializable {
     private Clip clip;
     private long pauseTime;
     private final IconFactory iconF = new IconFactory();
-
-    
-    private final Font reg = Font.font("", FontWeight.NORMAL, 16);
-    private final Font bold = Font.font("", FontWeight.BOLD, 16);
     
     private List<Utterance> utterancesNormal = new ArrayList<>();
     private List<Utterance> utterancesForced = new ArrayList<>();
@@ -108,10 +100,6 @@ public class ResultPage implements Initializable {
         scene.getStylesheets().add(getClass().getResource("ResultPage.css").toExternalForm());
         thisStage.setScene(scene);
 
-    }
-    
-    public void show(){
-        thisStage.showAndWait();
     }
     
     @Override
